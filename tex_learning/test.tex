@@ -1,0 +1,440 @@
+\documentclass[a4paper, 11pt]{article}
+
+\author{smh \and smher}
+
+\title{\textsl{first try}}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsbsy}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\part{Introduce}
+\section{Text Edit}
+I read Kunth divides the people working with \TeX{} into \TeX{} nicians and \TeX perts. \\
+Today is \today. \\
+
+you can \textsl{lean} on me !\\
+
+\ldots when Einstein introduced his formula 
+\begin{equation}
+e = m \cdot c^2 \;\footnote{famous equation} ,
+\end{equation}
+which is at the same time the most widely known and the least well understood physical formula.
+
+\mbox{123 345 789}\\
+\fbox{123 456 789}\\
+
+``please 'u' akdfj''
+
+hello-boys\\
+pages 34--35\\
+yes---or no?\\
+$0$, $1$, and $-1$\\
+www.baidu.com/\~{}bush\\
+www.baidu.com/$\sim$demo\\
+it's $-30\,^{\circ}\mathrm{C}$\\
+not like this ... but like this: \\new york, tokyo, budapest, \ldots \\
+Not shelfful\\
+but shelf\mbox{}ful\\
+
+H\^otel, na\"ive, \'el\`eve,\\
+sm\o rrebr\o d, !`Se\~norita!,\\
+Sch\"onbrunner Schlo\ss Stra\ss e, \c o\\
+
+%\section{first}
+%	the first section.
+%\subsection{second}
+%	the second section.\label{sec:that}
+%\section*{first-s}
+%	first second
+%\subsection*{second-s}
+%	second second
+
+\paragraph{para-first}
+	first paragraph
+\subparagraph{sub-para-first}
+	first subparagraph\\
+
+A reference to this subsection \label{sec:this} looks like :
+``see section~\ref{sec:that} on page ~\pageref{sec:this}.''
+Footnote\footnote{this is a footnote .} are often used by people using \LaTeX.
+\underline{hello \LaTeX}.\\
+\emph{hello world}\\
+\emph{if you use emphasizing inside a piece of emphasized text, then \LaTeX{} uses the \emph{normal} font for more emphasizing.}\\
+\textit{you can also \emph{emphasize} text if it is set in italics, }\textsf{in a \emph{sans-serif} font, } \texttt{or in \emph{typewrite} style.} \\
+
+%\part{environment}
+%\section{Environment}
+\subsection{list}
+\flushleft
+\begin{enumerate}
+\item You can mix the list envrionments to your taste:
+\begin{itemize}
+\item But it might start to look silly.
+\item[-] With a dash.
+\end{itemize}
+\item Therefore remember:
+\begin{description}
+\item[Stupid] things will not become smart because they are in a list.
+\item[Smart] things, though can be presented beautifully in a list.
+\end{description}
+\end{enumerate}
+
+\subsection{align}
+\begin{flushleft}
+This text is \\ left-alighed.
+\LaTeX{} is not trying to make each line the same length.
+\end{flushleft}
+\begin{flushright}
+This is text right-\\alighed.
+\LaTeX{} is not trying to make each line the same length.
+\end{flushright}
+\begin{center}
+At the center \\ of the earth.
+\end{center}
+
+\subsection{quote}
+A typographical rule of thumb for the line length is :
+\begin{quote}
+On average, no line should be longer than 66 characters.
+\end{quote}
+This is why \LaTeX{} pages have such large borders by default and also why multicolumn print is used in newspapers.
+\begin{flushleft}
+I know only one English poem by heart. It is about Humpty Dumpty.
+\begin{verse}
+Humpty Dumpty sat on a wall:\\
+Humpty Dumpty had a great fall.\\
+All the king's horses and the king's men\\
+Couldn't put Humpty together again.
+\end{verse}
+\end{flushleft}
+
+\subsection{abstract}
+\begin{abstract}
+The abstract abstract.
+\end{abstract}
+
+\subsection{print}
+the \verb|\ldots| command \ldots 
+\begin{verbatim}
+10  print "hello world";
+20  Goto 10
+\end{verbatim}
+
+\subsection{table}
+\begin{tabular}{|r|l|}
+\hline
+7C0 & hexadecimal\\
+3700 & octal \\ \cline{2-2}
+11111000000 & binary \\
+\hline
+\hline
+1984 & decimal \\
+\hline
+\end{tabular}\label{sec:tab1}
+\\
+table~\ref{sec:tab1} is the first table\footnote{this is the first table.}. 
+\\
+\begin{tabular}{c r @{.} l}
+Pi expression & \multicolumn{2}{c}{Value} \\
+\hline
+$\pi$ & $3$ & 1416\\
+$\pi$ & 36 & 46\\
+$(\pi^{\pi})^{\pi}$ & 80062 & 7\\
+\end{tabular}\label{sec:tab2}\\
+%\caption{first table}\\
+\ref{sec:tab2} is the second table\footnote{this is the second table}.\\
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{Ene}\\
+\hline
+Mene & Muh!\\
+\hline
+\end{tabular}
+
+\subsection{floating bodies}
+figure~\ref{white} is an example of Pop-Art.
+\begin{figure}[!hbp]
+\makebox[\textwidth]{\framebox[5cm]{\rule{0pt}{5cm}}}
+\caption{Five by Five in Centimeters.\label{white}}
+\end{figure}
+
+\subsection{protect}
+\verb|\footnote| and \verb|\phantom| is fragile commands and should be protected.\\
+\begin{enumerate}
+\item Usage
+\begin{itemize}
+\item[-] \verb|\protect|
+\item[-] \verb|\protect|\verb|\footnote{and protect my footnotes}|\\
+\end{itemize}
+\item Description
+\end{enumerate}
+
+\part{MATH}
+\section{math}
+\subsection{Intro.}
+Add $a$ squared and $b$ squared to get $c$ squared. Or, using a more mathematical approach:$c^2 = a^2 + b^2$.\\
+
+\TeX{} is pronounced as \(\tau\epsilon\chi\). \\[6pt]
+100~m$^{3}$ of water\\[6pt]
+This comes from my 
+\begin{math}
+\heartsuit
+\end{math}\\
+
+Add $a$ squared and $b$ squared to get get $c$ squared. Or, using a more mathematical approach:
+\begin{displaymath}
+c^{2} = a^{2} + b^{2}
+\end{displaymath}
+or you can type less with :
+\[a^{2} + b^{2} = c^{2}\] 
+
+\begin{equation}\label{eq:eps}
+\epsilon > 0
+\end{equation}
+From(\ref{eq:eps}), we gather \ldots{} From (\ref{eq:eps}) we do the same.\\
+Two type display : first, $lim_{n \to \infty}\sum_{k=1}^{n}\frac{1}{k^2} = \frac{\pi ^{2}}{6}$; second,\begin{displaymath}
+lim_{n \to \infty}\sum_{k=1}^{n}\frac{1}{k^2} = \frac{\pi ^{2}}{6}
+\end{displaymath}
+
+\begin{equation}
+\forall x in \mathbf{R}:
+\qquad x^2 \geq 0 
+\end{equation}
+
+\begin{equation}
+x^2 \geq 0 \qquad
+\textrm{for all }x \in \mathbf{R} 
+\end{equation}
+
+\begin{displaymath}
+x^2 \geq 0 \qquad
+\textrm{for all }x \in \mathbb{R}
+\end{displaymath}
+
+\subsection{array}
+\begin{equation}
+a^x + y \neq a^{x+y} 
+\end{equation}
+
+\subsection{basic elements}
+$\alpha, \xi, \pi, \mu, \Phi, \Omega $ \\
+$a_{1}$ \qquad $x^{2} \qquad$ $e^{-\alpha t} \qquad a_{ij}^{3}$\\
+$e^{x^2} \neq {e^x}^{2}$ \\
+
+\(\sqrt{x}\) \qquad \(\sqrt{x^{2} + \sqrt{y}}\) \\
+$\sqrt[3]{n}$ \\ [3pt]
+$\surd[x^2 + y^2]$\\
+
+$\overline{m+n}$ \qquad $\underline{m+n}$ \\
+\begin{displaymath}
+\underbrace{a + b + \cdots +z}_{26}=100
+\end{displaymath}
+\begin{displaymath}
+y=x^2 \qquad y' = 2x\qquad y''=2
+\end{displaymath}
+\[\vec{a}\qquad\overrightarrow{AB}\qquad\overleftarrow{AB}\]
+
+\begin{displaymath}
+v = {\sigma}_1 \cdot {\sigma}_2 \cdot {\tau}_1 \cdot {\tau}_2
+\end{displaymath}
+
+\[\lim_{x \to 0}\frac{\sin x}{x} = 1\]
+\[\lim_{x \rightarrow 0}\frac{\sin x}{x} = 1\]
+
+$a\bmod b $\\
+$a \equiv a \pmod{b}$\\
+
+$1\frac{1}{2}$~hours
+\begin{displaymath}
+\frac{x^2}{k+1}\qquad x^{\frac{2}{k+1}}\qquad x^{1/2}
+\end{displaymath}
+
+\begin{displaymath}
+\binom{n}{k} \qquad \mathrm{C}_n^k
+\end{displaymath}
+
+\begin{displaymath}
+\int f_N(x) \stackrel{!}{=} 1
+\end{displaymath}
+
+\begin{displaymath}
+\sum_{i=1}^{n}\qquad \int_{0}^{\frac{\pi}{2}}\qquad \prod_{\epsilon}
+\end{displaymath}
+
+\begin{displaymath}
+\sum_{\substack{0<i<n \\ 1<j<m}}P(i,j) = \sum_{\begin{subarray}{l}
+i \in I \\ 1<j<m
+\end{subarray}}Q(i,j)
+\end{displaymath}
+
+\begin{displaymath}
+{a,b,c} \neq \{a, b, c\}
+\end{displaymath}
+
+\begin{displaymath}
+1 + \left(\frac{1}{1- x^2}\right)^3
+\end{displaymath}
+
+\begin{displaymath}
+1 + (\frac{1}{1- x^2})^3
+\end{displaymath}
+
+$\big((x+1)(x-1)\big)^2$\\
+$\big(\Big(\bigg(\Bigg($ \quad $\big\}\Big\}\bigg\}\Bigg\}$
+\quad
+$\big\| \Big\| \bigg\| \Bigg\|$\\
+
+\begin{displaymath}
+x_1, x_2, \ldots, x_n \qquad
+x_1, x_2, \cdots, x_n
+\end{displaymath}
+
+\subsection{math black}
+\newcommand{\ud}{\mathrm{d}}
+\begin{displaymath}
+\int\!\!\!\int_{D}g(x,y)\,\ud x\, \ud y
+\end{displaymath}
+instead of
+\begin{displaymath}
+\int\int_{D} g(x,y)\ud x\ud y
+\end{displaymath}
+\begin{displaymath}
+\iint_{D} g(x,y) \, \ud x\, \ud y
+\end{displaymath}
+
+\subsection{verticle align}
+\begin{displaymath}
+\mathbf{X} = 
+\left(\begin{array}{ccc}
+x_{11} & x_{12} & \ldots\\
+x_{21} & x_{22} & \ldots\\
+x_{31} & x_{32} & \ldots\\
+\vdots & \vdots & \ddots
+\end{array}\right)
+\end{displaymath}
+
+\begin{displaymath}
+y = \left\{\begin{array}{ll}
+a & \textrm{if $d>c$}\\
+b+x & \textrm{in the morining}\\
+l & \textrm{all day long}
+\end{array}\right.
+\end{displaymath}
+
+\begin{displaymath}
+\left(\begin{array}{c|c}
+1 & 2\\
+\hline
+3 & 4
+\end{array}\right)
+\end{displaymath}
+
+\begin{eqnarray}
+f(x) & = & \cos x \\
+f'(x) & = & - \sin x \\
+\int_{0}^{x} f(y) dy & = & \sin x  
+\end{eqnarray}
+
+{\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+\sin x & = & x - \frac{x^3}{3!} + \frac{x^5}{5!}-{}
+\nonumber\\
+&& {}-\frac{x^7}{7!}+{}\cdots
+\end{eqnarray}}
+
+\begin{eqnarray}
+\lefteqn{ \cos x = 1-\frac{x^2}{2!} + {}}
+\nonumber\\
+& & {}+\frac{x^4}{4!} - \frac{x^6}{6!}+{}\cdots
+\end{eqnarray}
+
+\subsection{phantom}
+\begin{displaymath}
+{}^{12}_{\phantom{1}6}\textrm{C}\qquad
+\textrm{verse} \qquad
+{}^{12}_{6}\textrm{C}
+\end{displaymath}
+
+\begin{displaymath}
+\Gamma_{ij}^{\phantom{ij}k} \qquad
+\textrm{verse} \qquad
+\Gamma_{ij}^{k}
+\end{displaymath}
+
+\subsection{Size}
+\begin{equation}
+2^{\textrm{nd}}\qquad
+2^{\mathrm{nd}}
+\end{equation}
+
+\begin{displaymath}
+	\frac{\displaystyle \sum_{i=1}^{n}(x_i-\overline{x})(y_i - \overline{y})}{\displaystyle\biggl[\sum_{i=1}^{n}(x_i-\overline{x})^2\sum_{i=1}^{n}(y_i-\overline{y})^2\biggr]^{1/2}}
+\end{displaymath}
+
+\subsection{theme}
+
+\begin{itemize}
+\item[-] Usage\\
+\end{itemize}
+\begin{verbatim}
+\newtheorem{name}[counter]{text}[section]
+\end{verbatim}
+
+%\newtheorem{theam1}{this is my interesting theorem}
+
+\theoremstyle{definition}
+\newtheorem{law}{Law}
+\theoremstyle{plain}
+\newtheorem{jury}[law]{Jury}
+\theoremstyle{remark}
+\newtheorem*{marge}{Margaret}
+
+\begin{law}\label{law:box}
+Don't hide in the witness box
+\end{law}
+\begin{jury}[The Twelve]
+It could be you! So beware and see low~\ref{law:box}
+\end{jury}
+\begin{marge}
+No, No, No
+\end{marge}
+
+\flushleft
+\newtheorem{mur}{Murphy}[subsection]
+\begin{mur}
+If there are two or more ways to do something, and one of those ways can result in a catastrophe, then someone will do it.
+\end{mur}
+
+\begin{proof}
+Trivial, use
+\[E=mc^2\]
+\end{proof}
+
+\subsection{bold body}
+\begin{displaymath}
+\mu, M \qquad \mathbf{M} \qquad
+\mbox{\boldmath $\mu, M$}
+\end{displaymath}
+
+\begin{displaymath}
+\mu, M \qquad
+\boldsymbol{\mu}, \boldsymbol{M}
+\end{displaymath}
+$\hbar$
+
+
+
+\appendix
+\section{appendix}
+Please, start a new line right here ! \newline
+Thankyou.
+
+\end{document}
