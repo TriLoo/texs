@@ -1,0 +1,229 @@
+\documentclass[a4paper,12pt,titlepage]{article}
+
+\title{Customize}
+\author{\href{smhhaoo@126.com}{smher}}
+
+\usepackage[xetex,colorlinks]{hyperref}
+\usepackage{calc}
+\usepackage[UTF8]{ctex}
+%\usepackage{ams-mdbch}
+
+%\addtolength{\hoffset}{-0.5cm}
+%\addtolength{\textwidth}{1cm}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\newpage
+\section{\textit{你好}}
+你好， \LaTeX !!!\\
+{\par \Huge \textit{来自中文的问候！！} }
+\section{new cmd \& env \& package}
+\subsection{new cmd}
+Use \verb|\newcommand{text}[num]{def}| to define own command.\\
+For example:\\
+\newcommand{\owncmd}[1]{This is the \emph{#1} Short 
+					Introduce to \TeX}
+\begin{itemize}
+\item \owncmd{not so}
+\item \owncmd{very}
+\end{itemize}
+
+Other command:\\
+\verb|\renewcommand{text}[num]{def}| \emph{Or} \verb|\providecommand|
+
+\subsection{new env}
+Use \verb|\newenvironment{text}[args]{begdef}{enddef}| to define a new environment.
+For example: \\
+\newenvironment{king}{\rule{1ex}{1ex} %
+						\hspace{\stretch{1}}}{\hspace{\stretch{1}} %
+						\rule{1ex}{1ex}}
+
+\begin{king}
+my humble subjects \ldots
+\end{king}
+
+\subsection{extra space}
+\newenvironment{simple}{\noindent}{\par\noindent}
+\begin{simple}
+See the space \\ to the left.
+\end{simple}
+Same here.
+
+\newenvironment{correct}{\noindent\ignorespaces}{\par\noindent\ignorespacesafterend}
+
+\begin{correct}
+No space \\ to the left.
+\end{correct}
+Same here.
+
+\subsection{cmd \LaTeX}
+Add \verb|\usepackage{ifthen}|, to the start of \TeX file.\\
+Use \verb|latex '\newcommand{cmd}{def}\input{file}'| to use the new command.\\
+
+\subsection{Create own package}
+See the manul for more details.
+Include \verb|\ProvidesPackage{name}[release]| \& \verb|\newcommand{text}{def}| \&
+\verb|\newenvironment{name}{begdef}{enddef}| and so on \ldots \\
+
+\noindent\emph{Note:} \\
+the file type is \emph{.sty} !
+
+\section{Fonts}
+\subsection{Change Fonts}
+See follow example :\\
+{\small The small and \textbf{Bold}} Romans ruled
+{\Large all of great big \textit{Italy}. }\\
+T Here ?\\
+He likes {\LARGE large and {\small small} letters}.\\
+\textsc{PostScripe}\\
+\verb|\par| is a space line \\
+
+\begin{itemize}
+\item \verb|\textrm{text}| -- \textrm{text}
+\item \verb|\texttt{text}| -- \texttt{text}
+\item \verb|\textmd{text}| -- \textmd{text}
+\item \verb|\textup{text}| -- \textup{text}
+\item \verb|\textsl{text}| -- \textsl{text}
+\item \verb|\textsf{text}| -- \textsf{text}
+\item \verb|\textbf{text}| -- \textbf{text}
+\item \verb|\textit{text}| -- \textit{text}
+\item \verb|\textsc{text}| -- \textsc{Hello}
+\item \verb|\textnormal{...}| -- \textnormal{Document font}
+\end{itemize}
+
+{\Large Don't read this !
+It is not ture. You can believe me. \par
+}
+
+Hello, new line...
+
+{\Large Don't read this !
+It is not ture. You can believe me.
+} \par
+
+Hello, new line ...
+
+\noindent\verb|\tiny| --- {\tiny hello} \\
+\verb|\Huge|---{\Huge hello} \\
+\verb|\huge|---{\huge hello} \\
+\verb|\large|---{\large hello} \\
+\verb|\normalsize|---{\normalsize hello} \\
+
+\subsection{use newcommand}
+\newcommand{\oops}[1]{\textbf{#1}}
+
+Do not \oops{enter} this room, it's occupied by \oops{machines} of unknown origin and purpose.
+
+\underline{\textbf{hello !}}
+
+\section{Space}
+Use \verb|\linespread{factor}| before \verb|\begin{document}| at the beginning of file. \\
+Better to use \verb|\setlength{text}{length}|, for example :\\
+\begin{quote}
+{\setlength{\baselineskip}{1.5\baselineskip}
+This paragraph is typeset with the baseline skip set to 1.5 of what it was before. Note the par command at the end of the paragraph. \par
+}
+This paragraph is normal with the baseline skip set to 1.5 of what it was before. Note the par command at the end of the paragraph.
+\end{quote}
+
+\subsection{paragraph layout}
+There are two parameters to decide the layout of paragraph :\\
+{\centering
+\verb|\setlength{\parindent}{0pt}|\\
+\verb|\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}| \\
+}
+Hello ...\\
+\indent Hello ...\\
+
+\subsection{horizontal space}
+Use \verb|\hspace{length}| to increase horizontal distance.\\
+{
+This \hspace{1.5cm} is a space of 1.5 cm .
+}
+
+Use \verb|\stretch{text}| to fulfill the whole line.\\
+x \hspace{\stretch{1}} x \hspace{\stretch{3}} x. \\
+
+Use \verb|em|\\
+{\Large{} \par Big \hspace{1em} y} \\
+{\tiny{} tiny \hspace{1em} y} \\
+
+Hello ...
+
+\subsection{vertical space}
+Use \verb|\vspace{text}| to increase vertical space ...\\
+Some text \ldots
+
+\vspace{\stretch{1}} 
+this goes onto the last line of the page. \pagebreak
+
+Hello ...
+
+\section{page layout}
+
+\section{more length}
+\flushleft
+\newenvironment{vardesc}[1] %
+					{\settowidth{\parindent}{#1:\ } %
+					\makebox[0pt][r]{#1:\ }}{}
+
+\begin{displaymath}
+a^2 + b^2 = c^2
+\end{displaymath}
+\begin{vardesc}{Where}$a$,
+$b$ -- are adjoin to the right angle of a right-angled triangle.
+
+$c$ -- is the hypotenuse of the triangle and feels lonely.
+
+$d$ -- finally does not show up here at all. Isn't that puzzling?
+\end{vardesc}
+
+\section{Box}
+Use \verb|\parbox[pos]{text}{text}| to put a paragraph into a box!\\
+\emph{\large Or} \\
+\verb|\begin{minipage}[pos]{width}| text \verb|\end{minipage}|  \\
+
+\makebox[\textwidth]{central}\par
+\makebox[\textwidth][s]{spread}\par
+\framebox[1.1\width]{Guess I'm framed now!}\par
+\framebox[0.8\width][r]{Bummer, I am too wide}\par
+\framebox[1cm][l]{Never mind, so am I}
+Can you read this...\\
+
+Hello ...\\
+% em mean horizontal distance; ex mean vertical distance.
+\raisebox{0pt}[0pt][0pt]{\Large %
+\textbf{Aaaa\raisebox{-0.3ex}{a} %
+\raisebox{-0.7ex}{aa}
+\raisebox{-1.2ex}{r}
+\raisebox{-2.2ex}{g}
+\raisebox{-4.5ex}{h}}
+}
+He should but not even the next one in line noticed that something terrible had happened to him.
+
+\section{Dimension}
+\rule{3mm}{.1pt} %
+\rule[-1mm]{5mm}{1cm}
+\rule[1mm]{1cm}{3mm}
+
+\subsection{Struts}
+\begin{tabular}{|c|}
+\hline
+\rule{1pt}{4ex}Pitprop \ldots\\
+\hline
+\rule{0pt}{4ex} Strut\\
+\hline
+\end{tabular}
+
+\begin{flushright}
+{
+\Huge
+\textit{END.} \\
+~\\  % add new sparse line !!!
+\today
+}
+\end{flushright}
+
+\end{document}
