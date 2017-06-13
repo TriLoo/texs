@@ -1,0 +1,17 @@
+\begin{thebibliography}{1}
+
+\bibitem{KierDavis}
+Kier Davis.
+\newblock Computing sin and cos in hardware with synthesisable verilog.
+
+\bibitem{overton2001numerical}
+Michael~L Overton.
+\newblock {\em Numerical computing with IEEE floating point arithmetic}.
+\newblock SIAM, 2001.
+
+\bibitem{volder1959cordic}
+Jack~E Volder.
+\newblock The cordic trigonometric computing technique.
+\newblock {\em IRE Transactions on electronic computers}, (3):330--334, 1959.
+
+\end{thebibliography}
