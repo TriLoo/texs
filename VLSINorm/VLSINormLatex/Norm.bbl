@@ -1,0 +1,16 @@
+\begin{thebibliography}{1}
+
+\bibitem{dimitrakopoulos2008low}
+Giorgos Dimitrakopoulos, Kostas Galanopoulos, Christos Mavrokefalidis, and
+  Dimitris Nikolos.
+\newblock Low-power leading-zero counting and anticipation logic for high-speed
+  floating point units.
+\newblock {\em IEEE transactions on very large scale integration (VLSI)
+  systems}, 16(7):837--850, 2008.
+
+\bibitem{bookHSpice2007}
+宫志超.
+\newblock {\em HSPICE简明教程}.
+\newblock 复旦大学, 2007.
+
+\end{thebibliography}

@@ -1,0 +1,128 @@
+\documentclass[a4paper, 12pt]{report}
+
+\usepackage[tc]{titlepic}    % used to custom yourself title page
+\usepackage{fontspec}
+\usepackage{titlesec}
+%\title{VLSI设计\\
+%Norm指令的低功耗全定制设计}
+%\author{\href{song_mh@yeah.net}{宋明辉$^\star \qquad$ 16063216}\\
+%{$^\star$\textit{text}}}
+
+\usepackage{geometry}
+\geometry{left=3cm,right=3cm,top=1.8in}
+
+\usepackage{makeidx}
+\makeindex
+
+\usepackage{xeCJK}
+\setmainfont{Times New Roman}
+\setCJKmainfont[BoldFont={SimHei}, ItalicFont={KaiTi} ]{SimSun}
+\setCJKsansfont{SimHei}
+\setCJKmonofont{SimSun}
+\setCJKfamilyfont{myssfont}[BoldFont={SimHei}, ItalicFont={SimSun}]{SimSun}
+\newcommand{\myss}{\CJKfamily{myssfont}}
+\usepackage{indentfirst}
+
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{wrapfig}
+
+\usepackage{multirow}     % for the use of multirow tables
+\usepackage{amsmath}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{caption}   % control how your captions will look like
+
+\usepackage{booktabs}
+%\usepackage{algorithmicx}
+%\usepackage{algpseudocode}
+
+\usepackage{clrscode3e}
+\usepackage{listings}    % used to arrange the code
+
+\bibliographystyle{plain}
+\renewcommand\bibname{References}
+
+\usepackage[colorlinks]{hyperref}
+
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\fancyhf{}
+\fancyfoot[C]{\bfseries \thepage}
+\fancyhead[LO]{\bfseries \rightmark}
+\fancyhead[R]{\bfseries \leftmark}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% define some colors
+\definecolor{title}{RGB}{180, 0, 0}
+\definecolor{other}{RGB}{171, 0, 255}
+\definecolor{name}{RGB}{171, 0, 255}
+\definecolor{phd}{RGB}{0, 0, 240}
+
+% Change the section font style
+%\titleformat*{\section}{\Large \itshape}
+%\titleformat*{\subsection}{\large \itshape}
+%\titleformat*{\subsubsection}{\itshapte}
+
+\begin{document}
+% custom design myself title page
+\begin{titlepage}
+\begin{center}
+
+{
+\vfill
+\large \bfseries VLSI设计 \\ [5pt]
+\Large Norm指令的低功耗全定制设计
+}\\
+% -----------------------------------
+\vspace{1.5cm}
+{
+\Large \textit{Triloo} 
+}\\
+% -----------------------------------
+\vspace{7cm}
+\textsc{{\large 国防科技大学 计算机学院}} \\ [5pt]
+\vspace{2cm}
+%\vfill
+% -----------------------------------
+{\includegraphics[width=0.2\textwidth]{Nudt}} \\[5pt]
+\vspace{0.5cm}
+\today
+
+\end{center}
+\end{titlepage}
+%\maketitle    % do not need \maketitle anymore
+\tableofcontents
+\date{}        % remove the default date information
+
+% use new geometry setting, use \restoregeometry to use the default setting
+\newgeometry{left=3cm,right=3cm,top=1in}
+%\geometry{left=3cm,right=3cm,top=1in}
+
+\chapter*{报告说明}
+\addcontentsline{toc}{chapter}{报告说明}
+本次实验主要完成tms320 DSP的NORM指令的全定制设计，设计流程为：电路图设计、功能验证、时序分析与电路优化、版图设计与验证等步骤，主要包括31位反向器、2路31位选择器、以及前导零检测电路等子模块。其中，前导零模块的设计参考''Low-power leading zero counting and anticipation''\cite{dimitrakopoulos2008low}一文,即通过逻辑优化，尽可能的降低需要用到的器件的数量来降低电路的功耗，具体内容参考第一章节中设计思路一节。最后，基于以上子模块，完成NORM指令的全定制设计，并通过DRC、LVS检查。
+
+\input{chapter1/chapter1}
+
+\input{chapter2/chapter2}
+
+\input{chapter3/chapter3}
+
+\input{chapter4/chapter4}
+
+\input{chapter5/chapter5}
+
+\input{chapter6/chapter6}
+
+\nocite{*}
+\addcontentsline{toc}{chapter}{References}
+\bibliography{References}
+
+
+\end{document}
