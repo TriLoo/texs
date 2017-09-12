@@ -1,0 +1,7 @@
+\beamer@endinputifotherversion {3.24pt}
+\beamer@sectionintoc {1}{Intro to Beamer}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{About Beamer 0}{4}{0}{1}
+\beamer@subsectionintoc {1}{2}{Basic Structure}{5}{0}{1}
+\beamer@subsectionintoc {1}{3}{Examples}{7}{0}{1}
+\beamer@sectionintoc {2}{Overlaying Concepts}{11}{0}{2}
+\beamer@subsectionintoc {2}{1}{Examples: Lists, Graphics, Tables}{13}{0}{2}
