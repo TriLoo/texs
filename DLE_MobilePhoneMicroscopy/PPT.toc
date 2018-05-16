@@ -1,0 +1,8 @@
+\beamer@endinputifotherversion {3.24pt}
+\beamer@sectionintoc {1}{目的}{3}{0}{1}
+\beamer@sectionintoc {2}{成像设备对比}{5}{0}{2}
+\beamer@sectionintoc {3}{提出的算法}{7}{0}{3}
+\beamer@subsectionintoc {3}{1}{数据预处理}{8}{0}{3}
+\beamer@subsectionintoc {3}{2}{神经网络结构}{11}{0}{3}
+\beamer@subsectionintoc {3}{3}{评价指标以及实验结果}{16}{0}{3}
+\beamer@sectionintoc {4}{分析与总结}{17}{0}{4}
