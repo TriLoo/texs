@@ -1,0 +1,47 @@
+\begin{thebibliography}{1}
+
+\bibitem{asano2009performance}
+Shuichi Asano, Tsutomu Maruyama, and Yoshiki Yamaguchi.
+\newblock Performance comparison of fpga, gpu and cpu in image processing.
+\newblock In {\em Field Programmable Logic and Applications, 2009. FPL 2009.
+  International Conference on}, pages 126--131. IEEE, 2009.
+
+\bibitem{chen18iterative}
+Xinlei Chen, Li-Jia Li, Li~Fei-Fei, and Abhinav Gupta.
+\newblock Iterative visual reasoning beyond convolutions.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, 2018.
+
+\bibitem{li2017fast}
+Chao Li, Yanjing Bi, Franck Marzani, and Fan Yang.
+\newblock Fast fpga prototyping for real-time image processing with very
+  high-level synthesis.
+\newblock {\em Journal of Real-Time Image Processing}, pages 1--18, 2017.
+
+\bibitem{li2013image}
+Shutao Li, Xudong Kang, and Jianwen Hu.
+\newblock Image fusion with guided filtering.
+\newblock {\em IEEE Transactions on Image Processing}, 22(7):2864--2875, 2013.
+
+\bibitem{Fcn2014}
+J.~{Long}, E.~{Shelhamer}, and T.~{Darrell}.
+\newblock {Fully Convolutional Networks for Semantic Segmentation}.
+\newblock {\em ArXiv e-prints}, November 2014.
+
+\bibitem{marvin2018crf}
+Roberto~Cipolla Marvin T.T.~Teichmann.
+\newblock Convolutional crfs for semantic segmentation.
+\newblock {\em arXiv:https://arxiv.org/pdf/1805.04777.pdf}, 2018.
+
+\bibitem{toet2016multiscale}
+Alexander Toet and Maarten~A Hogervorst.
+\newblock Multiscale image fusion through guided filtering.
+\newblock In {\em SPIE Security+ Defence}, pages 99970J--99970J. International
+  Society for Optics and Photonics, 2016.
+
+\bibitem{YuKoltun2016}
+Fisher Yu and Vladlen Koltun.
+\newblock Multi-scale context aggregation by dilated convolutions.
+\newblock In {\em ICLR}, 2016.
+
+\end{thebibliography}

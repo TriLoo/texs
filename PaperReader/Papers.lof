@@ -1,0 +1,26 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Image Convolution based on Global Memory\relax }}{5}{figure.caption.6}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Image Convolution based on shared memory\relax }}{6}{figure.caption.7}
+\contentsline {figure}{\numberline {1.3}{\ignorespaces PTX Directives\relax }}{12}{figure.caption.16}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Reserved Instruction Keywords\relax }}{12}{figure.caption.17}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces 传统提升小波计算过程\relax }}{14}{figure.caption.18}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Circuits for non-separable filters\relax }}{15}{figure.caption.19}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Performance of two-dimensional filters\relax }}{16}{figure.caption.20}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Comparison of RTL- and HLS-based design flows by using Gasjki-Kuhn's Y-chart: full lines indicate the automated cycles, while dotted lines the manual cycles.\relax }}{17}{figure.caption.21}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Schematic diagram of the proposed image fusion method based on guided filtering.\relax }}{24}{figure.caption.23}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces The implicitly \& explicitly back-propagation on Graph\relax }}{29}{figure.caption.27}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Dependencies can be found quickly.\relax }}{30}{figure.caption.28}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Different backward path from forward path.\relax }}{30}{figure.caption.29}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{31}{figure.caption.32}
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{32}{figure.caption.33}
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{32}{figure.caption.34}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{33}{figure.caption.35}
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Color the longest paths in the Graph.\relax }}{34}{figure.caption.38}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Dilated Convolution示意图\relax }}{38}{figure.caption.39}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Dilated Convolution在WaveNet中的应用示意图\relax }}{38}{figure.caption.40}

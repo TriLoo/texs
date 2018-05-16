@@ -1,0 +1,104 @@
+\documentclass[a4paper, 12pt]{book}
+
+\title{Papers I have read}
+\author{\href{song_mh@yeah.net}{宋明辉}}
+
+\usepackage{geometry}
+\geometry{left=3cm,right=3cm,top=1in}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{caption}   % control how your captions will look like
+
+\usepackage{makeidx}
+\makeindex
+
+\usepackage{xeCJK}
+\setmainfont{Times New Roman}
+\setCJKmainfont[AutoFakeBold,ItalicFont={KaiTi}]{SimSun}
+\setCJKsansfont{SimHei}
+\setCJKmonofont{SimSun}
+\setCJKfamilyfont{myssfont}[BoldFont={SimHei},ItalicFont={SimSun}]{SimSun}
+\newcommand{\myss}{\CJKfamily{myssfont}}
+\usepackage{indentfirst}
+
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{wrapfig}
+
+\usepackage{amsmath}
+
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\bibliographystyle{plain}   % include the reference style 
+\renewcommand\bibname{References}   % change the default name of Biblography to own name
+
+\usepackage[colorlinks]{hyperref}
+
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\fancyhf{}
+\fancyfoot[C]{\bfseries \thepage}
+\fancyhead[LO]{\bfseries \rightmark}
+\fancyhead[RE]{\bfseries \leftmark}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{document}
+\maketitle
+\frontmatter
+\tableofcontents
+\listoffigures
+\captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=period,name={Fig.}}
+
+
+
+\mainmatter
+%\chapter*{Preface}
+%\noindent {\Large \textbf{Author:}}
+%\begin{wrapfigure}{L}{5cm}
+%\includegraphics[width=0.4\textwidth]{Ubuntu0}
+%\caption{smh}
+%\end{wrapfigure}\\
+
+%\section*{Usage}
+\noindent{\Large \textbf{Usage Instructions:}}\\
+\begin{itemize}
+\item This book include all papers I have read from 2017.05.28. \\
+\item The {\color{magenta} magenta} represent the online link.\\
+\item The {\color[rgb]{1,0,0} red} represents the links in this book including reference, figure, table and others.\\
+\item The {\color{purple} purple} represents the emphasize.
+\end{itemize}
+
+\nopagebreak
+
+\include{CUDAImageProcessing/CUDAImageProcessing}
+
+\include{FPGAs/FPGAs}
+
+\input{ImageFusion/ImageFusion}
+
+\input{SaliencyDetection/saliency}
+
+\input{SemanticSLAM/SemanticSLAM}
+
+\input{MXNet/MXNet}
+
+\input{DLTips/DLTips}
+
+
+\backmatter
+%\chapter*{References}
+\nocite{*}
+\bibliography{reference}
+
+
+\printindex
+
+\end{document}
