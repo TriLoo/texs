@@ -172,9 +172,29 @@ meanAveragePrecision = \frac{\sum_{C} AveragePrecision_C}{N(Class)}
 一个比较好的总结：\href{http://kubicode.me/2015/08/16/Machine%20Learning/Algorithm-Summary-for-Interview/#SVM%E3%80%81SMO}{机器学习常见算法个人总结}
 
 
+\section{Distillation Module}
+文献来源：\cite{Xu2018PADNet}\cite{Mehta2018OD200}
+
+在\cite{Xu2018PADNet}中，同时完成深度估计以及场景解析两个任务。
+
+Distillation Module的目的：
+\begin{itemize}
+\item Deep-model distilation modules fuses information from the intermediate predictions for each specific final task\cite{Xu2018PADNet}.高效的利用中间任务的信息互补。文章\cite{Xu2018PADNet}提出的三种不同的实现方式如图\ref{ThreeDistillationModules1}所示。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{DLTips/ThreeDistillationModules1.png}
+\caption{三种不同的Distillation Module}
+\label{ThreeDistillationModules1}
+\end{figure}
+
+\item Distillation loss function\cite{Mehta2018OD200}
+
+利用Distillation帮助将Teacher Network(精度更高)的知识迁移到的Student Network.
+
+\end{itemize}
+
 \section{待续}
-
-
 
 
 

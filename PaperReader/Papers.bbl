@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{asano2009performance}
 Shuichi Asano, Tsutomu Maruyama, and Yoshiki Yamaguchi.
@@ -33,11 +33,27 @@ Roberto~Cipolla Marvin T.T.~Teichmann.
 \newblock Convolutional crfs for semantic segmentation.
 \newblock {\em arXiv:https://arxiv.org/pdf/1805.04777.pdf}, 2018.
 
+\bibitem{Mehta2018OD200}
+R.~{Mehta} and C.~{Ozturk}.
+\newblock {Object detection at 200 Frames Per Second}.
+\newblock {\em ArXiv e-prints}, May 2018.
+
 \bibitem{toet2016multiscale}
 Alexander Toet and Maarten~A Hogervorst.
 \newblock Multiscale image fusion through guided filtering.
 \newblock In {\em SPIE Security+ Defence}, pages 99970J--99970J. International
   Society for Optics and Photonics, 2016.
+
+\bibitem{WangWang2018DeLS}
+P.~{Wang}, R.~{Yang}, B.~{Cao}, W.~{Xu}, and Y.~{Lin}.
+\newblock {DeLS-3D: Deep Localization and Segmentation with a 3D Semantic Map}.
+\newblock {\em ArXiv e-prints}, May 2018.
+
+\bibitem{Xu2018PADNet}
+D.~{Xu}, W.~{Ouyang}, X.~{Wang}, and N.~{Sebe}.
+\newblock {PAD-Net: Multi-Tasks Guided Prediction-and-Distillation Network for
+  Simultaneous Depth Estimation and Scene Parsing}.
+\newblock {\em ArXiv e-prints}, May 2018.
 
 \bibitem{YuKoltun2016}
 Fisher Yu and Vladlen Koltun.

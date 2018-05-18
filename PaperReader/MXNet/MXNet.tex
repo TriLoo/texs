@@ -149,7 +149,387 @@ The defining characteristic of symbolic programs is their clear separation betwe
 
 \subsection{Imperative Programs Tend to be More Flexible}
 
-未完待续...
+使用命令式编程，那么任何Python语法都可以使用(Nearly anything),但使用符号式编程时，一些Python特性可能无法使用，如迭代。
+
+当使用Python的符号式编程时，实际实在一个Domain-Specific-Language(DSL)定义的空间中进行编程。
+
+Intuitively, you might say that imperative programs are more native than symbolic programs. It’s easier to use native language features. 
+
+\subsection{Symbolic Programs Tend to be More Efficient}
+
+命令式编程与原生Python的相差不大，所以灵活性很高。但符号式编程更有利于速度、存储优化。
+
+Symbolic programs are more restricted. When we call \textit{Compile} on d, we tell the system that only the value of d is needed. The intermediate values of the computation, is then invisible to us.
+
+\begin{itemize}
+\item We benefit because the symbolic programs can then safely reuse the memory for in-place computation. 
+
+\item Symbolic programs can also perform another kind of optimization, called operation folding(图\ref{Symbolic1}). In fact, this is one way we hand-craft operations in optimized libraries, such as CXXNet and Caffe. Operation folding improves computation efficiency.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.75\textwidth]{MXNet/Symbolic1.png}
+\caption{Operation Folding示意图。}
+\label{Symbolic1}
+\end{figure}
+
+Note, you can’t perform operation folding in imperative programs, because the intermediate values might be referenced in the future. Operation folding is possible in symbolic programs because you get the entire computation graph, and a clear specification of which values will be needed and which are not.
+\end{itemize}
+
+\subsection{Case Study: Backprop and AutoDiff}
+\lstset{language=Python}
+\begin{lstlisting}[title=toy model,frame=shadowbox]
+import numpy as np
+    a = np.ones(10)
+    b = np.ones(10) * 2
+    c = b * a
+    d = c + 1
+    ...
+\end{lstlisting}
+
+
+\subsubsection{基于命令式编程的自动求导}
+循环调用求导函数，直至最开始的输入变量。
+
+利用grad闭包(Closure)来隐含的保存后向计算图。
+
+但一个坏处是，必须保存所有中间变脸的Grad闭包。
+
+\subsubsection{基于符号式编程的自动求导}
+
+可以实现的优化力度更大。
+
+\subsubsection{Analysis}
+
+可以实现的优化的程度，依赖于可以允许的操作(Restrictions on what you can do)。使用符号式编程时，必须明确提供这些约束，所以可进行优化也就更多。
+
+对于命令式编程，可以通过其它的一些方式添加明确的约束。比如一种方法是Context Variable。如：
+\begin{verbatim}
+with context.NoGradient()
+    ...
+\end{verbatim}
+可以关闭梯度的计算。但这样也不能利用In-Place Calculation来对存储空间进行复用。
+
+其实是一种trade-off between restriction and flexibility.
+
+\subsection{Model Checkpoint}
+
+保存和加载模型。保存模型的时候，需要保存两类变量：网络的结构配置、网络的权重系数。
+
+符号式编程有利于配置的检查。而对于命令式编程，需要保存所有的代码，或者利用符号式指令进行能够顶层封装。
+
+\begin{itemize}
+\item Parameter Updates
+
+大部分符号是编程，都是基于数据流图(Data Flow Graphs, DFG)实现的。DFG描述的是计算。但这种方式下，参数的更新不是很方便。一些做法是将更新过程转化为基于命令式的方式实现，而梯度的计算是基于计算图的方式计算。
+
+\item There is No Strict Boundary
+
+这两种风格的框架其实没有很明显的区分。如在命令式编程时，可以借助Just-in-Time(JIT) Compiler来实现一些符号式编程里面的全局优化等好处。
+ 
+\end{itemize}
+
+
+\subsection{Big vs. Small Operations}
+
+\begin{itemize}
+\item Big Operations
+
+主要是一些经典的神经网络层在用，如Fully Connected and Batch Normalize.
+
+\item Small Operations
+
+一些数学上的计算，如矩阵乘、Element-wise Addition.
+
+\end{itemize}
+
+CXXNet, Caffe支持Layer一级的计算，而Theano, Minerva支持更精细的计算。
+
+\begin{itemize}
+\item Smaller Operations Can Be More Flexible (小运算更灵活)
+
+可实现的东西多，且建立新的Layer比较简单，直接添加部件就行。
+
+\item Big Operations Are More Efficient (大运算更高效)
+
+可能引起计算、存储上的开支。
+
+\item Compilation and Optimization
+
+对于小运算的优化，计算图支持一下两种优化：
+\begin{itemize}
+\item Memory Allocation Optimization
+
+重用中间结果的存储空间。也可用于大运算。
+
+\item Operator Fusion
+
+Fuse several small operations into big one.
+
+\end{itemize}
+
+这些优化对小操作十分重要。小操作对编译器也增加了负担。
+
+\item Expression Template and Statically Typed Language
+
+借助Expression Template来产生具体的Kernels.\href{https://github.com/dmlc/mshadow/blob/master/guide/exp-template/README.md}{Template Expression}, 其实底层是基于C++ Template实现的。
+
+\end{itemize}
+
+
+\subsection{Mix The Approaches}
+
+Amdahl's Law:
+\begin{quote}
+ If you are optimizing a non-performance-critical part of your problem, you won’t get much of a performance gain
+\end{quote}
+
+实际考虑编程Style时，需要综合考虑：性能、灵活性、工程复杂度等。实践表明，混合使用多个Style可以得到更好的性能。
+
+\begin{itemize}
+\item Symbolic and Imperative Programs
+
+有两种方式可以实现这种混用：
+\begin{itemize}
+\item Use imperative programs within symbolic programs as callbacks
+\item Use symbolic programs as part of imperative programs
+\end{itemize}
+如在参数更新中的讨论。如果代码中，混合了Symbolic和Imperative，那么结果是Imperative.但更好的选择是，用支持GPU计算、参数更新的符号式编程框架来开发。
+
+\item Small and Big Operations
+\item Choose Your Own Approach
+\end{itemize}
+
+\section{Dependency Engine for Deep Learning}
+
+\subsection{Problems in Dependency Scheduling}
+
+\begin{itemize}
+\item Data Flow Dependency
+
+Data flow dependency describes how the outcome of one computation can be used in other computations. 
+
+\item Memory Recycling
+
+\item Random Number Generation
+
+A pseudo-random number generator (PRNG) is not thread-safe because it might cause some internal state to mutate when generating a new number. Even if the PRNG is thread-safe, it is preferable to serialize number generation, so we can get reproducible random numbers.
+
+\end{itemize}
+
+\subsubsection{Design a Generic Dependency Engine}
+
+目标是建立一个轻量级、普用的依赖引擎。目标如下：
+\begin{itemize}
+\item 识别有效的操作
+\item 可以调度GPU、CPU存储的依赖，以及处理随机发生器的依赖
+\item 引擎不应分配资源，而仅处理依赖
+\end{itemize}
+
+步骤如下：
+
+\begin{enumerate}
+\item At the beginning, the user can allocate the variable tag, and attach it to each of the objects that we want to schedule.
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{MXNet/Tag1.png}
+\caption{第一步，给变量分配tag}
+\label{Tag1}
+\end{figure}
+
+\item 然后调用\textit{push}来告知引擎需要运行的函数、参数等，需要区分读取、写入的参数，分别输入。引擎通过识别上一步的tag来识别变量，这样的好处是不涉及tag具体指向什么，所以引擎可以处理包括变量、函数之类的Everything。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{MXNet/Tag2.png}
+\caption{把相应的Function Closure push进依赖分析引擎}
+\label{Tag2}
+\end{figure}
+\end{enumerate}
+
+\subsection{Implementing the Generic Dependency Engine}
+
+基本思想
+\begin{itemize}
+\item Use a queue to track all of the pending dependencies on each variable tag
+\item Use a counter on each operation to track how many dependencies are yet to be fulfilled
+\item When operations are completed, update the state of the queue and dependency counters to schedule new operations
+\end{itemize}
+
+一个例子如图所示：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{MXNet/Tag3.png}
+\caption{一个具体的例子}
+\label{Tag3.png}
+\end{figure}
+
+\subsection{Discussion}
+
+\begin{itemize}
+\item Dynamic vs. Static
+\item Mutation vs. Immutable
+\end{itemize}
+
+\section{Designing Efficient Data Loaders for DL}
+
+几点重要的考虑：
+\begin{itemize}
+\item Small File Size
+\item Parallel (Distributed) packing of data
+\item Fast data loading and online augmentation
+\item Quick reads from arbitrary parts of the dataset in the distributed setting
+\end{itemize}
+
+\subsection{Design Insight}
+
+为了设计好的IO系统，需要解决两类任务：Data Preparation, Data Loading.
+
+\subsubsection{Data Preparation}
+
+Data preparation describes the process of packing data into a desired format for later processing. 
+
+\begin{itemize}
+\item Pack the dataset into small numbers of files
+\item Do the packing once
+\item Process the packing in parallel to save time
+\item Be able to access arbitrary parts of the data easily
+\end{itemize}
+
+\subsubsection{Data Loading}
+
+The next step to consider is how to load the packed data into RAM. 
+
+\begin{itemize}
+\item Read Continuously
+\item Reduce the bytes to be loaded，可以借助于数据压缩等
+\item Load and train in different threads
+\item Save RAM
+\end{itemize}
+
+\subsection{Data Format}
+
+需要选择既高效又方便的数据结构。为了实现这个目标，把二进制数据包装成可以分离的结构。具体，MXNet采用DMLC-Core里面的recordIO类型。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{MXNet/recordIO1.png}
+\caption{Binary recordIO数据结构}
+\label{recordIO1}
+\end{figure}
+
+通过连续读，来避免随机读引入的延时。
+
+这种数据结构的一个好处是，每一个record的长度可以改变。从而支持更好的数据压缩。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{MXNet/recordIO2.png}
+\caption{Binary recordIO的一个例子}
+\label{recordIO2}
+\end{figure}
+其中，\textit{resize}把输入图像变为256 * 256大小。
+
+
+\subsubsection{Access Arbitrary Parts of Data}
+
+The packed data can be logically sliced into an arbitrary number of partitions, no matter how many physical packed data files there are.
+
+在recordIO中借助Magic Number来实现上述目的，具体是使用dmlc-core中的\textit{InputSplit}函数来实现。这个函数极大的帮助了并行实现，因为每一个节点只处理一个\textit{Part}.
+
+\subsection{Data Loading and Preprocessing}
+
+\subsubsection{Loading and Preprocessing on the Fly}
+
+In service of efficiency, we also address multi-threading techniques. 
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{MXNet/loadingData1.png}
+\caption{并行预处理例子}
+\label{loadingData1}
+\end{figure}
+
+在加载了大量图像数据后，利用多线程工具(OpenMP)进行并行处理。
+
+\subsubsection{Hide IO Cost Using Threadediter}
+
+一种降低IO影响的办法是：数据预取。具体使用dmlc-core提供的\textit{threadediter}来处理IO. The key of threadediter is to start a stand-alone thread that acts as a data provider, while the main thread acts as a data consumer as illustrated below.
+
+The threadediter maintains a buffer of a certain size and automatically fills the buffer when it’s not full. And after the consumer finishes consuming part of the data in the buffer, threadediter will reuse the space to save the next part of data. 
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{MXNet/dataLoading2.png}
+\caption{数据预取的示意图，借助Buffer来实现}
+\label{loadingData2}
+\end{figure}
+
+
+\subsection{MXNet IO Python Interface}
+
+We make the IO object as an iterator in numpy. By achieving that, the user can easily access the data using a for-loop or calling next() function. Defining a data iterator is very similar to defining a symbolic operator in MXNet.
+
+为了创建一个数据迭代器，需要提供五种类型的参数：
+
+\begin{itemize}
+\item Dataset Param: 如路径、输入的尺寸等
+\item Batch Param: Batch Size
+\item Augmentation Param: 确定数据增广的类型，如翻转等
+\item Backedn Param:  控制后台线程，来隐藏数据读取延时
+\item Auxiliary Param: 帮助Debug的信息等。
+\end{itemize}
+
+通常必须确定\textbf{Dataset Param}和\textbf{Batch Param}。MX Data IO也支持模块化，如以下两种：
+\begin{itemize}
+\item 自己的高效数据预取。allows the user to write a data loader that reads their customized binary format that automatically gets multi-threaded prefetcher support.
+
+\item 数据转换。image random cropping, mirroring, etc. Allows the users to use those tools, or plug in their own customized transformers
+
+\end{itemize}
+
+
+\section{Except Handling in MXNet}
+
+MXNet在两类情况下可以抛出异常：
+\begin{itemize}
+\item MXNet main thread. For \textit{e.g.} Infershape and InferType。 在主线程中处理
+\item Spawned threads (生成线程？)
+\begin{itemize}
+\item By dependency engine for operator execution in parallel。会被rethrown到主线程，进行处理
+\item By the iterators, during the data loading, text parsing phase \textit{etc.}
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Exception Handling for Iterators}
+
+CVIter 使用 PrefetcherIter来加载和解析数据。PrefetcherIter会生成一个Producer线程并后台运行，在主线程(Consumer)中使用这些数据。在Producer线程中可能抛出异常，该异常被发送到主线程。
+
+
+可能引起线程之间的竞争(Race).To avoid this situation, you should try and iterate through your full dataset if you think it can throw exceptions which need to be handled.
+
+\subsubsection{Except Handling for Operators}
+
+For the operator case, the dependency engine spawns a number of threads if it is running in the \textbf{ThreadedEnginePool} or \textbf{ThreadedEnginePerDevice} mode. The final operator is executed in one of the spawned threads.
+
+If an operator throws an exception during execution, this exception is propagated down the dependency chain. Once there is a synchronizing call i.e. \textbf{WaitToRead} for a variable in the dependency chain, the propagated exception is rethrown.
+
+
+\textbf{注意}：Please avoid waitalls in your code unless you are confident about your code not throwing exception in any scenario. 因为\textbf{mx.nd.waitall}不支持rethrowing异常。
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

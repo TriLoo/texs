@@ -12,15 +12,28 @@
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Schematic diagram of the proposed image fusion method based on guided filtering.\relax }}{24}{figure.caption.23}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces DeLS Framwork\relax }}{28}{figure.caption.27}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Segment Network in DeLS\relax }}{30}{figure.caption.31}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces The implicitly \& explicitly back-propagation on Graph\relax }}{29}{figure.caption.27}
-\contentsline {figure}{\numberline {6.2}{\ignorespaces Dependencies can be found quickly.\relax }}{30}{figure.caption.28}
-\contentsline {figure}{\numberline {6.3}{\ignorespaces Different backward path from forward path.\relax }}{30}{figure.caption.29}
-\contentsline {figure}{\numberline {6.4}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{31}{figure.caption.32}
-\contentsline {figure}{\numberline {6.5}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{32}{figure.caption.33}
-\contentsline {figure}{\numberline {6.6}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{32}{figure.caption.34}
-\contentsline {figure}{\numberline {6.7}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{33}{figure.caption.35}
-\contentsline {figure}{\numberline {6.8}{\ignorespaces Color the longest paths in the Graph.\relax }}{34}{figure.caption.38}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces The implicitly \& explicitly back-propagation on Graph\relax }}{33}{figure.caption.35}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Dependencies can be found quickly.\relax }}{34}{figure.caption.36}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Different backward path from forward path.\relax }}{34}{figure.caption.37}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{35}{figure.caption.40}
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{36}{figure.caption.41}
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{36}{figure.caption.42}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{37}{figure.caption.43}
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Color the longest paths in the Graph.\relax }}{38}{figure.caption.46}
+\contentsline {figure}{\numberline {6.9}{\ignorespaces Operation Folding示意图。\relax }}{40}{figure.caption.47}
+\contentsline {figure}{\numberline {6.10}{\ignorespaces 第一步，给变量分配tag\relax }}{43}{figure.caption.52}
+\contentsline {figure}{\numberline {6.11}{\ignorespaces 把相应的Function Closure push进依赖分析引擎\relax }}{43}{figure.caption.53}
+\contentsline {figure}{\numberline {6.12}{\ignorespaces 一个具体的例子\relax }}{44}{figure.caption.54}
+\contentsline {figure}{\numberline {6.13}{\ignorespaces Binary recordIO数据结构\relax }}{46}{figure.caption.57}
+\contentsline {figure}{\numberline {6.14}{\ignorespaces Binary recordIO的一个例子\relax }}{46}{figure.caption.58}
+\contentsline {figure}{\numberline {6.15}{\ignorespaces 并行预处理例子\relax }}{47}{figure.caption.61}
+\contentsline {figure}{\numberline {6.16}{\ignorespaces 数据预取的示意图，借助Buffer来实现\relax }}{47}{figure.caption.63}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Dilated Convolution示意图\relax }}{38}{figure.caption.39}
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Dilated Convolution在WaveNet中的应用示意图\relax }}{38}{figure.caption.40}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Dilated Convolution示意图\relax }}{50}{figure.caption.66}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Dilated Convolution在WaveNet中的应用示意图\relax }}{50}{figure.caption.67}
+\contentsline {figure}{\numberline {7.3}{\ignorespaces 三种不同的Distillation Module\relax }}{53}{figure.caption.68}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
