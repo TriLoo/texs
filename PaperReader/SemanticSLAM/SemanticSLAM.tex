@@ -185,11 +185,430 @@ By using the attention PAD-Net (Distillation C + SP) guided scheme, the performa
 
 \section{RNN for Learning Dense Depth and Ego-Motion from Video}
 
+参考文献：\cite{Wang2018DenseSLAMNet}
+
+{\color{red}时间：2018年05月19日}
+
+\subsection{Abstract}
+
+现在基于学习的单目深度估计，在Unseen Dataset上泛化较差，可以利用连续两帧之间的特征匹配来解决。本文提出了基于RNN的多目视觉深度估计以及运动估计。结果表明，在远距离上的深度估计，表现很好。本文方法可使用both static and deformable scenes with either constant or inconsistent light conditions.
+
+\subsection{Introduction \& Related Works}
+
+由于CNN只能捕获单帧内部的空间特征，所以即使输入两帧图像，实际效果也比较差。相关的SLAM框架有：
+
+\begin{itemize}
+\item ORB-SLAM, DSO: 稀疏SLAM
+\item LSD-SLAM: semi-dense SLAM，利用光强来实现跟踪以及构建地图
+\item DTAM: dense SLAM
+\end{itemize}
+
+上述框架仅适用于静态、光照恒定、足够的camera motion baseline的情景。
+
+进来，CNN可被用于SLAM中的以下部分：
+\begin{itemize}
+\item Correspondence matching
+\item Camera Pose estimation
+\item Stereo
+\end{itemize}
+输出包括：
+\begin{itemize}
+\item Depth maps
+\item point clouds and voxels
+\end{itemize}
+CNN的优势在于可以适用于纹理较少、表面覆盖、很细等场景下，这些场景对纯使用几何技术来说很难实现。
+
+Newcombe研究表明，多目视觉有助于提高深度估计的精度，而本文作者认为采用相邻几帧可以实现类似的效果。
+
+有作者利用一个非监督生成模型来学习复杂的3D到2D的投影。但这些手段不太适用于Deformable Objects.
+
+\subsection{Network Architecture}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{SemanticSLAM/DenseSLAMNet1.png}
+\caption{Dense SLAM框架}
+\label{DenseSLAMNet1}
+\end{figure}
+
+从图\ref{DenseSLAMNet1}可以看出，它接受当前RGB图像$I_t$以及来自迁移级的隐藏状态$h_{t-1}$。$h_{t-1}$通过LSTM单元进行内部转移。网络的输出是稠密地图$z_t$以及相机的姿态$R_t, T_t$等。有没在每一时刻，只输入一帧图像，且输出该帧对应的深度以及姿态，所以相比于CNN具有更高的灵活性。
+
+具体的每一块的细节结构如下：
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{SemanticSLAM/DenseSLAMNet2.png}
+\caption{Dense SLAM中每一级的细节框架}
+\label{DenseSLAMNet2}
+\end{figure}
+
+网络结构的另一个参数是时间窗口的大小$N$。本文中$N=10$，也就是说，图\ref{DenseSLAMNet2}中的结构被重复十次。
+
+\subsection{Training}
+
+During training, we feed
+frames to the network and compute losses from all frames in a temporal window. However, there is no input length constraint at test time.
+
+\subsubsection{Loss Function}
+
+由三部分组成：
+\begin{itemize}
+\item A Point-wise depth loss
+
+\begin{displaymath}
+L_{depth} = \sum_{t}^{N}\sum_{i, j}\left\| \xi_t(i, j) - \hat{\xi}_t(i, j) \right\|_{L1}
+\end{displaymath}
+其中，$i, j$为索引，$t$为time step.使用$L1-Norm$的原因是，它对噪声更鲁棒。
+
+\item a camera pose loss
+
+Use the Euler angle $R$ 和平移向量$T$。
+
+\begin{displaymath}
+\begin{gathered}
+L_{rot} = \sum_{t}\left\| r_t - \hat{r}_t \right\|_2 \\
+L_{trans} = \sum_{t}\left\| t_t - \hat{t}_t \right\|_2
+\end{gathered}
+\end{displaymath}
+
+\item a scale-invariant gradient loss
+
+为了保证深度图的Smoothness和Sharpness,所以增加了这个loss。具体如下：
+\begin{displaymath}
+L_{grad} = \sum_{t}\sum_{h\in\{ 1, 2, 4, 8, 16 \}}\sum_{i, j}\left\| g_{h, t}(i, j) - \hat{g}_{i, j}(i, j)\right\|_2
+\end{displaymath}
+其中，$h$代表不同的尺度。$g_{h, t}$is a scale-normalized, discretized measurement of the local changes of $\xi_t$。定义如下：
+\begin{displaymath}
+g_{h, t} = \left( \frac{\xi_t(i+h, j) - \xi_t(i, j)}{|\xi_t(i + h, j) + \xi_t(i, j)|}, \frac{\xi_t(i, j+h) - \xi_t(i, j)}{|\xi_t(i, j+h) + \xi_t(i, j)|}    \right)
+\end{displaymath}
+
+$L_{grad}$emphasizes the depth discontinuities, such as occlusion
+boundaries and sharp edges, as well as the smoothness in homogeneous regions.
+This property encourages the estimated depth map to preserve more details and
+reduce noise. Therefore, we put highly weight on this component of the loss. 这一项在所有的Loss中比重较大。
+
+\end{itemize}
+
+最终的Loss由上面几项的和构成：
+\begin{displaymath}
+L = \alpha * L_{depth} + \beta * L_{pose} + \gamma * L{grad}
+\end{displaymath}
+其中，$\alpha, \beta, \gamma$是系数，由经验决定。
+
+
+注意，下面解释的是为什么使用Disparity而不是直接使用深度。
+\begin{quote}
+{\color{red} \textbf{Caution!} Disparity, the reciprocal of depth (深度的倒数), $\xi = \frac{1}{z}$  as our direct estimation because it can represent points at infinity and account for the localization uncertainty of points at increasing
+distance.}
+\end{quote}
+
+Different datasets have different camera intrinsic parameters, so we
+explicitly crop and resize images to ensure uniform intrinsic parameters. This
+step assures that the non-linear mapping between color and depth is consistent
+across all training datasets.
+
+\subsection{Experiments}
+
+We evaluate DenseSLAMNet using five error metrics。具体可以参考文章。
+\begin{itemize}
+\item Sc-inv
+\item Abs-rel, Abs-inv
+\item RMSE, RMSE-log
+\end{itemize}
+
+\subsection{Ablation Studies}
+
+比较了三种不同的网络结构。
+\begin{enumerate}
+\item CNN-SINGLE, 去掉图\ref{DenseSLAMNet2}中LSTM单元
+\item CNN-STACK, 使用与CNN-SINGLE相同的网络，但是输入stack of ten images as input.
+\end{enumerate}
+
+实验结果表明，LSTM可有效保留时间域的信息，从而深度预测的更好。
+
+\subsubsection{Conclusions}
+
+引入了LSTM单元。
+Our method effectively utilizes the temporal relationships between neighboring
+frames through LSTM units, which we show is more effective than simply stack-
+ing multiple frames together as input.
+
+比几乎所有的单帧CNN-based 都好。
+Our DenseSLAMNet outperformed nearly
+all of the state-of-the-art CNN-based, single-frame depth estimation methods on
+both indoor and outdoor scenes and showed better generalization ability.
+
+
+\section[DA-RNN]{DA-RNN: Semantic Mapping with Data Associated Recurrent Neural Networks}
+
+参考文献：\cite{Xiang2017DARNN}
+
+{\color{red} \textbf{评语} 看得出来，RNN在帮助建立相邻帧之间的一致性方面具有很大的优势。}
+
+本文利用可以实现Data Associate的RNN产生Semantic Label。然后作用于KinectFusion，来插入语义信息。
+
+所以本文利用了RNN与KinectFusion来实现语义地图的构建！
+
+\subsection{Related Works}
+
+{\bfseries 本文提出的 DA-RU (Data Associated Recurrent Unit) 可以作为一个单独的模块加入到已有的CNN结构中！}
+
+\subsection{Conclusion}
+\begin{itemize}
+\item $\star$将来的可以借助Optical Flow来生成图像帧之间的Data Associate，来代替KinectFusion的作用！
+\end{itemize}
 
 
 
 
 
+\section[LiteFlowNet]{LiteFlowNet: A Lightweight Convolutional Neural Nework for Optical Flow Estimation}
+
+参考文献：\cite{Hui2018LiteFlowNet}， CVPR 2018
+
+\subsection{背景知识}
+
+FlowNet2是基于CNN进行光流估计的SOTA算法(?), 需要160M的参数量。LiteFlowNet实现了30倍的轻量化，并且比FlowNet2块1.36倍。
+
+主要的贡献：
+\begin{itemize}
+\item 在每一层金字塔(Pyramid Level)预测光溜更高效的轻量级联网络。通过早前矫正(Early Correction)提高了精度，同时无缝支持网络中的描述子匹配。
+\item 提出了一个新型的光流正则化层，可以改善野值点、光流边界模糊等问题，是基于特征驱动的区域卷积实现
+\item 网络结构可以高效提取Pyramidal Feature以及Feature Warping，而不是像FlowNet2中的Image Warping。
+\end{itemize}
+
+FlowNet2通过级联FlowNet，来不断调优光流场, by contributing on the flow increment between the first image and the warped second imaeg?
+
+后来，SPyNet通过在每一Pyramid level采用Imae Warping实现了只有1.2M大小的网络，但精度只有FlowNet大小，而达不到FlowNet2的水平。
+
+{\bfseries Image Warping: 图像扭转，是一种数字图像处理过程，在任何图像中所描述的任何形状都会产生显著有损。扭曲可用于矫正图像有损，同时可用于某种创意目的。纯粹的图像扭曲意味着点到点的映射，而不改变其颜色。}
+
+提高FlowNet2以及SPyNet的两种准则(Principles)：
+
+\begin{itemize}
+\item Pyramid feature extraction
+
+Consists of an encoder and a decoder. Encoder把输入的图像对分别映射到多尺度高维特征空间中；Decoder以Coarse-to-fine的框架估计光流场。这比FlowNet2采用U-Net更轻量化。相比于SPyNet，我们的模型把特征提取与光流估计两个过程分离，可以更好的处理精度与复杂度之间的矛盾。
+
+\item Feature Warping
+
+FlowNet2与SPyNet将输入图像对中的第二幅图像基于先前估计的光流进行Warp，然后使用Warped的第二幅图像与第一幅图像的特征图谱Refine估计的光流。
+
+所以这个过程中，首先把第二幅图像进行Warp,然后提取Warp图像的特征，这个过程十分繁琐。所以，本文提出直接对Feature Map进行warp。保证模型更精确以及高效。
+
+\end{itemize}
+
+更详细的细节一定要看原文\cite{Hui2018LiteFlowNet}。
+
+此外，除了上面两个主要改进的 Principle, 作者还提出第三个比较重要的改进措施，那就是 Flow Regularization.
+
+\begin{itemize}
+\item Flow Regularization
+
+级联的光流估计类似于能量最小化方法中的保真度(Data Fidelity)的作用。 为了消除边界的模糊以及野值点，Regularize flow Field的常用Cues：
+\begin{itemize}
+\item Local flow consistency
+\item Co-occurrence between flow boundaries
+\item Co-occurrence between intensity edges
+\end{itemize}
+
+对应的代表方法包括：
+\begin{itemize}
+\item Anisotropic image-driven
+\item image- and flow-driven
+\item Complementary regularizations
+\end{itemize}
+
+在本文中，提出的是Feature-driven local convolution layer at each pyramid level. 该方法对Flow-以及Image-敏感。
+
+{\color{red} \textbf{评语}：看起来，一个是提高精度，一个是提高效率，这是两个最终的目的。提高精度可以通过设计网络结构以及增加其它考虑来实现；提高效率的一个重要表现是降低模型的参数数量，提高运算速度。不过，本文虽然参数数量减少了30倍，但速度却只提高了1.36倍，这里面的原因是什么？}
+
+\end{itemize}
+
+\subsection{Related Works}
+
+\subsubsection{Variational Methods}
+
+Address illumination changes by combining the brightness and gradient constancy assumptions.
+
+DeepFlow, propose to correlate multi-scale patches and incorporate this as the matching term in functional.
+
+PatchMatch Filter, EpicFlow.
+
+本文提出的网络结构，是受Variational methods中的Data Fidelity以及正则化启发。
+
+\subsubsection{Machine Learning Methods}
+
+PCA-Flow. 这些参数化模型可以通过CNN高效的实现。
+
+\subsubsection{CNN-based Methods}
+
+FlowNet, 使用能量最小化作为后处理步骤，来降低在光流边界的平滑效应。不能端到端训练？
+
+FlowNet2， 通过FlowNet的级联实现。虽然提高了精度，但模型更大，计算更复杂。
+
+SPyNet，受Spatial Pyramid启发，模型更紧凑，但效果远不如FlowNet2。
+
+InterpoNet， 借助第三方系数光流但需要off-the-shelf的边缘检测。
+
+DeepFlow, 使用Correlation而不是真正意义的CNN，参数不能训练。
+
+\subsubsection{Establish Point Correspondence}
+
+Establishing point correspondence, 一种方式是Match Image Patches
+
+CNN-Feature Matching, 首先被Zagoruyko等人提出(Learning to compare image patches via CNN, 2015 CVPR)。
+
+MRF-based， G$\ddot{u}$ney等人提出利用Feature Representation以及利用MRF来估计光流。
+
+Bailer使用多尺度Feature，然后以类似于Flow Fields的方式进行特征匹配。
+
+Fischer和Ilg等人为了提高计算效率，仅在稀疏空间维度进行特征匹配。
+
+本文中，We reduce the computational burden of feature matching by using a short-ranged matching of warped CNN features at sampled positions and a sub-pixel refinement at every pyramid level.
+
+类似于Spatial Transformer, 本文利用 f-warp layer来区分不同个Channel.本文的决策网络是一个更普用的Warping Network，可以用来Warp高层次的CNN Features，而不仅仅是对Image进行Warpping.
 
 
+\subsection{LiteFlowNet}
 
+整体结构如下：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{SemanticSLAM/LiteFlowNet0.png}
+\caption{LiteFlowNet结构框图}
+\label{LiteFlowNet0}
+\end{figure}
+
+\subsubsection{Pyramid Feature Extraction}
+
+进行stride-$s$的卷积操作，得到的Feature Map表示为：$\mathcal{F}_k(I_i)$，即第$i$个图像的第$k$层Feature Map。简化写成 $\mathcal{F}_i$。
+
+\subsubsection{Feature Warping (f-warp)}
+
+假设\.x为预测的光流，则Feature Warping是指：
+\begin{displaymath}
+\tilde{\mathcal{F}}_2(x) \triangleq \mathcal{F}_2(x + \dot{x}) \sim \mathcal{F}_1(x) 
+\end{displaymath}
+
+注意，Warping是作用于$\mathcal{F}$上的，而不是输入图像上的。
+
+为了使上述过程可以支持end-to-end训练，这里采用Bilinear Interpolation进行插值的技术实现Warping。Bilinear Interpolation是支持后向传播训练的！修改后Warping实现公式如下：
+\begin{displaymath}
+\tilde{\mathcal{F}} = \sum_{x_s^i \in N(x_s)} \mathcal{F}(x_s^i)(1-|x_s - x_s^i|)(1 - |y_s - y_s^i|)
+\end{displaymath}
+
+其中，$x_s = x + \dot{x} = (x_s, y_s)^T$是输入的源Feature Map中的坐标。$x$denotes the target coordinates of the regular grid in the interpolated feature map $\mathcal{F}$，$N(x)$代表the four pixel neighbors of $x_s$.
+
+自己的理解：首先$x$是插值后 的图像索引，而$x_s = x + \dot{x}$是插值前Feature Map中对应Object Feature的$x$索引处的索引。$x_s^i$是在$x_s$周围的四个紧邻像素。也就是个Bilinear Interpolated.
+
+\subsubsection{Cascaded Flow Interface}
+
+{\color{red} \textbf{评语}：这一块看的比较吃力。为什么会吃力？因为新的概念么？那么作者为什么提出这么麻烦的概念呢？实际效果又怎么样呢？}
+
+通过计算高层特征向量的Correlation来实现输入图像的点对应。
+
+\begin{displaymath}
+c(x, d) = \mathcal{F}_1(x) \cdot \mathcal{F}_2(x + d) / N
+\end{displaymath}
+这个公式跟FlowNet中的计算方式区别不大。只不过这里的$N$是指Feature的长度。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{SemanticSLAM/LiteFlowNet1.png}
+\caption{在NetE中的级联光流推理模块,M:S}
+\label{LiteFlowNet1}
+\end{figure}
+
+\textbf{M Module}$\;$  在Descirptor Matching unit M, Residual flow $\varDelta \dot{x}_m$. A complete flow field $\dot{x}_m$ is computed as follows, 这句话没懂
+
+\begin{displaymath}
+\dot{x}_m = \underbrace{M(C(\mathcal{F}_1, \tilde{\mathcal{F}}_2; d))}_{\varDelta \dot{x}_m} + s\dot{x}^{\uparrow s}
+\end{displaymath}
+
+其中，$\dot{x}$是上一层的最开始的光流估计！
+
+\textbf{S Module}$\;$ 
+为了进一步提高flow estimate  $\dot{x}_m$ 的精度，即达到亚像素级别。作者引入了Second flow inference。 这可以防止错误光流的放大并传到下一级。Sub-pixel refinement unit $S$，会产生一个更准确的光流场，这通过最小化$\mathcal{F}_1$和 $\tilde{\mathcal{F}}_2$之间的距离来实现。
+
+\begin{displaymath}
+\dot{x}_s = \underbrace{S(C(\mathcal{F}_1, \tilde{\mathcal{F}}_2, \dot{x}_m))}_{\varDelta \dot{x}_s} + \dot{x}_m
+\end{displaymath}
+
+{\bfseries 所以总的来说} M模块是为了计算$\varDelta \dot{x}_m$， 而$S$模块是为了计算$\varDelta \dot{x}_s$。对最开始$\dot{x}$估计的光流进行两次的Refinement.
+
+\subsubsection{Flow Regularization}
+
+这一部分主要消除光流边界的模糊、存在的artifacts等。提出用 feature-driven local convolution (f-lcon)
+
+假设Feature Map (F)的尺寸为：$M * N * c$，定义f-lcon的滤波器为$\textbf{G}={g}$
+
+对于输入为$\dot{x}_s$， Flow Regularization值的是：
+\begin{displaymath}
+\dot{x}_r = R(\dot{x}_s; G)
+\end{displaymath}
+输出的是正则化后的光流估计$\dot{x}_r$
+
+下面的关键是如何生成这个用于正则化的卷积核。为此，作者定义了一个feature-driven的距离度量$\mathcal{D}$，总的来说，该度量由一个CNN unit $R_D$来计算：
+\begin{displaymath}
+\mathcal{D} = R_D(\mathcal{F}_1, \dot{x}_s, O)
+\end{displaymath}
+
+基于这个度量，可以计算得到卷积核：
+\begin{displaymath}
+g(x, y, c) = \frac{\exp(-\mathcal{D}(x, y, c)^2)}{\sum_{(x_i, y_i)\in N(x, y)}\exp(-\mathcal{D}(x_i, y_i, c)^2)}
+\end{displaymath}
+
+其中$N(x)$表示一个$\omega * \omega$的近邻。
+
+\subsection{Ablation Study}
+
+算法的结果是优于 FlowNet2, SPyNet等。
+
+\subsubsection{Feature Warping}
+
+没有Warping, 光流更Vague.通过计算residual flow (M:S两个模块的功能)可以提高估计效果。
+
+M: Matching
+
+S: Sub-pixel refinement
+
+R: Regularization units in NetE
+
+\subsubsection{Descriptor Matching}
+
+\subsubsection{Sub-Pixel Refinement}
+
+The flow field generated from
+WMS is more crisp and contains more fine details than
+that generated from WM with sub-pixel refinement dis-
+abled.
+
+更小的flow artifacts.
+
+\subsection{Regularization}
+
+In comparison WMS with regularization
+disabled to ALL, undesired artifacts exist in homogeneous
+regions
+
+Flow bleeding and
+vague flow boundaries are observed.
+
+表明， Feature-driven local convolution对于光滑光流场、保持crisp flow boundaries非常重要！
+
+\subsection{Conclusion}
+
+Pyramidal feature extrac-
+tion and feature warping (f-warp) help us to break the de
+facto rule of accurate flow network requiring large model
+size. To address large-displacement and detail-preserving
+flows, LiteFlowNet exploits short-range matching to gener-
+ate pixel-level flow field and further improves the estimate
+to sub-pixel accuracy in the cascaded flow inference. To
+result crisp flow boundaries, LiteFlowNet regularizes flow
+field through feature-driven local convolution (f-lcon). With
+its lightweight, accurate, and fast flow computation, we ex-
+pect that LiteFlowNet can be deployed to many applications
+such as motion segmentation, action recognition, SLAM,
+3D reconstruction and more.

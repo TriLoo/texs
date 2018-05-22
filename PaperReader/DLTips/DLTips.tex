@@ -194,6 +194,34 @@ Distillation Module的目的：
 
 \end{itemize}
 
+\subsection{Knowledge Distillation}
+
+\subsubsection{什么是Distilling the knowledge}
+
+一句话总结，就是用teacher network的输出作为soft label来训练一个student network.
+
+\subsubsection{Disilling the knowledge in a Neural Network}
+
+\begin{displaymath}
+q_i = \frac{exp(z_i/T)}{\sum_{j}exp(z_j/T)}
+\end{displaymath}
+
+其实就是一个Softmax，值得注意的是$T$是Temperature，$T$越大，概率分布就越Soft。在训练Student Network时，该概率分布就是Student Network的soft label.
+
+Student Network 的训练策略：
+\begin{itemize}
+\item 先用Teacher Network的概率分布训练
+\item 再用Real Label训练
+\end{itemize}
+
+\subsection{Recurrent Knowledge Distillation \cite{Silvia2018Recurrent}}
+
+\section{光流估计中的Average end-point error}
+
+貌似就是类似于均方误差类似。具体定义还没查到。
+
+
+
 \section{待续}
 
 

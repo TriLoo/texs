@@ -12,6 +12,25 @@ Xinlei Chen, Li-Jia Li, Li~Fei-Fei, and Abhinav Gupta.
 \newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
   Pattern Recognition}, 2018.
 
+\bibitem{Felzenszwalb2004}
+Pedro~F Felzenszwalb and Daniel~P Huttenlocher.
+\newblock {Efficient Graph-Based Image Segmentation}.
+\newblock {\em International Journal of Computer Vision}, 59(2):167--181, 2004.
+
+\bibitem{Goodfellow2014GAN}
+Ian Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley,
+  Sherjil Ozair, Aaron Courville, and Yoshua Bengio.
+\newblock Generative adversarial nets.
+\newblock In Z.~Ghahramani, M.~Welling, C.~Cortes, N.~D. Lawrence, and K.~Q.
+  Weinberger, editors, {\em Advances in Neural Information Processing Systems
+  27}, pages 2672--2680. Curran Associates, Inc., 2014.
+
+\bibitem{Hui2018LiteFlowNet}
+T.-W. {Hui}, X.~{Tang}, and C.~{Change Loy}.
+\newblock {LiteFlowNet: A Lightweight Convolutional Neural Network for Optical
+  Flow Estimation}.
+\newblock {\em ArXiv e-prints}, May 2018.
+
 \bibitem{li2017fast}
 Chao Li, Yanjing Bi, Franck Marzani, and Fan Yang.
 \newblock Fast fpga prototyping for real-time image processing with very
@@ -38,16 +57,39 @@ R.~{Mehta} and C.~{Ozturk}.
 \newblock {Object detection at 200 Frames Per Second}.
 \newblock {\em ArXiv e-prints}, May 2018.
 
+\bibitem{Silvia2018Recurrent}
+Jan C. van~Gemert Silvia L.~Pintea, Yue~Liu.
+\newblock {Recurrent knowledge distillation}.
+\newblock {\em ArXiv e-prints}, May 2018.
+
 \bibitem{toet2016multiscale}
 Alexander Toet and Maarten~A Hogervorst.
 \newblock Multiscale image fusion through guided filtering.
 \newblock In {\em SPIE Security+ Defence}, pages 99970J--99970J. International
   Society for Optics and Photonics, 2016.
 
+\bibitem{Uijlings2013}
+J.~R.~R. Uijlings, K.~E.~A. van~de Sande, T.~Gevers, and A.~W.~M. Smeulders.
+\newblock Selective search for object recognition.
+\newblock {\em International Journal of Computer Vision}, 104(2):154--171, Sep
+  2013.
+
 \bibitem{WangWang2018DeLS}
 P.~{Wang}, R.~{Yang}, B.~{Cao}, W.~{Xu}, and Y.~{Lin}.
 \newblock {DeLS-3D: Deep Localization and Segmentation with a 3D Semantic Map}.
 \newblock {\em ArXiv e-prints}, May 2018.
+
+\bibitem{Wang2018DenseSLAMNet}
+R.~{Wang}, J.-M. {Frahm}, and S.~M. {Pizer}.
+\newblock {Recurrent Neural Network for Learning DenseDepth and Ego-Motion from
+  Video}.
+\newblock {\em ArXiv e-prints}, May 2018.
+
+\bibitem{Xiang2017DARNN}
+Y.~{Xiang} and D.~{Fox}.
+\newblock {DA-RNN: Semantic Mapping with Data Associated Recurrent Neural
+  Networks}.
+\newblock {\em ArXiv e-prints}, March 2017.
 
 \bibitem{Xu2018PADNet}
 D.~{Xu}, W.~{Ouyang}, X.~{Wang}, and N.~{Sebe}.
