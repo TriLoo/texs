@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  22 MAY 2018 21:35
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  23 MAY 2018 23:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1486,17 +1486,17 @@ Overfull \hbox (1.97218pt too wide) in paragraph at lines 60--60
 ation with a 2D Semantic Map[[]][][] [][]  
  []
 
-[2] [3])
+[2] [3] [4])
 \tf@toc=\write5
 \openout5 = `Papers.toc'.
 
- [4] (./Papers.lof [5
+ [5] [6
 
-])
+] (./Papers.lof [7])
 \tf@lof=\write6
 \openout6 = `Papers.lof'.
 
- [6]
+ [8]
 Underfull \hbox (badness 10000) in paragraph at lines 75--76
 
  []
@@ -1793,132 +1793,155 @@ File: SemanticSLAM/DenseSLAMNet2.png Graphic file (type QTm)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [33]
-[34] [35]
-Overfull \hbox (42.37985pt too wide) in paragraph at lines 365--365
+[34] [35] [36]
+File: SemanticSLAM/SemanticFusion0.png Graphic file (type QTm)
+ <use  "SemanticSLAM/SemanticFusion0.png" > [37]
+Overfull \hbox (16.20836pt too wide) in paragraph at lines 462--462
+[]\EU1/TimesNewRoman(0)/bx/n/17.28 Meaningful Maps with Object-Oriented Semanti
+c Map-
+ []
+
+[38]
+File: SemanticSLAM/OrientedMap0.png Graphic file (type QTm)
+ <use  "SemanticSLAM/OrientedMap0.png" > [39] [40]
+File: SemanticSLAM/OrientedMap1.png Graphic file (type QTm)
+
+<use  "SemanticSLAM/OrientedMap1.png" > [41]
+Overfull \hbox (42.37985pt too wide) in paragraph at lines 557--557
 []\EU1/TimesNewRoman(0)/bx/n/17.28 LiteFlowNet: A Lightweight Convolutional Neu
 ral Nework
  []
 
-[36] [37]
+[42] [43]
 File: SemanticSLAM/LiteFlowNet0.png Graphic file (type QTm)
- <use  "SemanticSLAM/LiteFlowNet0.png" > [38]
+ <use  "SemanticSLAM/LiteFlowNet0.png" > [44]
 File: SemanticSLAM/LiteFlowNet1.png Graphic file (type QTm)
 
-<use  "SemanticSLAM/LiteFlowNet1.png" > [39] [40] [41])
-Overfull \hbox (11.74425pt too wide) in paragraph at lines 602--94
+<use  "SemanticSLAM/LiteFlowNet1.png" > [45] [46] [47]
+Overfull \hbox (11.74425pt too wide) in paragraph at lines 794--807
 \EU1/TimesNewRoman(0)/m/n/12 facto rule of accurate flow network requiring larg
 e model size. To address large-displacement
  []
 
 
-Overfull \hbox (2.03561pt too wide) in paragraph at lines 602--94
+Overfull \hbox (2.03561pt too wide) in paragraph at lines 794--807
 \EU1/TimesNewRoman(0)/m/n/12 and detail-preserving flows, LiteFlowNet exploits 
 short-range matching to gener- ate pixel-
  []
 
 
-Overfull \hbox (2.10442pt too wide) in paragraph at lines 602--94
+Overfull \hbox (2.10442pt too wide) in paragraph at lines 794--807
 \EU1/TimesNewRoman(0)/m/n/12 flow inference. To result crisp flow boundaries, L
 iteFlowNet regularizes flow field through
  []
 
-(./OpenSetRecognition/OpenSetRecognition.tex [42]
+
+Overfull \hbox (1.12492pt too wide) in paragraph at lines 816--816
+[]\EU1/TimesNewRoman(0)/bx/n/17.28 ExFuse: Enhancing Feature Fusion for Semanti
+c Seg-
+ []
+
+File: SemanticSLAM/ExFusion0.jpg Graphic file (type QTm)
+<use  "SemanticSLAM/ExFusion0.jpg" > [48]
+File: SemanticSLAM/ExFusion1.jpg Graphic file (type QTm)
+ <use  "SemanticSLAM/ExFusion1.jpg" >
+[49]) (./OpenSetRecognition/OpenSetRecognition.tex [50]
 Chapter 6.
-[43
+[51
 
 ]
 File: OpenSetRecognition/GANTraining0.jpg Graphic file (type QTm)
- <use  "OpenSetRecognition/GANTraining0.jpg" > [44]
+ <use  "OpenSetRecognition/GANTraining0.jpg" > [52]
 Overfull \hbox (48.0701pt too wide) in paragraph at lines 93--93
 [] 
  []
 
-[45]
+[53]
 Missing character: There is no θ in font cmmi12!
 Missing character: There is no θ in font cmmi12!
 Missing character: There is no θ in font cmmi12!
 File: OpenSetRecognition/CGAN0.jpg Graphic file (type QTm)
- <use  "OpenSetRecognition/CGAN0.jpg" > [46] [47]) (./MXNet/MXNet.tex
-[48]
+ <use  "OpenSetRecognition/CGAN0.jpg" > [54] [55]) (./MXNet/MXNet.tex
+[56]
 Chapter 7.
 File: MXNet/back_graph.png Graphic file (type QTm)
-<use  "MXNet/back_graph.png" > [49
+<use  "MXNet/back_graph.png" > [57
 
 ]
 File: MXNet/back_dep_prune.png Graphic file (type QTm)
  <use  "MXNet/back_dep_prune.png" >
 File: MXNet/back_agg_grad.png Graphic file (type QTm)
 
-<use  "MXNet/back_agg_grad.png" > [50]
+<use  "MXNet/back_agg_grad.png" > [58]
 File: MXNet/alloc_normal.png Graphic file (type QTm)
  <use  "MXNet/alloc_normal.png" >
 File: MXNet/alloc_mlp.png Graphic file (type QTm)
 
-<use  "MXNet/alloc_mlp.png" > [51]
+<use  "MXNet/alloc_mlp.png" > [59]
 File: MXNet/alloc_step.png Graphic file (type QTm)
- <use  "MXNet/alloc_step.png" > [52]
+ <use  "MXNet/alloc_step.png" > [60]
 File: MXNet/parallel_alloc.png Graphic file (type QTm)
 
-<use  "MXNet/parallel_alloc.png" > [53]
+<use  "MXNet/parallel_alloc.png" > [61]
 File: MXNet/graph_color.png Graphic file (type QTm)
  <use  "MXNet/graph_color.png" >
-[54] [55]
+[62] [63]
 File: MXNet/Symbolic1.png Graphic file (type QTm)
  <use  "MXNet/Symbolic1.png" >
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
-) [56] [57]
-[58]
+) [64] [65]
+[66]
 File: MXNet/Tag1.png Graphic file (type QTm)
  <use  "MXNet/Tag1.png" >
 File: MXNet/Tag2.png Graphic file (type QTm)
- <use  "MXNet/Tag2.png" > [59]
+ <use  "MXNet/Tag2.png" > [67]
 File: MXNet/Tag3.png Graphic file (type QTm)
 
-<use  "MXNet/Tag3.png" > [60]
+<use  "MXNet/Tag3.png" > [68]
 File: MXNet/recordIO1.png Graphic file (type QTm)
  <use  "MXNet/recordIO1.png" >
 File: MXNet/recordIO2.png Graphic file (type QTm)
 
 <use  "MXNet/recordIO2.png" >
 File: MXNet/loadingData1.png Graphic file (type QTm)
- <use  "MXNet/loadingData1.png" > [61] [62]
+ <use  "MXNet/loadingData1.png" > [69] [70]
 File: MXNet/dataLoading2.png Graphic file (type QTm)
 
-<use  "MXNet/dataLoading2.png" > [63]) (./DLTips/DLTips.tex [64]
+<use  "MXNet/dataLoading2.png" > [71]) (./DLTips/DLTips.tex [72]
 Chapter 8.
 File: DLTips/DilatedConv1.jpg Graphic file (type QTm)
-<use  "DLTips/DilatedConv1.jpg" > [65
+<use  "DLTips/DilatedConv1.jpg" > [73
 
 ]
 File: DLTips/WaveNet1.jpg Graphic file (type QTm)
- <use  "DLTips/WaveNet1.jpg" > [66]
-[67] [68]
+ <use  "DLTips/WaveNet1.jpg" > [74]
+[75] [76]
 File: DLTips/ThreeDistillationModules1.png Graphic file (type QTm)
- <use  "DLTips/ThreeDistillationModules1.png" > [69]
+ <use  "DLTips/ThreeDistillationModules1.png" > [77]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\@ifnextchar' on input line 217.
 
-) (./ImageProcessing/ImageProcessing.tex [70]
+) (./ImageProcessing/ImageProcessing.tex [78]
 Chapter 9.
-) (./FeatureExtraction/FeatureExtraction.tex [71
+) (./FeatureExtraction/FeatureExtraction.tex [79
 
-] [72
+] [80
 
 ]
 Chapter 10.
-[73]
+[81]
 File: FeatureExtraction/RCNN0.jpg Graphic file (type QTm)
  <use  "FeatureExtraction/RCNN0.jpg" >)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [74]
-[75] [76
+ [82]
+[83] [84
 
-] (./Papers.bbl [77
+] (./Papers.bbl [85
 
-]) (./Papers.ind [78] [79
+]) (./Papers.ind [86] [87
 
 
 ])
@@ -1931,12 +1954,12 @@ Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 114.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
  ) 
 Here is how much of TeX's memory you used:
- 28548 strings out of 495525
- 527914 string characters out of 6184337
- 741770 words of memory out of 5000000
- 31303 multiletter control sequences out of 15000+600000
+ 28582 strings out of 495525
+ 528797 string characters out of 6184337
+ 742511 words of memory out of 5000000
+ 31332 multiletter control sequences out of 15000+600000
  12233 words of font info for 90 fonts, out of 8000000 for 9000
  80 hyphenation exceptions out of 8191
  45i,14n,58p,10437b,1779s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Papers.pdf (87 pages).
+Output written on Papers.pdf (97 pages).

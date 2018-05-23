@@ -216,6 +216,27 @@ I(c, G(z, c)) = \mathbb{E}_{c \sim P(c), x \sim G(z, c)} \left[ \log Q(c|X) + H(
 {\color{red} \textbf{评语}： 需要重点关注，提出一个新的网络后，如何在数学上证明是可行的呢？}
 
 
+\section{Towards Open Set Deep Networks}
+
+引入了一种新型的新型的神经网络层结构，OpenMax，可以评估输入来自于一个未知类的概率。其中一个重要的组成部分是采用Meta-Recognition来对网络的Activation patterns进行处理。
+
+比对SoftMax的结果进行Thresholding要好很多。(为什么会好？)
+
+这是因为，实际使用中，即使输入是非常奇怪的，也就是说 "fooling" or "Rubbish" images时，网络也可能会在某一类上产生很高的输出概率，所以这时候通过设置Threshod的方式是不合适的。
+\begin{quote}
+They strongly
+suggests that thresholding on uncertainty is not sufficient
+to determine what is unknown.
+\end{quote}
+
+\subsection{Introduction \& Related Works}
+
+In Sec. 3, we show that
+extending deep networks to threshold SoftMax probabil-
+ity improves open set recognition somewhat, but does not
+resolve the issue of fooling images.
+
+Thresholding可能会在某些时候会帮助Open Set Recognition，但对于Fooling images，结果可能比较差。
 
 
 

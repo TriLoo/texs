@@ -17,6 +17,11 @@ Pedro~F Felzenszwalb and Daniel~P Huttenlocher.
 \newblock {Efficient Graph-Based Image Segmentation}.
 \newblock {\em International Journal of Computer Vision}, 59(2):167--181, 2004.
 
+\bibitem{Felzenszwalb2004Efficient}
+Pedro~F. Felzenszwalb and Daniel~P. Huttenlocher.
+\newblock Efficient graph-based image segmentation.
+\newblock {\em International Journal of Computer Vision}, 59(2):167--181, 2004.
+
 \bibitem{Goodfellow2014GAN}
 Ian Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley,
   Sherjil Ozair, Aaron Courville, and Yoshua Bengio.
@@ -52,15 +57,33 @@ Roberto~Cipolla Marvin T.T.~Teichmann.
 \newblock Convolutional crfs for semantic segmentation.
 \newblock {\em arXiv:https://arxiv.org/pdf/1805.04777.pdf}, 2018.
 
+\bibitem{SemanticFusion2016}
+J.~{McCormac}, A.~{Handa}, A.~{Davison}, and S.~{Leutenegger}.
+\newblock {SemanticFusion: Dense 3D Semantic Mapping with Convolutional Neural
+  Networks}.
+\newblock {\em ArXiv e-prints}, September 2016.
+
 \bibitem{Mehta2018OD200}
 R.~{Mehta} and C.~{Ozturk}.
 \newblock {Object detection at 200 Frames Per Second}.
 \newblock {\em ArXiv e-prints}, May 2018.
 
+\bibitem{Pham2016Geometrically}
+Trung~T. Pham, Markus Eich, Ian Reid, and Gordon Wyeth.
+\newblock Geometrically consistent plane extraction for dense indoor 3d maps
+  segmentation.
+\newblock In {\em Ieee/rsj International Conference on Intelligent Robots and
+  Systems}, pages 4199--4204, 2016.
+
 \bibitem{Silvia2018Recurrent}
 Jan C. van~Gemert Silvia L.~Pintea, Yue~Liu.
 \newblock {Recurrent knowledge distillation}.
 \newblock {\em ArXiv e-prints}, May 2018.
+
+\bibitem{Meaningful2016}
+N.~{S{\"u}nderhauf}, T.~T. {Pham}, Y.~{Latif}, M.~{Milford}, and I.~{Reid}.
+\newblock {Meaningful Maps With Object-Oriented Semantic Mapping}.
+\newblock {\em ArXiv e-prints}, September 2016.
 
 \bibitem{toet2016multiscale}
 Alexander Toet and Maarten~A Hogervorst.

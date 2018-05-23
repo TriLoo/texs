@@ -353,14 +353,206 @@ both indoor and outdoor scenes and showed better generalization ability.
 
 {\bfseries 本文提出的 DA-RU (Data Associated Recurrent Unit) 可以作为一个单独的模块加入到已有的CNN结构中！}
 
+\subsection{Methods}
+
+需要注意到是，本文采用了DA-RNN与KinectFusion合作的方式来产生最终的Semantic Mapping，而文章采用的则是ORB-SLAM与CNN结合，他们有一些共同的结构，如Data Associate，虽然我现在还不明白这个DA具体得怎么实现！？
+
+\subsection{Experiments}
+
+实验表明，针对不同的实验输入场景，RGB图像和Depth图像可能发挥不同的作用，有一些时候甚至让结果更差，而本文采用Contatenated把来自于RGB和Depth的Feature进行组合起来，在这里，是否可以采取Attention或者\cite{Xu2018PADNet}中采用的Knowledge Distillation的方式进行多模态数据融合呢！？
+
+此外，实验中也发现，有时候RGB图像的Color会影响实验结果，所以，是否可以利用一些其它的不那么Confusing的数据呢，比如Shape等，这也类似于\cite{Xu2018PADNet}中多任务中的Contour类似吧！
+
+
 \subsection{Conclusion}
+
 \begin{itemize}
 \item $\star$将来的可以借助Optical Flow来生成图像帧之间的Data Associate，来代替KinectFusion的作用！
 \end{itemize}
 
+\section{SemanticFusion: Dense 3D Semantic Mapping with CNNs}
+参考文献：\cite{SemanticFusion2016}
+
+主要框架，用到了ElasticFusion和CNN来产生稠密的Semantic Mapping.
+
+\subsection{Introduction \& Related Works}
+
+本文的算法，利用SLAM来实现2D Frame与3D Map之间的匹配(Corresponding)。通过这种方式，可以实现把CNN的语义预测以概率的方式融合到Dense semantically annotated map.
+
+为什么选择ElasticFusion呢，是因为这种算法是surfel-based surface representation，可以支持每一帧的语义融合。
+
+比较重要的一点是，通过实验说明，引入SLAM甚至可以提高单帧图像的语义分割效果。尤其在存在wide viewpoint variation，可以帮助解决单目2D Semantic中的一些Ambiguations.
+
+之前存在方法使用Dense CRF来获得语义地图。
+
+本文的主要不同是：利用CNN来产生语义分割，然后是在线以 Incremental 的方式生成Semantic Map。即新来一帧就生成一帧的语义地图。
+
+\subsection{Method}
+
+系统由三部分组成：
+\begin{itemize}
+\item A real-tiem SLAM system ElasticFusion
+
+用于提供帧间的关联、全局一致的地图
+
+\item CNN
+
+产生语义分割
+
+\item Bayesian update scheme
+
+基于SLAM提供的Pose关系、CNN提供的每个像素的Class Probability对Map中的每一个surfel的Class Probability进行更新！
+
+\end{itemize}
+
+此外，作者还尝试了用CRF来利用SLAM提供的Geometry帮助语义分割。
+
+非常粗糙的流程图如下图所示：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{SemanticSLAM/SemanticFusion0.png}
+\caption{粗糙的数据流图}
+\label{SemanticFusion0}
+\end{figure}
+
+\subsubsection{SLAM Mapping}
+就是使用ElasticFusion.
+
+\subsubsection{CNN Architecture}
+
+使用Deconvolutional Semantic Segmentation network，与FCN同年提出的另一个分割网络。
+
+在本实验中，输入由RGB变为RGBD，多了一个Channel.然而，深度相关的训练数据比较少，为了提高利用率，作者利用其它三个输入的光强的平均值对Depth Filter进行初始化。
+
+对输入数据，作者还进行了Scaling， RGB是用Bilinear Interpolation, Depth数据是Nearest enighbour。
+
+\subsubsection{Incremental Semantic Label Fusion}
+
+在生成的地图$\mathcal{M}$中，每一个Surfel(ElasticFusion的结果)不仅代表了Location、Normal等信息，还包含一个类别($\mathcal{L}$)的分布。
+
+输入数据为$\mathbf{I}_k$表示RGB图像与Depth等。
+
+在对每一个Surfel进行类别分布概率更新时，采用的Recursive Bayesian update，这个算法就是Probability Robotics里面最基础的算法，也就是分为Prediction和Correlation两个步骤。
+
+\begin{displaymath}
+P(l_i | I_{1, \ldots, k}) = \frac{1}{Z}P(l_i | I_{1, \ldots, k- 1})P(O_{u(s, k)=l_i | I_k})
+\end{displaymath}
+
+其中，第一个$P$表示根据过去的信息的预测，在这里也就是已有的$\mathcal{M}$里面的一个surfel的class probability，如果，是一个全新的Surfel，则初始化它为均匀分布，因此这样熵最大；而第二个$P$表示来自CNN输入是$I_k$时输出的class probability，然后对已有地图中的surfel的class probability进行Correlation!
+
+\subsubsection{Map Regularisation}
+
+作者尝试了利用CRF来借助map geometry对预测的Semantic surfel进行Regularise。
+
+在这里，把每一个Surfel当做CRF的一个Node。
+
+这一部分，参考论文吧。
+
+\subsection{Experiments}
+
+本文用到的Semantic分割的方法(CNN + SLAM)与普通的单CNN相比，具有很大的优势。本文的方法是，得到3D的Semantic Map后，重投影到2D图像中。
+
+时间方面，SLAM需要29.3ms，CNN的前向传播用了51.2ms，Bayesian更新用了41.1ms。
+
+\subsection{总结}
+
+未来也还是SLAM与语义分割相互促进吧，达到Semantic SLAM。
 
 
+\section{Meaningful Maps with Object-Oriented Semantic Mapping}
+参考文献：\cite{Meaningful2016}
 
+主要的框架是，利用CNN与ORB-SLAM2来实现Semantic Mapping。{\bfseries 但是都用到了Data Association的操作}！而且本文还是Object-oriented (Instance level) !
+
+\subsection{Introduction \& Related Works}
+
+{\bfseries 重要：}
+
+与已有的方式不同的是，本文的算法不仅分割独立的3D Point，也就是把语义信息投影到3D Point中，而是投影到3D Structure。这样会更有利于场景理解。
+
+已有的SLAM算法得到的结果都是一些几何上的概念，比如:点、面、表面等。另一方面，为了实现与环境交互，必须基于语义地图才行。
+
+\subsubsection{Semantic Mapping}
+
+语义信息与地图构建可能属于两个不同的过程得到。
+
+有一些算法用到了HMM或Dense CRF等。
+
+\subsubsection{Object Detection and Semantic Segmentation}
+
+FCN的缺点是，形成的语义地图一般缺少Notion of independent object instances. 如果只是Pixel-level的labels不能辨别有重叠时物体的身份。
+
+也有一些Instance-level的分割算法，但精度、速度都有待提高。
+
+\subsection{Object Oriented Semantic Mapping}
+
+算法的主要步骤：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{SemanticSLAM/OrientedMap0.png}
+\caption{算法的几个主要步骤}
+\label{OrientedMap0}
+\end{figure}
+
+算法使用RGB-D作为输入，算法是用ORB-SLAM2提供相机的姿态、地图等。
+
+\subsubsection{Object Detection for Semantic Mapping}
+
+本文使用SSD来完成Object的Location和 Recognition。
+
+\subsubsection{3D Segmentation}
+
+由于需要非常精确的图像分割，所以本文利用Depth图来帮助分割。所以需要对Depth进行分割的算法，本文采用了文章\cite{Felzenszwalb2004}\cite{Pham2016Geometrically}等人的算法。也是涉及到基于图的分割的过程。
+
+\subsubsection{Data Association}
+
+重点。
+
+当完成了把3D Point投影到识别的物体后，数据关联要做的事：判断检测到的物体是否已经在已经构建的地图中存在了呢，如果不存在的话，就需要新增这个物体。
+
+通过一个二阶的流程来实现：
+
+\begin{itemize}
+\item 对于每一个检测到的Object，根据点云的欧式距离，来选择一系列的Landmarks(已经检测到并在地图里面已经有的Object)
+\item 对Object和Point Cloud of landmark进行最近邻搜索，使用了k-d tree来提高效率，其实这一步也就是判断当前图像检测到的Object与已有的地图中的Landmark(Object)是否相匹配。
+\end{itemize}
+
+在第二步中，如果多余50 \% 的Points的都距离小于2cm的话，就说明这个检测到的Object已经存在了。
+
+这个也就是把CNN的分割结果与地图中的Object进行关联起来，并用颜色表示Map中Object的类别。
+
+\subsubsection{Object Model Update}
+
+地图中的目标保存：
+\begin{itemize}
+\item 与目标相关联的分割的3D点云
+\item ORB-SLAM中因子图的各个位姿的索引
+\item 有SSD提供的各个目标的置信度
+\end{itemize}
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{SemanticSLAM/OrientedMap1.png}
+\caption{Semantic Mapping 系统概览}
+\label{OrientedMap1}
+\end{figure}
+
+上图中可以看出，
+
+
+{\color{red} \textbf{评语}：在上一篇SematicFusion中，采用的Recursive Bayesian 的更新规则来完成地图更新的！看来，这个是CNN与传统的SLAM框架结合的时候的一个需要解决的问题，那就是如何把新来的物体与已有的地图中的物体相互关联起来，并更新！}
+
+\subsubsection{Map Generation}
+
+通过保存Keyframe中物体的3D poin clouds、每一个物体的3D分割以及执行位姿图中的一个指针。
+
+\subsection{总结}
+
+未来可以的发展方向：
+\begin{itemize}
+\item 语义Landmark如何提高SLAM的精度,从而实现Semantic SLAM
+\item 把稀疏的语义地图改进为稠密地图
+\end{itemize}
 
 \section[LiteFlowNet]{LiteFlowNet: A Lightweight Convolutional Neural Nework for Optical Flow Estimation}
 
@@ -612,3 +804,83 @@ its lightweight, accurate, and fast flow computation, we ex-
 pect that LiteFlowNet can be deployed to many applications
 such as motion segmentation, action recognition, SLAM,
 3D reconstruction and more.
+
+
+\section{小结}
+
+2018.05.23小结
+
+在生成Semantic Map的时候，看样子现在的趋势，是利用RNN保证时间一致性；利用多模态数据提高精度，但如何融合多模态数据的Feature有待研究，现有的有一些是直接Concatenate、Knowledge Distillation、Attnetion(?)等机制。
+
+
+\section{ExFuse: Enhancing Feature Fusion for Semantic Segmentation}
+
+参考文献：\href{https://zhuanlan.zhihu.com/p/37177073}{ExFuse简介-知乎}
+
+\subsection{要解决的问题}
+
+在语义分割领域中，经常需要融合多层的Feature。然而，底层的Feature含有的语义信息较少，但分辨率较高，噪声也比较少，这是由于卷积层比较浅；而高层的Feature语义信息多，但空间分辨率很小。
+
+所以本文就提出了：1)增加底层特征的语义；2) 在高层中增加空间信息
+
+\subsection{Method}
+
+使用了ResNet、GCN(Global Convolution Net)的思想。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{SemanticSLAM/ExFusion0.jpg}
+\caption{ExFusion的实现框图}
+\label{ExFusion0}
+\end{figure}
+
+其中，SS, SEB, ECRE, DAP是文章作者提出的算法。
+
+\subsubsection{在底层中加入更多的语义信息}
+具体是三个方面的改进：
+\begin{itemize}
+\item Layer Rearrengement
+
+ ResNeXt网络结构中，各级的网络包含的残差单元个数为{3,4,23,3}。为了提高底层特征的语义性，一个想法便是让低层的两级网络拥有的层数更多。因此作者将残差单元个数重排为{8,8,9,8}，并重新在ImageNet上预训练模型。重排后网络的分类性能没有明显变化，但是分割模型可以提高约0.8个点(mean intersection over union)的性能。
+
+\item Semantic Supervision(SS)
+
+深度语义监督其实在其他的一些工作里(如GoogLeNet，边缘检测的HED等等)已经使用到了。这里的使用方法基本上没有太大变化，能够带来大约1个点的提升。
+
+\item Semantic Embedding branch(SEB)
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.65\textwidth]{SemanticSLAM/ExFusion1.jpg}
+\caption{语义嵌入分支的结构图}
+\label{ExFusion1}
+\end{figure}
+
+ 其做法是将高层特征上采样后，与低层特征逐像素相乘，用在GCN之前。该部分能带来大约0.7个点的提升。
+
+\end{itemize}
+
+\subsubsection{在高层中加入更多的空间信息}
+
+用两种方法来把更多的空间信息融入到高层特征中：
+\begin{itemize}
+\item 通道分辨率嵌入(Explicit Channel resolution embedding, ECRE)
+
+其思路是在上采样支路中使用[2,3,4]工作中都使用到的子像素上采样模块(sub-pixel upsample)。作者的出发点并不是前人工作中强调的如速度快、消除反卷积的棋盘效应等等，而是通过这个结构能够让和空间信息相关的监督信息回传到各个通道中，从而让不同通道包含不同空间信息。该模块和原有的反卷积一起使用才能显示出更好的性能。同单独使用反卷积相比，性能可以提高约0.6个点。
+
+\item 稠密邻域预测(Densely adjacent prediction, DAP)
+
+DAP模块只使用在输出预测结果的时候。其想法也是通过扩展通道数来增加空间信息。举一个例子来描述其功能，假设DAP的作用区域为3x3，输出结果的通道数为21，则扩展后的输出通道数为21x3x3。每3x3个通道融合成一个通道。如在最终结果中，第5通道(共21通道)的(12,13)坐标上的像素，是通过DAP之前的第5+0通道(11,12)、5+1通道的(11,13)、5+2通道的(11,14)、5+3通道的(12,12)、5+4通道的(12,13)、5+5通道的(12,14)…平均得到的。DAP能带来约0.6个点的提升。
+
+\end{itemize}
+
+\section{Multi-View Deep Learning for Consistent Semantic Mapping with RGB-D Cameras}
+
+{\color{red} 时间：2018.05.24}
+
+
+
+
+
+
+
