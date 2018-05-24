@@ -238,7 +238,26 @@ resolve the issue of fooling images.
 
 Thresholding可能会在某些时候会帮助Open Set Recognition，但对于Fooling images，结果可能比较差。
 
+\section{Probability Models for Open Set Recognition}
 
+本文的主要目的是，在限制Open Space Risk的分类算法中，使其能完成非线性多分类的功能。
+
+此外，提出了Compact Abating Probability (CAP)，也就是说，随着距离Known Data越来越远，即距离Open Space越来越近的时候，样本分类的概率会降低。
+
+提出了具体的Weibull-calibrated SVM算法，该算法基于EVT原理进行Score Calibration，以及线性SVM来实现。
+
+\textbf{本文的重点}：
+\begin{itemize}
+\item 提出了Compact abating probability (CAP)
+\item 提出了Weibull-calibrate SVM (W-SVM):
+\begin{itemize}
+\item CAP
+\item Statistic Extreme Value Theory (EVT)
+\end{itemize}
+\item 在Caltech 256 \& ImageNet上也有对比试验
+\end{itemize}
+
+\subsection{背景及相关工作}
 
 
 

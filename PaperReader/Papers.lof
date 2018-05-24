@@ -23,30 +23,31 @@
 \contentsline {figure}{\numberline {5.9}{\ignorespaces 在NetE中的级联光流推理模块,M:S\relax }}{46}{figure.caption.61}
 \contentsline {figure}{\numberline {5.10}{\ignorespaces ExFusion的实现框图\relax }}{49}{figure.caption.66}
 \contentsline {figure}{\numberline {5.11}{\ignorespaces 语义嵌入分支的结构图\relax }}{50}{figure.caption.68}
+\contentsline {figure}{\numberline {5.12}{\ignorespaces 基于Encoder-Decoder CNN的语义分割示意图\relax }}{51}{figure.caption.73}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces GAN训练过程\relax }}{52}{figure.caption.73}
-\contentsline {figure}{\numberline {6.2}{\ignorespaces CGAN示意图，在G、N网络中新增了数据y\relax }}{55}{figure.caption.75}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces GAN训练过程\relax }}{56}{figure.caption.81}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces CGAN示意图，在G、N网络中新增了数据y\relax }}{59}{figure.caption.83}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces The implicitly \& explicitly back-propagation on Graph\relax }}{57}{figure.caption.76}
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Dependencies can be found quickly.\relax }}{58}{figure.caption.77}
-\contentsline {figure}{\numberline {7.3}{\ignorespaces Different backward path from forward path.\relax }}{58}{figure.caption.78}
-\contentsline {figure}{\numberline {7.4}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{59}{figure.caption.81}
-\contentsline {figure}{\numberline {7.5}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{60}{figure.caption.82}
-\contentsline {figure}{\numberline {7.6}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{60}{figure.caption.83}
-\contentsline {figure}{\numberline {7.7}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{61}{figure.caption.84}
-\contentsline {figure}{\numberline {7.8}{\ignorespaces Color the longest paths in the Graph.\relax }}{62}{figure.caption.87}
-\contentsline {figure}{\numberline {7.9}{\ignorespaces Operation Folding示意图。\relax }}{64}{figure.caption.88}
-\contentsline {figure}{\numberline {7.10}{\ignorespaces 第一步，给变量分配tag\relax }}{67}{figure.caption.93}
-\contentsline {figure}{\numberline {7.11}{\ignorespaces 把相应的Function Closure push进依赖分析引擎\relax }}{67}{figure.caption.94}
-\contentsline {figure}{\numberline {7.12}{\ignorespaces 一个具体的例子\relax }}{68}{figure.caption.95}
-\contentsline {figure}{\numberline {7.13}{\ignorespaces Binary recordIO数据结构\relax }}{70}{figure.caption.98}
-\contentsline {figure}{\numberline {7.14}{\ignorespaces Binary recordIO的一个例子\relax }}{70}{figure.caption.99}
-\contentsline {figure}{\numberline {7.15}{\ignorespaces 并行预处理例子\relax }}{71}{figure.caption.102}
-\contentsline {figure}{\numberline {7.16}{\ignorespaces 数据预取的示意图，借助Buffer来实现\relax }}{71}{figure.caption.104}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces The implicitly \& explicitly back-propagation on Graph\relax }}{63}{figure.caption.84}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Dependencies can be found quickly.\relax }}{64}{figure.caption.85}
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Different backward path from forward path.\relax }}{64}{figure.caption.86}
+\contentsline {figure}{\numberline {7.4}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{65}{figure.caption.89}
+\contentsline {figure}{\numberline {7.5}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{66}{figure.caption.90}
+\contentsline {figure}{\numberline {7.6}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{66}{figure.caption.91}
+\contentsline {figure}{\numberline {7.7}{\ignorespaces Standard Memory sharing between \textbf {B} \& the result of \textbf {E}.\relax }}{67}{figure.caption.92}
+\contentsline {figure}{\numberline {7.8}{\ignorespaces Color the longest paths in the Graph.\relax }}{68}{figure.caption.95}
+\contentsline {figure}{\numberline {7.9}{\ignorespaces Operation Folding示意图。\relax }}{70}{figure.caption.96}
+\contentsline {figure}{\numberline {7.10}{\ignorespaces 第一步，给变量分配tag\relax }}{73}{figure.caption.101}
+\contentsline {figure}{\numberline {7.11}{\ignorespaces 把相应的Function Closure push进依赖分析引擎\relax }}{73}{figure.caption.102}
+\contentsline {figure}{\numberline {7.12}{\ignorespaces 一个具体的例子\relax }}{74}{figure.caption.103}
+\contentsline {figure}{\numberline {7.13}{\ignorespaces Binary recordIO数据结构\relax }}{76}{figure.caption.106}
+\contentsline {figure}{\numberline {7.14}{\ignorespaces Binary recordIO的一个例子\relax }}{76}{figure.caption.107}
+\contentsline {figure}{\numberline {7.15}{\ignorespaces 并行预处理例子\relax }}{77}{figure.caption.110}
+\contentsline {figure}{\numberline {7.16}{\ignorespaces 数据预取的示意图，借助Buffer来实现\relax }}{77}{figure.caption.112}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {8.1}{\ignorespaces Dilated Convolution示意图\relax }}{74}{figure.caption.107}
-\contentsline {figure}{\numberline {8.2}{\ignorespaces Dilated Convolution在WaveNet中的应用示意图\relax }}{74}{figure.caption.108}
-\contentsline {figure}{\numberline {8.3}{\ignorespaces 三种不同的Distillation Module\relax }}{77}{figure.caption.109}
+\contentsline {figure}{\numberline {8.1}{\ignorespaces Dilated Convolution示意图\relax }}{80}{figure.caption.115}
+\contentsline {figure}{\numberline {8.2}{\ignorespaces Dilated Convolution在WaveNet中的应用示意图\relax }}{80}{figure.caption.116}
+\contentsline {figure}{\numberline {8.3}{\ignorespaces 三种不同的Distillation Module\relax }}{83}{figure.caption.117}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {10.1}{\ignorespaces RCNN整体思想\relax }}{82}{figure.caption.112}
+\contentsline {figure}{\numberline {10.1}{\ignorespaces RCNN整体思想\relax }}{88}{figure.caption.120}

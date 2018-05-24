@@ -878,6 +878,181 @@ DAP模块只使用在输出预测结果的时候。其想法也是通过扩展�
 
 {\color{red} 时间：2018.05.24}
 
+主要的贡献是：以自监督的方式预测多视角一致的语义分割，在与关键帧的语义地图融合时，更加一致。
+
+\subsection{Introduction \& Related Works}
+现阶段，RGB-D数据，Appearance以及Shape Modalities对于语义分割都会有帮助，可以结合起来。但结合多视觉信息的做法，还没有人尝试。
+
+那么如何把多视觉Frames与SLAM结合起来呢，作者的做法是，根据SLAM提供的Pose，其中一个帧为目标帧，目标帧存在Ground Truth 标签数据，然后，同一时刻其它视角的Frame可以通过SLAM计算得到的位姿被Warp到目标帧中。这样，网络可以学习视角不变的特性，且不需要额外的标签数据。其它视角的输出被Warp到目标帧(Reference)中，然后融合，融合过程是以概率的形式完成的。
+
+\subsubsection{Image based Semantic Segmentation}
+
+有一些是单独利用RGB输入，有一些输入是RGB-D数据。
+
+前者，主要的思想有FCN、Encoder-decoder结构通过可学习的Unpooling, Deconvlution等完成语义分割。
+
+后者，有一些基于encoder-decoder的可以融合RGB数据与Depth数据，也可以吧Depth数据转换成HHA， 其它的还有Mulit-scale Refinement, dilated Convolutions以及Residual units，此外还有LSTM来融合RGB与Depth数据，可生成更平滑的结果。最后，还有一些用到了CRF的算法。
+
+{\color{red} \textbf{评语}：如果输入数据是RGB-D数据的话，那么就不用像\cite{Xu2018PADNet}那样需要额外的单独预测Depth的网络结构了，而直接使用Attention或Knowledge Distillation等机制处理Depth与RGB数据不就可以了么！？}
+
+\subsubsection{Semantic SLAM}
+
+SLAM++可以实现Object Instance level的跟踪、地图构建等。
+
+其它的一些算法包括概率的形式融合语义信息。还有是处理点云的算法。
+
+
+\subsubsection{Multi-View Semantic Segmentation}
+
+CNN用于多目3D的语义分割研究很少。
+
+存在用3D CNN来处理系数的Octree数据结构，得到对voxel的语义分割。
+
+有算法提出使用视频中的Superpixel和Optical Flow来融合视频中的多目视觉的语义信息。
+
+跟本文相近的一个算法是利用多目来实现Shape Recognition中。
+
+
+\subsection{CNN Architecture For Semantic Segmentation}
+
+本文在FuseNet上的改进是，加入了Multi-scale的Loss Function Minimization。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{SemanticSLAM/MultiView0.png}
+\caption{基于Encoder-Decoder CNN的语义分割示意图}
+\label{MultiView0}
+\end{figure}
+
+需要注意到有一下几点：
+\begin{itemize}
+\item 使用Unpooling、Deconvolution等实现Decoder
+\item 注意，RGB与Depth经过两个分离的分支提取特征，然后在多个尺度(Multi-scale!)进行融合！
+\item 使用KL散度作为Loss Function :
+
+\begin{displaymath}
+L(\mathcal{W}) = - \frac{1}{N} \sum_{i}^{N}\sum_{j}^{K}\lfloor j = l_{gt} \rceil \log p_j (x_i, \mathcal{W} | \mathcal{I})
+\end{displaymath}
+
+\item 使用Deeply Supervised Learning method计算all Upsample Scales，注意，Gound Truth使用\textbf{Stochastic Pooling}这种正则化技术生成各个尺度下对应的Gound Truth
+\end{itemize}
+
+\subsection{Multi-View Consistent Learning and Prediction}
+
+本文的主要贡献是，Explore the use of temporal multi-view consistency within RGB-D sequences for CNN training and prediction. 这是通过把多帧数据Warp到一个Common Reference View来实现。
+
+\subsubsection{Multi-view Data Associate Through Warping}
+
+为了保证时间一致性，引入了Warping Layers。
+
+该Layer的操作原理是：
+\begin{displaymath}
+X^{\omega} = w(x, \xi) = \pi (T(\xi)\pi^{-1}(x, Z_i(x)))
+\end{displaymath}
+其中，$\omega$为Warping function, $T(\xi)$为SLAM得到的位姿$\xi$下的单应变换；$\pi$实现3D坐标与图像坐标之间的转换。$Z_i(x)$为图像$x$处的深度信息。
+
+\subsubsection{Consistency Through Warp Augmentation}
+
+把KeyframeWarp到Neighboring Frames。
+
+\subsubsection{Consistency Through Bayesian Fusion}
+
+\begin{align}
+p(y|z^i) & = \frac{p(z_i|y, z^{i-1})p(y | z^{i-1})}{z_i|z^{i - 1}} \notag \\
+         & = \beta_i p(z_i | y, z^{i-1}) p(y | z^{i-1}) \notag
+\end{align}
+
+其中，$z^i$为到达第$i$帧的所有Measurements。
+
+上式也就是Recursive Bayesive Update.
+
+\subsubsection{Consistency Through Multi-View Max-Pooling}
+
+Bayesian Fusion是在Probability域内进行的，而这里作者还尝试了直接在Feature域内进行Fuse。
+
+使用Multi-View max-pooling对Warp 的 Feature Map进行处理。
+
+\subsection{Experiments}
+
+使用NYUDv2数据集、DVO-SLAM框架。
+
+使用Cubic Interpolation来对RGB图像进行降采样，利用Nearest-neighbor Interpolation来对Depth和Labelling数据进行降采样
+
+使用SGD Moment训练，动量为0.9，同时有0.0005的Weight Decay。Learning Rate 被设置为0.001然后每30K次迭代就Decay by a factor of 0.9。
+
+使用IOU来判断Segment的效果。
+
+\subsection{总结}
+
+We base our CNN design on FuseNet，a recently proposed CNN architecture in an encoder-decoder scheme for semantic segmentation of RGB-D images.
+
+All multi-view consistency training approaches outperform single-view trained baselines. They are key to boosting segmentation performance when fusing network predictions from multiple view points during  testing.
+
+In future work, we want to further investigate integration of our approach in a semantic SLAM system, for example, through coupling of pose tracking and SLAM with our semantic predictions.
+
+所以，作者的意思是说现在还没有达到Semantic SLAM的水平，而实现的也就是只有Semantic Segmentation吗!?SLAM只是提供了必要的位姿估计，来帮助相邻帧之间的Warping？
+
+\section[MaskFusion]{MaskFusion: Real-Time Recognition, Tracking, and Reconstruction of Multiple Moving Objects}
+
+MaskFusion,看样子挺厉害的样子。
+
+A real-time, object-aware, semantic And dynamic RGB-D SLAM.({\color{red} 为什么这几篇基于RGB-D数据的算法这么多呢!?所以，要发文章的话，可以选面向不同输入数据的一种方法!比如，双目的文章我还没有看到，虽然上篇是关于Multi-View的语义分割，但不涉及SLAM啊。看样子生成语义地图的结果应该会挺炫的。})
+
+可以实现更有优势的Instance-level的Semantic Segmentation。利用VR应用来表明MaskFusion的独特优势：Instance-aware, Semantic and Dynamic。
+
+\subsection{背景及相关工作}
+
+把SLAM应用到AR(Augemented Reality)时，还有两个问题解决的不太理想：
+\begin{itemize}
+\item 现在的SLAM系统均假设环境是静态的，会主动忽略Moving Objects
+\item 现在的SLAM系统得到的均是一些几何的地图，缺少语义信息。有一些尝试，如SLAM++, CNN-SLAM
+\end{itemize}
+
+本文提出的MaskFusion算法可以解决这两个问题，首先，可以从Object-level理解环境，在准确分割运动目标的同时，可以识别、检测、跟踪以及重建目标。
+
+分割算法由两部分组成：
+\begin{itemize}
+\item Mask RCNN
+
+提供多达80类的目标识别等。
+
+\item A geometry-based segmentation algorithm
+
+利用Depth以及Surface Normal等信息向Mask RCNN提供更精确的目标边缘分割。
+
+\end{itemize}
+
+上述算法的结果输入到本文的Dynamic SLAM框架中。
+
+使用Instance-aware semantic segmentation比使用pixel-level semantic segmentation更好。{\bfseries 目标Mask更精确，并且可以把不同的object instance分配到同一object category}。
+
+本文的作者又提到了现在SLAM所面临的另一个大问题：Dynamic的问题。作者提到，本文提出的算法在两个方面具有优势：
+\begin{itemize}
+\item 传统的Semantic SLAM尝试
+
+相比于这些算法，本文的算法可以解决Dynamic Scene的问题。
+
+\item 解决Dynamic SLAM的尝试
+
+本文提出的算法具有Object-level Semantic的能力。
+
+\end{itemize}
+
+{\color{red} \textbf{评语}：所以总的来说，作者就是与那些Semantic Mapping的方法比Dynamic Scene的处理能力，与那些Dynamic Scene SLAM的方法比Semantic能力，在或者就是比速度。确实，前面的作者都只关注Static Scene， 现在看来，实际的SLAM中还需要解决Dynamic Scene(Moving Objects存在)的问题。}
+
+\section[CNN-SLAM]{CNN-SLAM:}
+
+{\color{red} 时间：2018.05.25}
+
+
+
+
+
+
+
+
+
+
 
 
 
