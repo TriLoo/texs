@@ -523,8 +523,188 @@ If an operator throws an exception during execution, this exception is propagate
 
 \textbf{注意}：Please avoid waitalls in your code unless you are confident about your code not throwing exception in any scenario. 因为\textbf{mx.nd.waitall}不支持rethrowing异常。
 
+\section{MXNet-Gluon创建模型}
 
+参考文献：\href{zh.gluon.ai}{Gluon}
 
+\subsection{模型构造}
+
+继承\verb|gluon.nn.Block|来实现，必须重载\verb|forward|函数。在\verb|__init__|函数里面定义模型所需的变量等。
+
+\textbf{需要值得注意的地方是}，在基于自定义的模型构建大的模型时，需要调用的是\verb|__init__|函数的参数；而一旦模型定义好了，开始向里面传入数据时，数据的格式需要根据\verb|forward|函数来确定！
+
+\subsubsection{两种稍微不同的实现}
+方式一，是直接利用Gluon预定义的层构建类型变量。
+\lstset{language=Python, caption={自定义模型，方式一}， label=MXNetModel0}
+\begin{lstlisting}
+from mxnet import nd
+from mxnet.gluon import nn
+
+class MLP(nn.Block):
+    # 声明带有模型参数的层，这里我们声明了两个全链接层。
+    def __init__(self, **kwargs):
+        # 调用 MLP 父类 Block 的构造函数来进行必要的初始化。这样在构造实例时还可以指定
+        # 其他函数参数，例如下下一节将介绍的模型参数 params。
+        super(MLP, self).__init__(**kwargs)
+        # 隐藏层。
+        self.hidden = nn.Dense(256, activation='relu')
+        # 输出层。
+        self.output = nn.Dense(10)
+    # 定义模型的前向计算，即如何根据输出计算输出。
+    def forward(self, x):
+        return self.output(self.hidden(x))
+\end{lstlisting}
+
+方式二，即先定义一个Sequential的类型变量Net，然后在向里面增加\verb|gluon.nn.Layer|等具体的层，或者自己定义的层。
+\lstset{language=Python, caption={自定义模型，方式二}， label=MXNetModel1}
+\begin{lstlisting}
+class NestMLP(nn.Block):
+    def __init__(self, **kwargs):
+        super(NestMLP, self).__init__(**kwargs)
+        self.net = nn.Sequential()
+        self.net.add(nn.Dense(64, activation='relu'),
+                     nn.Dense(32, activation='relu'))
+        self.dense = nn.Dense(16, activation='relu')
+
+    def forward(self, x):
+        return self.dense(self.net(x))  #调用要加self
+
+net = nn.Sequential()
+net.add(NestMLP(), nn.Dense(20), FancyMLP())
+
+net.initialize()
+net(x)
+\end{lstlisting}
+
+由于FancyMLP和Sequential都是Block的子类，我们可以嵌套调用他们。
+
+实际使用中，貌似还存在第三种构建方式，直接以函数的形式使用， 如VGG:
+\lstset{language=Python, caption={自定义模型VGG11，方式三}， label=MXNetLayer2}
+\begin{lstlisting}
+import sys
+sys.path.append('..')
+import gluonbook as gb
+from mxnet import nd, init, gluon
+from mxnet.gluon import nn
+
+def vgg_block(num_convs, num_channels):
+    blk = nn.Sequential()
+    for _ in range(num_convs):
+        blk.add(nn.Conv2D(
+            num_channels, kernel_size=3, padding=1, activation='relu'))
+    blk.add(nn.MaxPool2D(pool_size=2, strides=2))
+    return blk
+conv_arch = ((1,64), (1,128), (2,256), (2,512), (2,512))
+
+def vgg(conv_arch):
+    net = nn.Sequential()
+    # 卷积层部分
+    for (num_convs, num_channels) in conv_arch:
+        net.add(vgg_block(num_convs, num_channels))
+    # 全连接层部分
+    net.add(nn.Dense(4096, activation="relu"), nn.Dropout(.5),
+            nn.Dense(4096, activation="relu"), nn.Dropout(.5),
+            nn.Dense(10))
+    return net
+
+net = vgg(conv_arch)
+\end{lstlisting}
+
+\subsection{自定义层}
+
+也需要继承\verb|gluon.nn.Block|以及重载\verb|forward|函数。
+
+\lstset{language=Python, caption={自定义层，方式一}， label=MXNetLayer0}
+\begin{lstlisting}
+class CenteredLayer(nn.Block):
+    def __init__(self, **kwargs):
+        super(CenteredLayer, self).__init__(**kwargs)
+
+    def forward(self, x):
+        return x - x.mean()
+\end{lstlisting}
+
+\subsubsection{带参数的自定义层}
+
+我们还可以自定义含模型参数的自定义层。这样，自定义层里的模型参数就可以通过训练学出来了。我们在“模型参数”一节里介绍了Parameter类。其实，在自定义层的时候我们还可以使用Block自带的ParameterDict类型的成员变量params。顾名思义，这是一个由字符串类型的参数名字映射到Parameter类型的模型参数的字典。我们可以通过get函数从ParameterDict创建Parameter，注意是创建，也就是加入！
+
+\lstset{language=Python, caption={带参数的自定义层，方式一}， label=MXNetLayer1}
+\begin{lstlisting}
+class MyDense(nn.Block):
+    def __init__(self, units, in_units, **kwargs):
+        super(MyDense, self).__init__(**kwargs)
+        self.weight = self.params.get('weight', shape=(in_units, units))
+        self.bias = self.params.get('bias', shape=(units,))
+
+    def forward(self, x):
+        linear = nd.dot(x, self.weight.data()) + self.bias.data()
+        return nd.relu(linear)
+\end{lstlisting}
+
+\subsection{实际例子}
+
+\subsubsection{ResNet}
+
+使用的是自定义层方式一中的方式构建残差块。然后定义更高一级的结构(自定义模型方式二中的方法)，最后再在更高一级进行构架整个模型。层次结构如下：
+
+\lstset{language=Python, caption={ResNet using Gluon}}
+\begin{lstlisting}
+import sys
+sys.path.append('..')
+import gluonbook as gb
+from mxnet import nd, gluon, init
+from mxnet.gluon import nn
+
+# 构建底层
+class Residual(nn.Block):
+    def __init__(self, num_channels, use_1x1conv=False, strides=1, **kwargs):
+        super(Residual, self).__init__(**kwargs)
+        self.conv1 = nn.Conv2D(num_channels, kernel_size=3, padding=1,
+                               strides=strides)
+        self.conv2 = nn.Conv2D(num_channels, kernel_size=3, padding=1)
+        if use_1x1conv:
+            self.conv3 = nn.Conv2D(num_channels, kernel_size=1,
+                                   strides=strides)
+        else:
+            self.conv3 = None
+        self.bn1 = nn.BatchNorm()
+        self.bn2 = nn.BatchNorm()
+
+    def forward(self, X):
+        Y = nd.relu(self.bn1(self.conv1(X)))
+        Y = self.bn2(self.conv2(Y))
+        if self.conv3:
+            X = self.conv3(X)
+        return nd.relu(Y + X)
+
+# 构建高一层        
+def resnet_block(num_channels, num_residuals, first_block=False):
+    blk = nn.Sequential()
+    for i in range(num_residuals):
+        if i == 0 and not first_block:
+            blk.add(Residual(num_channels, use_1x1conv=True, strides=2))
+        else:
+            blk.add(Residual(num_channels))
+    return blk
+    
+# 构建整个模型
+net.add(resnet_block(64, 2, first_block=True),
+        resnet_block(128, 2),
+        resnet_block(256, 2),
+        resnet_block(512, 2))        
+\end{lstlisting}
+
+需要注意的是，即使在\verb|class|里面也可以调用底层的自定义模块，如在\verb|resnet_block|中调用\verb|Residual|，具体调用方式是调用底层类的构造函数，即\verb|__init__|函数，参数要跟这个函数的参数一致。
+
+\subsubsection{DenseNet}
+
+发现与上面的ResNet类似，所以这里省略。
+
+\section{MXNet中的Deconvolution}
+
+具体实现是， \verb|Conv2DTranspose|等。
+
+由于\verb|Conv2DTranspose|这个函数回引起棋盘状 Artifacts，所以在MXNet里面，还有一个上采样卷积的函数：\verb|mxnet.ndarray.UpSampling()|， \textbf{但是}， 听说目前还不好用啊。
 
 
 

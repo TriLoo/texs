@@ -1040,9 +1040,318 @@ A real-time, object-aware, semantic And dynamic RGB-D SLAM.({\color{red} 为什�
 
 {\color{red} \textbf{评语}：所以总的来说，作者就是与那些Semantic Mapping的方法比Dynamic Scene的处理能力，与那些Dynamic Scene SLAM的方法比Semantic能力，在或者就是比速度。确实，前面的作者都只关注Static Scene， 现在看来，实际的SLAM中还需要解决Dynamic Scene(Moving Objects存在)的问题。}
 
+\subsubsection{Dense RGB-D SLAM}
+
+KinectFusion证明使用Truncated Signed Distance Function(TSDF)可以表示室内地图构建，此外，其它的工作也证明使用合适的数据结构也可以完成室外环境的地图构建。
+
+Surfels: Surface Elements, 在Computer Graph中应用比较早。
+
+Surfel类似于Point Cloud，不同的是，Surfel不仅包含Location信息，还包含Radius和Normal等，此外，不像Point Cloud下在切换Mapping与Tracking之间时的Overhead.且是高效存储的。
+
+\subsubsection{Scene Segmentation \& Semantic Scene Segmentation}
+
+单纯的Scene Segmentation可以提供精确的目标边界，但缺乏Semantic Information.
+
+Semantic Scene Segmentation作者只提到了基于MRFs的方法。
+
+\subsubsection{Semantic SLAM \& Dynamic SLAM}
+
+Semantic SLAM中提到了CNN-SLAM, Semantic Fusion
+
+{\color{red} \textbf{评语}： 但作者的意思是这些算法没有考虑Object instance level的语义分割，而只考虑点云层面的分割，如果真是这样的话，那么不就没多少意义了，当然对人来说可能很清楚，但对机器而言，必须考虑Object Instance level.好像，这两个算法中确实就是这样。}
+
+存在两种方法可以处理Dynamic SLAM的问题，而不把Moving Object当做Outlier来处理：
+\begin{itemize}
+\item Deformable world is assumed and as-rigid-as-possible registration is performed
+\item Object instances are identified and potentially tracked rigidly
+\end{itemize}
+
+上面两种方法都涉及要么Template- 要么是 descriptor-based methods
+
+\subsection{System Design}
+
+\subsubsection{System Overview}
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.85\textwidth]{SemanticSLAM/MaskFusion0.png}
+\caption{Overview of MaskFusion}
+\label{MaskFusion0}
+\end{figure}
+
+每新来一帧数据，整个算法包括以下几个流程：
+\begin{enumerate}
+\item Tracking
+
+每一个Object的6 DoF通过最小化一个能量函数来确定，这个能量函数由两部分组成：几何的ICP Error， Photometric cost?。此外，作者仅对那些Non-static Model进行Track。最后，作者比较了两种确定Object是否运动的方法：
+\begin{itemize}
+\item Based on Motioin Incosistency
+\item Treating objects which are being touched by a person as dynamic
+\end{itemize}
+
+\item Segmentation
+
+使用了Mask RCNN和一个基于Depth Discontinuities and surface normals 的分割算法。前者有两个缺点：物体边界不精确、运行不实时。后者可以弥补这两个缺点， 但可能会Oversegment objects。
+
+\item Fusion
+
+就是把Object的几何结构与labels结合起来。
+
+\end{enumerate}
+
+\subsubsection{Multi-Object SLAM}
+
+本文采用ElasticFusion类似的3D Model.其中，Model用Surfel来表示，Surfel具体包含以下内容：
+$\mathcal{M}_m^s \in \{ \mathbf{p}\in\mathbb{R}^3, \mathbf{n}\in\mathbb{R}^3,\mathbf{c}\in\mathbb{N}^3,\mathbf{w}\in\mathbb{R},\mathbf{r}\in\mathbb{R}, \mathbf{t}\in\mathbb{R}^2  \}, \forall s < |\mathcal{M}_m|$, 分别表示：Position, normal, color, weiht, radius, and two timestamps.此外，系统还包含每一个目标的Label $l_m =m \forall m \in 0 \ldots N$, $N$是场景中包含的Object的数量。
+
+这一步SLAM主要解决的问题是，对Ojbect的Pose的跟踪，由于输入时RGB-D数据，且像前面说的那样，作者的目标函数包含两个部分：
+\begin{itemize}
+\item Geometry Error
+
+\begin{displaymath}
+E_m^{icp} = \sum_{i}\left( (v^i - exp(\xi_m)v_t^i)\cdot n^i  \right)^2
+\end{displaymath}
+
+其中，$\xi_m$表示待求解的用6DoF李代数表示的相机位姿。$v^i, v_i^t$分别表示第$i$个vertex in surfels， 以及领一帧图像在这上面的投影。
+
+\item Photoconsistency residuals
+
+把输入的RGB图像转化成灰度图：$r, g, b \rightarrow 0.114r + 0.299g + 0.587b$, 然后这一部分的误差$E_m^{rgb}$参考论文。
+
+\end{itemize}
+
+总的目标函数就是两者之和：
+\begin{displaymath}
+E_m = \min_{\xi_m} \left( E_m^{icp} + E_m^{rgb} \right) 
+\end{displaymath}
+
+在完成Pose的跟踪后，然后跟下面的分割结果进行Associate。
+
+这一步并不是每一帧都这样处理。
+
+\subsubsection{Segmentation}
+
+本部分主要包括三个小模块：
+\begin{itemize}
+\item Semantic Instance Segmentation
+
+这部分就是Mask RCNN来做。
+
+\item Geometric Segmentation
+
+这一部分借鉴了别人的做法，在Depth图中引入两个概念：$\Phi_d$ Depth Discontinuity term, Concavity term $\Phi_c$, 然后如果$\Phi_d + \Phi_c > \tau$那么该点就是位于一个边缘上，是分割点。$\tau$是一个阈值。$\Phi_c, \Phi_d$在邻域上计算。
+
+更多细节，看论文。
+
+这一步是每一帧都会这样处理。
+
+\item 如何把上面两个分割结果整合到一起，然后在与Map整合到一起
+
+第一步与第二步并不是完全一致的，如果match了，才会整合到一起，平时用第二步比较多。
+
+\begin{itemize}
+\item Mapping geometric segmentation to Mask
+
+根据Maximal Overlap进行匹配。
+
+\item Mapping Mask to Model
+
+\end{itemize}
+\end{itemize}
+
+\subsection{Evaluation}
+
+使用了ATE、RPE、RMSE等评价指标。
+
+\subsection{总结}
+
+总的来说，本文算是一个大杂烩，亮点不是很明显啊，虽然在开始的地方，作者强调了几个本文解决的重要问题，但实际上，文中并没有看到清晰的对这些问题的解决。可能是我没看明白。
+
+不过，在Geometry Segment这一块，作者借鉴了另一个工作，这与其它算法有点不同，其它的都是基于CNN的实现？输入是Depth数据，而作者这里没有用到CNN网络，而是通过一种邻域阈值的方法实现的。
+
+另外一点就是，Tracking的时候，可能通过引入上面提到的两种不同的误差项就可以实现多目标跟踪吧，结果存疑，然后公式写的还那么非主流。
+
+总体而言，并不好，前面的讨论倒是挺开拓视野的。
+
+
+\section{小结 2}
+
+现在看来语义SLAM主要的研究点：
+\begin{itemize}
+\item 输入数据：
+
+单目、多目、RGB-D数据等,如果是单目等，可能就需要单独的SLAM框架来提供相机的Pose以及Depth， 如果提供了Depth可以考虑用CNN进行处理两种模式的数据。
+
+\item 实时性
+
+\item Semantic SLAM
+
+现在要实现Object Instance-level，不能再是Point-level了，不然对于系统而言，可做的事情减少很多，因为只有认识Object Instance才能更好的交互，反而如果只有一堆Point的分类，对于机器系统用处不大吧，可能。
+
+\item Dynamic SLAM
+
+如何处理好Moving Object的问题。
+
+\item 输出数据：
+
+稠密还是稀疏？
+
+\end{itemize}
+
+
 \section[CNN-SLAM]{CNN-SLAM:}
 
 {\color{red} 时间：2018.05.25}
+
+\section{图像语义分割之FCN和CRF}
+
+参考文章：\href{https://zhuanlan.zhihu.com/p/22308032}{图像分割2017.7-知乎}
+
+知乎上专栏总结的一个总体分割框架：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.85\textwidth]{SemanticSLAM/ImageSegmentFrame0.jpg}
+\caption{图像分割的算法框架}
+\label{ImageSegmentFrame0}
+\end{figure}
+
+前端使用FCN进行特征粗提取，后端使用CRF/MRF优化前端的输出，最后得到分割图。 
+
+\subsection{前端FCN}
+
+\subsubsection{FCN}
+
+主要用到了三种技术：
+\begin{enumerate}
+\item 卷积化
+
+卷积化即是将普通的分类网络，比如VGG16，ResNet50/101等网络丢弃全连接层，换上对应的卷积层即可。
+
+\item 上采样
+
+此处的上采样即是反卷积（Deconvolution）。当然关于这个名字不同框架不同，Caffe和Kera里叫Deconvolution，而tensorflow里叫conv\_transpose。CS231n这门课中说，叫conv\_transpose更为合适。
+
+众所诸知，普通的池化（为什么这儿是普通的池化请看后文）会缩小图片的尺寸，比如VGG16 五次池化后图片被缩小了32倍。为了得到和原图等大的分割图，我们需要上采样/反卷积。
+
+反卷积和卷积类似，都是相乘相加的运算。只不过后者是多对一，前者是一对多。而反卷积的前向和后向传播，只用颠倒卷积的前后向传播即可。所以无论优化还是后向传播算法都是没有问题。具体的原理，需要参考DLTips一章。
+
+\item 跳跃结构
+
+这个结构的作用就在于优化结果，因为如果将全卷积之后的结果直接上采样得到的结果是很粗糙的，所以作者将不同池化层的结果进行上采样之后来优化输出。
+
+\end{enumerate}
+
+\subsubsection{SegNet/DecovNet}
+
+这两种结构可以直接参考原文，因为就只有结构的图示，没有详细解释。
+
+\subsection{DeepLab}
+
+首先这里我们将指出一个第一个结构FCN的粗糙之处：为了保证之后输出的尺寸不至于太小，FCN的作者在第一层直接对原图加了100的padding，可想而知，这会引入噪声。
+
+而怎样才能保证输出的尺寸不会太小而又不会产生加100 padding这样的做法呢？可能有人会说减少池化层不就行了，这样理论上是可以的，但是这样直接就改变了原先可用的结构了，而且最重要的一点是就不能用以前的结构参数进行fine-tune了。所以，Deeplab这里使用了一个非常优雅的做法：将pooling的stride改为1，再加上 1 padding。这样池化后的图片尺寸并未减小，并且依然保留了池化整合特征的特性。 
+
+但是，事情还没完。因为池化层变了，后面的卷积的感受野也对应的改变了，这样也不能进行fine-tune了。所以，Deeplab提出了一种新的卷积，带孔的卷积：Atrous Convolution.即图\ref{DeepLabAtrousConvolution0}所示。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{SemanticSLAM/DeepLabAtrousConvolution0.jpg}
+\caption{Atrous Convolution 示意图}
+\label{DeepLabAtrousConvolution0}
+\end{figure}
+
+具体的感受野变化：
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.85\textwidth]{SemanticSLAM/DeepLabAtrousConvolution1.jpg}
+\caption{Atrous Convolution中的感受野变化 示意图}
+\label{DeepLabAtrousConvolution1}
+\end{figure}
+
+图\ref{DeepLabAtrousConvolution1}中，a为普通的池化的结果，b为“优雅”池化的结果。我们设想在a上进行卷积核尺寸为3的普通卷积，则对应的感受野大小为7.而在b上进行同样的操作，对应的感受野变为了5(与a中颜色相同的输出所对应的输入只有0, 1, 2, 3 ,4。所以感受野变为5了。).感受野减小了。但是如果使用hole为1的Atrous Convolution则感受野依然为7.判断感受野的过程是，在输出数量一致的情况下(即和a中的输出的4种颜色相同的输出)，所覆盖的输入的个数。
+
+所以，Atrous Convolution能够保证这样的池化后的感受野不变，从而可以fine tune，同时也能保证输出的结果更加精细。
+
+其实就是Dialted Convolution的思想。
+
+\subsection{后端优化CRF/MRF}
+
+\subsubsection{全连接CRF， DenseCRF}
+
+对于每个像素$i$具有类别标签$x_i$还有对应的观测值$y_i$，这样每个像素点作为节点，像素与像素间的关系作为边，即构成了一个条件随机场。而且我们通过观测变量$y_i$来推测像素$i$对应的类别标签$x_i$。也就是说，这里的观察值$y_i$为对应第$i$位置的像素。
+
+二元势函数就是描述像素点与像素点之间的关系，鼓励相似像素分配相同的标签，而相差较大的像素分配不同标签，而这个“距离”的定义与颜色值和实际相对距离有关。所以这样CRF能够使图片尽量在边界处分割。
+
+在这里，势函数的输入来自FCN的输出。
+
+而全连接条件随机场的不同就在于，二元势函数描述的是每一个像素与其他\textbf{所有}像素的关系，所以叫“全连接”。 
+
+\subsubsection{CRFasRNN}
+
+最开始使用DenseCRF是直接加在FCN的输出后面，可想这样是比较粗糙的。而且在深度学习中，我们都追求end-to-end的系统，所以CRFasRNN这篇文章将DenseCRF真正结合进了FCN中。
+
+这篇文章也使用了平均场近似的方法，因为分解的每一步都是一些相乘相加的计算，和普通的加减（具体公式还是看论文吧），所以可以方便的把每一步描述成一层类似卷积的计算。这样即可结合进神经网络中，并且前后向传播也不存在问题。
+
+当然，这里作者还将它进行了迭代，不同次数的迭代得到的结果优化程度也不同（一般取10以内的迭代次数），所以文章才说是as RNN。
+
+\subsubsection{马尔科夫随机场， MRF}
+
+没看懂，但还是把原文贴过来了。论文是：Deep Parsing Network
+
+算了，还是去看论文吧，虽然我还没看。
+
+\subsubsection{高斯条件随机场， G-CRF}
+
+\subsection{小结}
+
+2017.07.06
+
+\begin{itemize}
+\item FCN更像一种技巧。随着基本网络（如VGG， ResNet）性能的提升而不断进步。
+\item 深度学习+概率图模型（PGM）是一种趋势。其实DL说白了就是进行特征提取，而PGM能够从数学理论很好的解释事物本质间的联系。 
+\item 概率图模型的网络化。因为PGM通常不太方便加入DL的模型中，将PGM网络化后能够是PGM参数自学习，同时构成end-to-end的系统。
+
+\end{itemize}
+
+\section{Learning Deconvolution Network for Semantic}
+参考文献：\href{https://zhuanlan.zhihu.com/p/26291607}{Learning Deconvolution Network for Semantic 1-知乎}
+
+\href{https://zhuanlan.zhihu.com/p/27580384}{Learning Deconvoluton Network for Semantic 2-知乎}
+
+背景：
+FCN具有以下限制：
+\begin{itemize}
+\item 固定尺寸的感受野。对于对于大尺度目标，只能获得该目标的局部信息，该目标的一部分将被错误分类；对于小尺度目标，很容易被忽略或当成背景处理
+
+\item 目标的细节结构容易丢失，边缘信息不够好。FCNs得到的label map过于粗糙，而用于上采样的反卷积操作过于简单
+
+\end{itemize}
+
+本文的主要贡献：
+\begin{itemize}
+\item 提出了可学习的反卷积网络， 并将其首次应用于语义分割
+\item 分割结果是Instance-wise的分割，所以摆脱了原来FCNs中的尺度问题，这也是对应FCNs中的第一个问题
+\item 在Pascal Voc12测试集上得到一个很好的效果，与FCN8s模型融合，得到当时最好的准确率
+\end{itemize}
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{SemanticSLAM/LearnDeconv0.jpg}
+\caption{论文提出的神经网络结构}
+\label{LearnDeconv0}
+\end{figure}
+
+反卷积网络主要由unpooling层、deconv层、relu层、BN层组成。
+
+\subsubsection{Instance-wise Segmentation}
+
+每张图片被裁剪为很多子图片，每张子图片包含一个目标实例。每张子图片作为输入，得到分割结果，再把这些分割结果聚合起来，得到整张图片的分割图。
+
+
+
+
+
 
 
 

@@ -148,104 +148,156 @@
 \contentsline {subsection}{\numberline {5.10.5}总结}{53}{subsection.5.10.5}
 \contentsline {section}{\numberline {5.11}MaskFusion}{53}{section.5.11}
 \contentsline {subsection}{\numberline {5.11.1}背景及相关工作}{53}{subsection.5.11.1}
-\contentsline {section}{\numberline {5.12}CNN-SLAM}{54}{section.5.12}
-\contentsline {chapter}{\numberline {6}Open Set Recognition}{55}{chapter.6}
-\contentsline {section}{\numberline {6.1}GAN}{55}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}GAN 原理笔记}{55}{subsection.6.1.1}
-\contentsline {subsubsection}{GAN原理}{55}{section*.78}
-\contentsline {subsubsection}{GAN公式}{56}{section*.79}
-\contentsline {subsubsection}{训练过程}{56}{section*.80}
-\contentsline {subsubsection}{Loss Function中的两个小问题}{57}{section*.82}
-\contentsline {section}{\numberline {6.2}从头开始GAN}{57}{section.6.2}
-\contentsline {subsection}{\numberline {6.2.1}定义}{58}{subsection.6.2.1}
-\contentsline {subsection}{\numberline {6.2.2}DCGAN： Deep Convolution GAN}{58}{subsection.6.2.2}
-\contentsline {subsection}{\numberline {6.2.3}CGAN: Conditional Generative Adversarial Nets}{59}{subsection.6.2.3}
-\contentsline {subsection}{\numberline {6.2.4}InfoGAN}{59}{subsection.6.2.4}
-\contentsline {section}{\numberline {6.3}Generative Adversarial Nets}{60}{section.6.3}
-\contentsline {section}{\numberline {6.4}Towards Open Set Deep Networks}{60}{section.6.4}
-\contentsline {subsection}{\numberline {6.4.1}Introduction \& Related Works}{60}{subsection.6.4.1}
-\contentsline {section}{\numberline {6.5}Probability Models for Open Set Recognition}{60}{section.6.5}
-\contentsline {subsection}{\numberline {6.5.1}背景及相关工作}{61}{subsection.6.5.1}
-\contentsline {chapter}{\numberline {7}MXNet}{63}{chapter.7}
-\contentsline {section}{\numberline {7.1}Optimizing Memory Consumption in DL}{63}{section.7.1}
-\contentsline {subsection}{\numberline {7.1.1}Computation Graph}{63}{subsection.7.1.1}
-\contentsline {subsection}{\numberline {7.1.2}What Can be Optimized?}{65}{subsection.7.1.2}
-\contentsline {subsubsection}{In-place Operations}{65}{section*.87}
-\contentsline {subsubsection}{Standard Memory Sharing}{65}{section*.88}
-\contentsline {subsection}{\numberline {7.1.3}Memory Allocation Algorithm}{65}{subsection.7.1.3}
-\contentsline {subsection}{\numberline {7.1.4}Static vs. Dynamic Allocation}{67}{subsection.7.1.4}
-\contentsline {subsection}{\numberline {7.1.5}Memory Allocation for Parallel Operations}{67}{subsection.7.1.5}
-\contentsline {subsubsection}{Be Correct and Safe First}{67}{section*.93}
-\contentsline {subsubsection}{Try to Allow More Parallelization}{68}{section*.94}
-\contentsline {subsection}{\numberline {7.1.6}How Much Can we Save ?}{68}{subsection.7.1.6}
-\contentsline {subsection}{\numberline {7.1.7}References}{69}{subsection.7.1.7}
-\contentsline {section}{\numberline {7.2}Deep Learning Programming Style}{69}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1}Symbolic vs. Imperative Program}{69}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2}Imperative Programs Tend to be More Flexible}{69}{subsection.7.2.2}
-\contentsline {subsection}{\numberline {7.2.3}Symbolic Programs Tend to be More Efficient}{69}{subsection.7.2.3}
-\contentsline {subsection}{\numberline {7.2.4}Case Study: Backprop and AutoDiff}{70}{subsection.7.2.4}
-\contentsline {subsubsection}{基于命令式编程的自动求导}{70}{section*.97}
-\contentsline {subsubsection}{基于符号式编程的自动求导}{70}{section*.98}
-\contentsline {subsubsection}{Analysis}{70}{section*.99}
-\contentsline {subsection}{\numberline {7.2.5}Model Checkpoint}{71}{subsection.7.2.5}
-\contentsline {subsection}{\numberline {7.2.6}Big vs. Small Operations}{71}{subsection.7.2.6}
-\contentsline {subsection}{\numberline {7.2.7}Mix The Approaches}{72}{subsection.7.2.7}
-\contentsline {section}{\numberline {7.3}Dependency Engine for Deep Learning}{72}{section.7.3}
-\contentsline {subsection}{\numberline {7.3.1}Problems in Dependency Scheduling}{72}{subsection.7.3.1}
-\contentsline {subsubsection}{Design a Generic Dependency Engine}{73}{section*.100}
-\contentsline {subsection}{\numberline {7.3.2}Implementing the Generic Dependency Engine}{74}{subsection.7.3.2}
-\contentsline {subsection}{\numberline {7.3.3}Discussion}{74}{subsection.7.3.3}
-\contentsline {section}{\numberline {7.4}Designing Efficient Data Loaders for DL}{74}{section.7.4}
-\contentsline {subsection}{\numberline {7.4.1}Design Insight}{75}{subsection.7.4.1}
-\contentsline {subsubsection}{Data Preparation}{75}{section*.104}
-\contentsline {subsubsection}{Data Loading}{75}{section*.105}
-\contentsline {subsection}{\numberline {7.4.2}Data Format}{75}{subsection.7.4.2}
-\contentsline {subsubsection}{Access Arbitrary Parts of Data}{75}{section*.108}
-\contentsline {subsection}{\numberline {7.4.3}Data Loading and Preprocessing}{75}{subsection.7.4.3}
-\contentsline {subsubsection}{Loading and Preprocessing on the Fly}{75}{section*.109}
-\contentsline {subsubsection}{Hide IO Cost Using Threadediter}{77}{section*.111}
-\contentsline {subsection}{\numberline {7.4.4}MXNet IO Python Interface}{77}{subsection.7.4.4}
-\contentsline {section}{\numberline {7.5}Except Handling in MXNet}{78}{section.7.5}
-\contentsline {subsubsection}{Exception Handling for Iterators}{78}{section*.113}
-\contentsline {subsubsection}{Except Handling for Operators}{78}{section*.114}
-\contentsline {chapter}{\numberline {8}Tips in DL}{79}{chapter.8}
-\contentsline {section}{\numberline {8.1}Enlarge the FOV}{79}{section.8.1}
-\contentsline {section}{\numberline {8.2}Upsampling}{79}{section.8.2}
-\contentsline {section}{\numberline {8.3}Multiscale Ability}{79}{section.8.3}
-\contentsline {section}{\numberline {8.4}Dilated Convolution}{80}{section.8.4}
-\contentsline {section}{\numberline {8.5}Deconvolutional Network}{81}{section.8.5}
-\contentsline {subsection}{\numberline {8.5.1}Convolutional Spare Coding}{81}{subsection.8.5.1}
-\contentsline {subsection}{\numberline {8.5.2}CNN可视化}{81}{subsection.8.5.2}
-\contentsline {subsection}{\numberline {8.5.3}Upsampling}{81}{subsection.8.5.3}
-\contentsline {section}{\numberline {8.6}Dilated Network与Deconv Network之间的区别}{81}{section.8.6}
-\contentsline {section}{\numberline {8.7}Uppooling}{82}{section.8.7}
-\contentsline {section}{\numberline {8.8}目标检测中的mAP的含义}{82}{section.8.8}
-\contentsline {section}{\numberline {8.9}统计学习方法}{83}{section.8.9}
-\contentsline {section}{\numberline {8.10}Distillation Module}{83}{section.8.10}
-\contentsline {subsection}{\numberline {8.10.1}Knowledge Distillation}{84}{subsection.8.10.1}
-\contentsline {subsubsection}{什么是Distilling the knowledge}{84}{section*.118}
-\contentsline {subsubsection}{Disilling the knowledge in a Neural Network}{84}{section*.119}
-\contentsline {subsection}{\numberline {8.10.2}Recurrent Knowledge Distillation \cite {Silvia2018Recurrent}}{84}{subsection.8.10.2}
-\contentsline {section}{\numberline {8.11}光流估计中的Average end-point error}{84}{section.8.11}
-\contentsline {section}{\numberline {8.12}待续}{84}{section.8.12}
-\contentsline {chapter}{\numberline {9}Image Processing}{85}{chapter.9}
-\contentsline {section}{\numberline {9.1}Feature Extraction}{85}{section.9.1}
-\contentsline {subsection}{\numberline {9.1.1}SIFT}{85}{subsection.9.1.1}
-\contentsline {chapter}{\numberline {10}Feature Extraction}{87}{chapter.10}
-\contentsline {section}{\numberline {10.1}Selective Search}{87}{section.10.1}
-\contentsline {subsection}{\numberline {10.1.1}Efficient Graph-Based Image Segmentation}{87}{subsection.10.1.1}
-\contentsline {subsection}{\numberline {10.1.2}Selective Search}{88}{subsection.10.1.2}
-\contentsline {section}{\numberline {10.2}Region CNN}{88}{section.10.2}
-\contentsline {subsection}{\numberline {10.2.1}概述}{88}{subsection.10.2.1}
-\contentsline {section}{\numberline {10.3}SPP Net}{89}{section.10.3}
-\contentsline {section}{\numberline {10.4}Fast RCNN}{89}{section.10.4}
-\contentsline {section}{\numberline {10.5}Faster RCNN}{89}{section.10.5}
-\contentsline {section}{\numberline {10.6}R FCN}{89}{section.10.6}
-\contentsline {section}{\numberline {10.7}FPN}{89}{section.10.7}
-\contentsline {section}{\numberline {10.8}Mask RCNN}{89}{section.10.8}
-\contentsline {section}{\numberline {10.9}YOLO}{89}{section.10.9}
-\contentsline {section}{\numberline {10.10}YOLO v2}{89}{section.10.10}
-\contentsline {section}{\numberline {10.11}YOLO v3}{89}{section.10.11}
-\contentsline {section}{\numberline {10.12}SSD}{89}{section.10.12}
-\contentsline {section}{\numberline {10.13}DSSD}{89}{section.10.13}
-\contentsline {section}{\numberline {10.14}Retina Net (Focal Loss)}{89}{section.10.14}
+\contentsline {subsubsection}{Dense RGB-D SLAM}{54}{section*.78}
+\contentsline {subsubsection}{Scene Segmentation \& Semantic Scene Segmentation}{54}{section*.79}
+\contentsline {subsubsection}{Semantic SLAM \& Dynamic SLAM}{54}{section*.80}
+\contentsline {subsection}{\numberline {5.11.2}System Design}{55}{subsection.5.11.2}
+\contentsline {subsubsection}{System Overview}{55}{section*.81}
+\contentsline {subsubsection}{Multi-Object SLAM}{55}{section*.83}
+\contentsline {subsubsection}{Segmentation}{57}{section*.84}
+\contentsline {subsection}{\numberline {5.11.3}Evaluation}{57}{subsection.5.11.3}
+\contentsline {subsection}{\numberline {5.11.4}总结}{57}{subsection.5.11.4}
+\contentsline {section}{\numberline {5.12}小结 2}{58}{section.5.12}
+\contentsline {section}{\numberline {5.13}CNN-SLAM}{58}{section.5.13}
+\contentsline {section}{\numberline {5.14}图像语义分割之FCN和CRF}{58}{section.5.14}
+\contentsline {subsection}{\numberline {5.14.1}前端FCN}{59}{subsection.5.14.1}
+\contentsline {subsubsection}{FCN}{59}{section*.86}
+\contentsline {subsubsection}{SegNet/DecovNet}{59}{section*.87}
+\contentsline {subsection}{\numberline {5.14.2}DeepLab}{59}{subsection.5.14.2}
+\contentsline {subsection}{\numberline {5.14.3}后端优化CRF/MRF}{61}{subsection.5.14.3}
+\contentsline {subsubsection}{全连接CRF， DenseCRF}{61}{section*.90}
+\contentsline {subsubsection}{CRFasRNN}{61}{section*.91}
+\contentsline {subsubsection}{马尔科夫随机场， MRF}{61}{section*.92}
+\contentsline {subsubsection}{高斯条件随机场， G-CRF}{61}{section*.93}
+\contentsline {subsection}{\numberline {5.14.4}小结}{61}{subsection.5.14.4}
+\contentsline {section}{\numberline {5.15}Learning Deconvolution Network for Semantic}{62}{section.5.15}
+\contentsline {subsubsection}{Instance-wise Segmentation}{62}{section*.95}
+\contentsline {chapter}{\numberline {6}Open Set Recognition}{63}{chapter.6}
+\contentsline {section}{\numberline {6.1}GAN}{63}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}GAN 原理笔记}{63}{subsection.6.1.1}
+\contentsline {subsubsection}{GAN原理}{63}{section*.96}
+\contentsline {subsubsection}{GAN公式}{64}{section*.97}
+\contentsline {subsubsection}{训练过程}{64}{section*.98}
+\contentsline {subsubsection}{Loss Function中的两个小问题}{65}{section*.100}
+\contentsline {section}{\numberline {6.2}从头开始GAN}{65}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}定义}{66}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}DCGAN： Deep Convolution GAN}{66}{subsection.6.2.2}
+\contentsline {subsection}{\numberline {6.2.3}CGAN: Conditional Generative Adversarial Nets}{67}{subsection.6.2.3}
+\contentsline {subsection}{\numberline {6.2.4}InfoGAN}{67}{subsection.6.2.4}
+\contentsline {section}{\numberline {6.3}Generative Adversarial Nets}{68}{section.6.3}
+\contentsline {section}{\numberline {6.4}Towards Open Set Deep Networks}{68}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}Introduction \& Related Works}{68}{subsection.6.4.1}
+\contentsline {section}{\numberline {6.5}Probability Models for Open Set Recognition}{68}{section.6.5}
+\contentsline {subsection}{\numberline {6.5.1}背景及相关工作}{69}{subsection.6.5.1}
+\contentsline {chapter}{\numberline {7}MXNet}{71}{chapter.7}
+\contentsline {section}{\numberline {7.1}Optimizing Memory Consumption in DL}{71}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}Computation Graph}{71}{subsection.7.1.1}
+\contentsline {subsection}{\numberline {7.1.2}What Can be Optimized?}{73}{subsection.7.1.2}
+\contentsline {subsubsection}{In-place Operations}{73}{section*.105}
+\contentsline {subsubsection}{Standard Memory Sharing}{73}{section*.106}
+\contentsline {subsection}{\numberline {7.1.3}Memory Allocation Algorithm}{73}{subsection.7.1.3}
+\contentsline {subsection}{\numberline {7.1.4}Static vs. Dynamic Allocation}{75}{subsection.7.1.4}
+\contentsline {subsection}{\numberline {7.1.5}Memory Allocation for Parallel Operations}{75}{subsection.7.1.5}
+\contentsline {subsubsection}{Be Correct and Safe First}{75}{section*.111}
+\contentsline {subsubsection}{Try to Allow More Parallelization}{76}{section*.112}
+\contentsline {subsection}{\numberline {7.1.6}How Much Can we Save ?}{76}{subsection.7.1.6}
+\contentsline {subsection}{\numberline {7.1.7}References}{77}{subsection.7.1.7}
+\contentsline {section}{\numberline {7.2}Deep Learning Programming Style}{77}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}Symbolic vs. Imperative Program}{77}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}Imperative Programs Tend to be More Flexible}{77}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}Symbolic Programs Tend to be More Efficient}{77}{subsection.7.2.3}
+\contentsline {subsection}{\numberline {7.2.4}Case Study: Backprop and AutoDiff}{78}{subsection.7.2.4}
+\contentsline {subsubsection}{基于命令式编程的自动求导}{78}{section*.115}
+\contentsline {subsubsection}{基于符号式编程的自动求导}{78}{section*.116}
+\contentsline {subsubsection}{Analysis}{78}{section*.117}
+\contentsline {subsection}{\numberline {7.2.5}Model Checkpoint}{79}{subsection.7.2.5}
+\contentsline {subsection}{\numberline {7.2.6}Big vs. Small Operations}{79}{subsection.7.2.6}
+\contentsline {subsection}{\numberline {7.2.7}Mix The Approaches}{80}{subsection.7.2.7}
+\contentsline {section}{\numberline {7.3}Dependency Engine for Deep Learning}{80}{section.7.3}
+\contentsline {subsection}{\numberline {7.3.1}Problems in Dependency Scheduling}{80}{subsection.7.3.1}
+\contentsline {subsubsection}{Design a Generic Dependency Engine}{81}{section*.118}
+\contentsline {subsection}{\numberline {7.3.2}Implementing the Generic Dependency Engine}{82}{subsection.7.3.2}
+\contentsline {subsection}{\numberline {7.3.3}Discussion}{82}{subsection.7.3.3}
+\contentsline {section}{\numberline {7.4}Designing Efficient Data Loaders for DL}{82}{section.7.4}
+\contentsline {subsection}{\numberline {7.4.1}Design Insight}{83}{subsection.7.4.1}
+\contentsline {subsubsection}{Data Preparation}{83}{section*.122}
+\contentsline {subsubsection}{Data Loading}{83}{section*.123}
+\contentsline {subsection}{\numberline {7.4.2}Data Format}{83}{subsection.7.4.2}
+\contentsline {subsubsection}{Access Arbitrary Parts of Data}{83}{section*.126}
+\contentsline {subsection}{\numberline {7.4.3}Data Loading and Preprocessing}{83}{subsection.7.4.3}
+\contentsline {subsubsection}{Loading and Preprocessing on the Fly}{83}{section*.127}
+\contentsline {subsubsection}{Hide IO Cost Using Threadediter}{85}{section*.129}
+\contentsline {subsection}{\numberline {7.4.4}MXNet IO Python Interface}{85}{subsection.7.4.4}
+\contentsline {section}{\numberline {7.5}Except Handling in MXNet}{86}{section.7.5}
+\contentsline {subsubsection}{Exception Handling for Iterators}{86}{section*.131}
+\contentsline {subsubsection}{Except Handling for Operators}{86}{section*.132}
+\contentsline {section}{\numberline {7.6}MXNet-Gluon创建模型}{87}{section.7.6}
+\contentsline {subsection}{\numberline {7.6.1}模型构造}{87}{subsection.7.6.1}
+\contentsline {subsubsection}{两种稍微不同的实现}{87}{section*.133}
+\contentsline {subsection}{\numberline {7.6.2}自定义层}{88}{subsection.7.6.2}
+\contentsline {subsubsection}{带参数的自定义层}{89}{section*.134}
+\contentsline {subsection}{\numberline {7.6.3}实际例子}{89}{subsection.7.6.3}
+\contentsline {subsubsection}{ResNet}{89}{section*.135}
+\contentsline {subsubsection}{DenseNet}{90}{section*.136}
+\contentsline {section}{\numberline {7.7}MXNet中的Deconvolution}{90}{section.7.7}
+\contentsline {chapter}{\numberline {8}Tips in DL}{91}{chapter.8}
+\contentsline {section}{\numberline {8.1}Enlarge the FOV}{91}{section.8.1}
+\contentsline {section}{\numberline {8.2}Upsampling}{91}{section.8.2}
+\contentsline {section}{\numberline {8.3}Multiscale Ability}{91}{section.8.3}
+\contentsline {section}{\numberline {8.4}Dilated Convolution}{92}{section.8.4}
+\contentsline {section}{\numberline {8.5}Deconvolutional Network}{93}{section.8.5}
+\contentsline {subsection}{\numberline {8.5.1}Convolutional Spare Coding}{93}{subsection.8.5.1}
+\contentsline {subsection}{\numberline {8.5.2}CNN可视化}{93}{subsection.8.5.2}
+\contentsline {subsection}{\numberline {8.5.3}Upsampling}{93}{subsection.8.5.3}
+\contentsline {subsection}{\numberline {8.5.4}补充}{93}{subsection.8.5.4}
+\contentsline {subsection}{\numberline {8.5.5}Deconvolution与Upsample的区别}{94}{subsection.8.5.5}
+\contentsline {subsubsection}{理解深度学习中的Deconvolution Networks}{95}{section*.140}
+\contentsline {section}{\numberline {8.6}Dilated Network与Deconv Network之间的区别}{96}{section.8.6}
+\contentsline {section}{\numberline {8.7}目标检测中的mAP的含义}{96}{section.8.7}
+\contentsline {section}{\numberline {8.8}统计学习方法}{97}{section.8.8}
+\contentsline {section}{\numberline {8.9}Distillation Module}{97}{section.8.9}
+\contentsline {subsection}{\numberline {8.9.1}Knowledge Distillation}{98}{subsection.8.9.1}
+\contentsline {subsubsection}{什么是Distilling the knowledge}{98}{section*.144}
+\contentsline {subsubsection}{Disilling the knowledge in a Neural Network}{98}{section*.145}
+\contentsline {subsection}{\numberline {8.9.2}Recurrent Knowledge Distillation \cite {Silvia2018Recurrent}}{98}{subsection.8.9.2}
+\contentsline {section}{\numberline {8.10}光流估计中的Average end-point error}{98}{section.8.10}
+\contentsline {section}{\numberline {8.11}CNN中的卷及方式汇总}{98}{section.8.11}
+\contentsline {subsection}{\numberline {8.11.1}Inception}{98}{subsection.8.11.1}
+\contentsline {subsection}{\numberline {8.11.2}空洞卷积, Dilation}{99}{subsection.8.11.2}
+\contentsline {subsection}{\numberline {8.11.3}深度可分离卷积, Depthwise Separable Convolution}{100}{subsection.8.11.3}
+\contentsline {subsection}{\numberline {8.11.4}可变性卷积}{101}{subsection.8.11.4}
+\contentsline {subsection}{\numberline {8.11.5}特征重标定卷积}{103}{subsection.8.11.5}
+\contentsline {subsection}{\numberline {8.11.6}小结-比较}{104}{subsection.8.11.6}
+\contentsline {section}{\numberline {8.12}全连接与卷积的异同}{104}{section.8.12}
+\contentsline {section}{\numberline {8.13}Pooling}{105}{section.8.13}
+\contentsline {subsubsection}{Global Average Pooling}{105}{section*.154}
+\contentsline {subsubsection}{Unpooling}{105}{section*.155}
+\contentsline {section}{\numberline {8.14}Local Response Normalization}{106}{section.8.14}
+\contentsline {subsubsection}{到底什么是LRN}{106}{section*.157}
+\contentsline {subsubsection}{如何实现LRN}{106}{section*.158}
+\contentsline {section}{\numberline {8.15}CNN中感受野的计算}{106}{section.8.15}
+\contentsline {subsubsection}{具体的例子}{107}{section*.159}
+\contentsline {subsubsection}{Stride的计算}{108}{section*.160}
+\contentsline {subsubsection}{专业的计算}{108}{section*.161}
+\contentsline {section}{\numberline {8.16}待续}{108}{section.8.16}
+\contentsline {chapter}{\numberline {9}Image Processing}{109}{chapter.9}
+\contentsline {section}{\numberline {9.1}Feature Extraction}{109}{section.9.1}
+\contentsline {subsection}{\numberline {9.1.1}SIFT}{109}{subsection.9.1.1}
+\contentsline {chapter}{\numberline {10}Feature Extraction}{111}{chapter.10}
+\contentsline {section}{\numberline {10.1}Selective Search}{111}{section.10.1}
+\contentsline {subsection}{\numberline {10.1.1}Efficient Graph-Based Image Segmentation}{111}{subsection.10.1.1}
+\contentsline {subsection}{\numberline {10.1.2}Selective Search}{112}{subsection.10.1.2}
+\contentsline {section}{\numberline {10.2}Region CNN}{112}{section.10.2}
+\contentsline {subsection}{\numberline {10.2.1}概述}{112}{subsection.10.2.1}
+\contentsline {section}{\numberline {10.3}SPP Net}{113}{section.10.3}
+\contentsline {section}{\numberline {10.4}Fast RCNN}{113}{section.10.4}
+\contentsline {section}{\numberline {10.5}Faster RCNN}{113}{section.10.5}
+\contentsline {section}{\numberline {10.6}R FCN}{113}{section.10.6}
+\contentsline {section}{\numberline {10.7}FPN}{113}{section.10.7}
+\contentsline {section}{\numberline {10.8}Mask RCNN}{113}{section.10.8}
+\contentsline {section}{\numberline {10.9}YOLO}{113}{section.10.9}
+\contentsline {section}{\numberline {10.10}YOLO v2}{113}{section.10.10}
+\contentsline {section}{\numberline {10.11}YOLO v3}{113}{section.10.11}
+\contentsline {section}{\numberline {10.12}SSD}{113}{section.10.12}
+\contentsline {section}{\numberline {10.13}DSSD}{113}{section.10.13}
+\contentsline {section}{\numberline {10.14}Retina Net (Focal Loss)}{113}{section.10.14}
