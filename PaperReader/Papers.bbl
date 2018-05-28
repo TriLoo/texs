@@ -68,6 +68,11 @@ R.~{Mehta} and C.~{Ozturk}.
 \newblock {Object detection at 200 Frames Per Second}.
 \newblock {\em ArXiv e-prints}, May 2018.
 
+\bibitem{Attention2014}
+V.~{Mnih}, N.~{Heess}, A.~{Graves}, and K.~{Kavukcuoglu}.
+\newblock {Recurrent Models of Visual Attention}.
+\newblock {\em ArXiv e-prints}, June 2014.
+
 \bibitem{Pham2016Geometrically}
 Trung~T. Pham, Markus Eich, Ian Reid, and Gordon Wyeth.
 \newblock Geometrically consistent plane extraction for dense indoor 3d maps

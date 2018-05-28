@@ -69,6 +69,10 @@
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {SE-ResNet Module}}}{104}{figure.caption.152}
 \contentsline {figure}{\numberline {8.14}{\ignorespaces 不同卷积策略的比较\relax }}{105}{figure.caption.153}
 \contentsline {figure}{\numberline {8.15}{\ignorespaces Unpooling示意图\relax }}{105}{figure.caption.156}
+\contentsline {figure}{\numberline {8.16}{\ignorespaces 文章的总结与说明\relax }}{109}{figure.caption.162}
+\contentsline {figure}{\numberline {8.17}{\ignorespaces 二维图像像素编号示意图\relax }}{109}{figure.caption.163}
+\contentsline {figure}{\numberline {8.18}{\ignorespaces BP计算过程示意图\relax }}{113}{figure.caption.166}
+\contentsline {figure}{\numberline {8.19}{\ignorespaces Attention 模型示意图\relax }}{114}{figure.caption.168}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {10.1}{\ignorespaces RCNN整体思想\relax }}{112}{figure.caption.162}
+\contentsline {figure}{\numberline {10.1}{\ignorespaces RCNN整体思想\relax }}{120}{figure.caption.173}

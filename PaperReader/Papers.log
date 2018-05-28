@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  26 MAY 2018 22:50
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  28 MAY 2018 23:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1486,13 +1486,13 @@ Overfull \hbox (1.97218pt too wide) in paragraph at lines 60--60
 ation with a 2D Semantic Map[[]][][] [][]  
  []
 
-[2] [3] [4])
+[2] [3] [4] [5])
 \tf@toc=\write5
 \openout5 = `Papers.toc'.
 
- [5] [6
+ [6] (./Papers.lof [7
 
-] (./Papers.lof [7])
+])
 \tf@lof=\write6
 \openout6 = `Papers.lof'.
 
@@ -2005,26 +2005,37 @@ File: DLTips/Conv0.jpg Graphic file (type QTm)
  <use  "DLTips/Conv0.jpg" > [103] [104]
 File: DLTips/Unpooling0.png Graphic file (type QTm)
 
-<use  "DLTips/Unpooling0.png" > [105] [106] [107])
-(./ImageProcessing/ImageProcessing.tex [108]
-Chapter 9.
-) (./FeatureExtraction/FeatureExtraction.tex [109
+<use  "DLTips/Unpooling0.png" > [105] [106] [107]
+File: DLTips/PerceptionField1.png Graphic file (type QTm)
 
-] [110
+<use  "DLTips/PerceptionField1.png" >
+File: DLTips/PerceptionField0.jpg Graphic file (type QTm)
+ <use  "DLTips/PerceptionField0.jpg" >
+[108] [109] [110] [111] [112]
+File: DLTips/BP0.jpg Graphic file (type QTm)
+ <use  "DLTips/BP0.jpg" > [113]
+File: DLTips/Attention0.png Graphic file (type QTm)
+
+<use  "DLTips/Attention0.png" > [114] [115])
+(./ImageProcessing/ImageProcessing.tex [116]
+Chapter 9.
+) (./FeatureExtraction/FeatureExtraction.tex [117
+
+] [118
 
 ]
 Chapter 10.
-[111]
+[119]
 File: FeatureExtraction/RCNN0.jpg Graphic file (type QTm)
  <use  "FeatureExtraction/RCNN0.jpg" >)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [112]
-[113] [114
+ [120]
+[121] [122
 
-] (./Papers.bbl [115
+] (./Papers.bbl [123
 
-]) (./Papers.ind [116] [117
+]) (./Papers.ind [124] [125
 
 
 ])
@@ -2041,12 +2052,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
  ) 
 Here is how much of TeX's memory you used:
- 28855 strings out of 495525
- 533352 string characters out of 6184337
- 744190 words of memory out of 5000000
- 31585 multiletter control sequences out of 15000+600000
+ 28891 strings out of 495525
+ 534472 string characters out of 6184337
+ 744427 words of memory out of 5000000
+ 31617 multiletter control sequences out of 15000+600000
  12233 words of font info for 90 fonts, out of 8000000 for 9000
  80 hyphenation exceptions out of 8191
  45i,14n,58p,10437b,1780s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Papers.pdf (127 pages).
+Output written on Papers.pdf (135 pages).

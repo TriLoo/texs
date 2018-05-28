@@ -650,9 +650,341 @@ strids(i) = stride(1) * stride(2) * stride(3) * \ldots * stride(i - 1)
 
 参考文献：\href{https://zhuanlan.zhihu.com/p/26663577}{卷积神经网络中的感受野计算(译)-知乎}， \href{https://medium.com/mlreview/a-guide-to-receptive-field-arithmetic-for-convolutional-neural-networks-e0f514068807}{原文-英语}
 
+定义：The receptive field is defined as the region in the input space that a particular CNN’s feature is looking at (i.e. be affected by).
+
+这篇英语文章，主要是四个公式：
+\begin{itemize}
+\item Calculate the number of output features
+
+\begin{displaymath}
+n_{out} =	\lfloor \frac{n_{in} + 2p - k}{s} \rfloor + 1
+\end{displaymath}
+
+其中，$p$表示单侧Padding大小， $k$表示filter kernel的大小。
 
 
+\item Calculate the Jump (Strides) in the output feature map
 
+\begin{displaymath}
+j_{out} = j_{in} * s
+\end{displaymath}
+
+其中， $j$表示Strides，注意stride是不断积累的。如上下文中提到的。
+
+\item Calculate the receptive field size
+
+\begin{displaymath}
+r_{out} = r_{in} + (k - 1) * j_{in}
+\end{displaymath}
+
+$k$表示kernel filter的大小。
+
+\item Calculate the center position of the receptive field of the first output feature
+
+\begin{displaymath}
+start_{out} = start_{in} + (\frac{k - 1}{2} - p) * j_{in}
+\end{displaymath}
+
+\end{itemize}
+
+The first layer is the input layer, which always has n = image size, r = 1, j = 1, and start = 0.5. 
+
+小结如图\ref{PerceptionField1}所示。
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{DLTips/PerceptionField1.png}
+\caption{文章的总结与说明}
+\label{PerceptionField1}
+\end{figure}
+
+
+\href{https://zhuanlan.zhihu.com/p/28492837}{神经网络中的感受野-知乎}
+
+由于图像是二维的，具有空间信息，因此感受野的实质其实也是一个二维区域。但业界通常将感受野定义为一个正方形区域，因此也就使用边长来描述其大小了。在接下来的讨论中，本文也只考虑宽度一个方向。我们先按照图\ref{PerceptionField0}所示对输入图像的像素进行编号。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{DLTips/PerceptionField0.jpg}
+\caption{二维图像像素编号示意图}
+\label{PerceptionField0}
+\end{figure}
+
+接下来我们使用一种并不常见的方式来展示CNN的层与层之间的关系（如下图，请将脑袋向左倒45°观看$>\_<$），并且配上我们对原图像的编号。
+
+图中黑色的数字所构成的层为原图像或者是卷积层，数字表示某单元能够看到的原始图像像素。我们用 $r_n$ 来表示第 n 个卷积层中，每个单元的感受野（即数字序列的长度）；蓝色的部分表示卷积操作，用 $k_n$ 和 $s_n$ 分别表示第 n 个卷积层的kernel\_size和stride。
+
+对Raw Image进行kernel\_size=3, stride 2的卷积操作所得到的fmap1 (fmap为feature map的简称，为每一个conv层所产生的输出)的结果是显而易见的。序列[1 2 3]表示fmap1的第一个单元能看见原图像中的1，2，3这三个像素，而第二个单元则能看见3，4，5。这两个单元随后又被kernel\_size=2，stride 1的Filter 2进行卷积，因而得到的fmap2的第一个单元能够看见原图像中的1,2,3,4,5共5个像素（即取[1 2 3]和[3 4 5]的并集）。
+
+接下来我们尝试一下如何用公式来表述上述过程。可以看到，[1 2 3]和[3 4 5]之间因为Filter 1的stride 2而错开（偏移）了两位，而3是重叠的。对于卷积两个感受野为3的上层单元，下一层最大能获得的感受野为 $3\times2=6$ ，但因为有重叠，因此要减去(kernel\_size - 1)个重叠部分，而重叠部分的计算方式则为感受野减去前面所说的偏移量，这里是2. 因此我们就得到 $r_2=r_1\times k_2-(r_1-s_1)\times(k_2-1)=3\times2-(3-2)\times(2-1)=5$ 。
+
+继续往下一层看，我们会发现[1 2 3 4 5]和[3 4 5 6 7]的偏移量仍为2，并不简单地等于上一层的 $s_2$ ，\textbf{这是因为之前的stride对后续层的影响是永久性的}，而且是累积相乘的关系（例如，在fmap3中，偏移量已经累积到4了），也就是说 $r_3$ 应该这样求 
+
+\begin{displaymath}
+r_3=r_2\times k_3-(r_2-s_1\times s_2)\times(k_3-1)=5\times3-(5-2)\times(3-1)=9 
+\end{displaymath}
+
+以此类推，
+
+\begin{displaymath}
+r_4=r_3\times k_4-(r_3-s_1\times s_2\times s_3)\times(k_4-1)=9\times2-(9-4)\times(2-1)=13 
+\end{displaymath}
+
+
+于是我们就可以得到关于计算感受野的抽象公式了： 
+
+\begin{displaymath}
+r_n=r_{n-1}\times k_n-(r_{n-1}-\prod_{i=1}^{n-1}s_i)\times(k_n-1) 
+\end{displaymath}
+
+
+经过简单的代数变换之后，最终形式为：
+
+\begin{displaymath}
+r_n=r_{n-1}+(k_n-1)\prod_{i=1}^{n-1}s_i 
+\end{displaymath}
+
+这个公式也体现了上文提到的stride影响的下一层。
+
+
+\section{神经网络中的初始化}
+
+\subsubsection{回答一}
+
+参考文献：\href{https://www.zhihu.com/question/56526007}{为什么要进行初始化-知乎}
+
+参数初始化的目的是为了让神经网络在训练过程中学习到有用的信息，这意味着参数梯度不应该为0。所以参数初始化应该满足两个条件：
+\begin{itemize}
+\item 各个激活层不会出现饱和现象，比如对于Sigmoid激活函数，初始化值不能太大也不能太小，导致进入饱和区
+\item 各个激活值不为0，如果激活层输出为0，也就是下一层的输入为0， 所以这个卷积层对权重的偏导数为0， 那么导致梯度也为0
+\item 另一个非常重要的原因，就是Xavier， MSRA等这些初始化不至于一开始就让网络发散，或者梯度消失
+\end{itemize}
+
+所以，最主要要注意两个问题，首先是梯度不能消失，然后网络不能发散。
+
+\subsection{Xavier}
+
+参考文章：\href{https://zhuanlan.zhihu.com/p/27919794}{深度前馈网络与Xavier初始化原理-知乎}
+
+而为什么把模型的参数初始化成全0就不行了呢？这个不用讲啦，全0的时候每个神经元的输入和输出没有任何的差异，换句话说，根据前面BP算法的讲解，这样会导致误差根本无法从后一层往前传（乘以全0的$\omega$后误差就没了），这样的model当然没有任何意义。
+
+{\bfseries 那么我们不把参数初始化成全0，那我们该初始化成什么呢？换句话说，如何既保证输入输出的差异性，又能让model稳定而快速的收敛呢？}
+
+要描述“差异性”，首先就能想到概率统计中的方差这个基本统计量。对于每个神经元的输入z这个随机变量，根据前面讲BP时的公式，它是由线性映射函数得到的,也就是：
+\begin{displaymath}
+z = \sum_{i = 1}^{n}\omega_i x_i
+\end{displaymath}
+
+其中n是上一层神经元的数量。因此，根据概率统计里的两个随机变量乘积的方差展开式
+
+\begin{displaymath}
+Var(\omega_i x_i) = E[\omega_i]^2 Var(x_i) + E[x_i]^2Var(\omega_i) + Var(\omega_i)Var(x_i)
+\end{displaymath}
+
+所以，如果$E(x_i) = E(\omega_i)=0$(可以通过批量归一化Batch Normlization来满足，其它大部分情况也不会差太多)，　那么就有：
+\begin{displaymath}
+Var(z) = \sum_{i = 1}^{n}Var(x_i)Var(\omega_i)
+\end{displaymath}
+
+如果变量$x_i$与$\omega_i$满足独立同分布的话：
+\begin{displaymath}
+Var(z) = n \cdot Var(x)Var(\omega)
+\end{displaymath}
+
+好了，这时重点来了。试想一下，根据文章《激活函数》，整个大型前馈神经网络无非就是一个超级大映射，将原始样本稳定的映射成它的类别。也就是将样本空间映射到类别空间。试想，如果样本空间与类别空间的分布差异很大，比如说类别空间特别稠密，样本空间特别稀疏辽阔，那么在类别空间得到的用于反向传播的误差丢给样本空间后简直变得微不足道，也就是会导致模型的训练非常缓慢。同样，如果类别空间特别稀疏，样本空间特别稠密，那么在类别空间算出来的误差丢给样本空间后简直是爆炸般的存在，即导致模型发散震荡，无法收敛。因此，我们要让样本空间与类别空间的分布差异（密度差别）不要太大，也就是要让它们的方差尽可能相等。这里的样本空间与类别空间可以理解成是输入$x$空间与输出$z$的空间，以及其所对应的方差。
+
+如果需要两个空间的方差差异不大，即满足$Var(z) = Var(x)$，　那么需要$n \cdot \omega = 1$，　也就是说$Var(\omega) = 1 / n$。其中$n$表示神经元输出端对应的个数。在前向传播时，对于特定一层神经网络，$n = n_{in}$，　在后向传播时，$n = n_{out}$而一般这两者都不相同，因此可以取它们的中间值：
+\begin{displaymath}
+Var(\omega) = \frac{1}{\frac{n_{in} + n_{out}}{2}}
+\end{displaymath}
+
+假设$\omega$均匀分布时，由$\omega$在区间$[a, b]$内均匀分布的方差为：
+\begin{displaymath}
+Var = \frac{(b - a)^2}{12}
+\end{displaymath}
+
+联立上面两个公式，可以得出$\omega$的分布区间(假设$b = -a$)：
+\begin{displaymath}
+\omega \sim U\left[ -\frac{\sqrt{6}}{\sqrt{n_{in} + n_{out}}}, \frac{\sqrt{6}}{\sqrt{n_{in} + n_{out}}}  \right]
+\end{displaymath}
+（让w在这个区间里均匀采样就好啦）
+
+得到的这个结论就是Xavier初始化方法。这就是为什么使用Xavier初始化这个trick经常可以让model的训练速度和分类性能取得大幅提高啦~所以在使用前馈网络时，除非你的网络设计的明显不满足xavier的假设，否则使用xavier往往不会出错。当然，另一方面来说，也很少有场合可以完全迎合xavier假设，因此时间充裕的话，改改分子，甚至去掉$n_{out}$都有可能带来意想不到的效果。
+
+
+\section{计算图的后向传播计算}
+
+参考文章：
+
+[1] \href{https://zhuanlan.zhihu.com/p/27919794}{深度前馈网络与Xavier初始化原理-知乎}
+
+[2] \href{https://mp.weixin.qq.com/s?__biz=MzIwNzc2NTk0NQ==&mid=2247484344&idx=1&sn=92ff388d93088ea6461023b376860ce7&chksm=970c2b6ea07ba2782da5de78b23b78b267b4b0fc4454e76256134cfc9d6aa5416e0bd4c14097&scene=21#wechat_redirect}{BP算法－夕小瑶}
+
+\subsubsection{简单的说明}
+误差反向传播过程， 其本质就是基于链式求导 + 梯度下降。
+
+首先往上翻一翻，记住之前说过的前馈网络无非就是反复的线性与非线性映射。
+
+首先，假设某个神经元的输入为z，经过激活函数$f_1(\cdot)$得到输出a。即函数值$a=f_1(z)$。如果这里的输入z又是另一个函数f2的输出的话（当然啦，这里的$f_2$就是线性映射函数，也就是连接某两层的权重矩阵），即$z=f_2(x)$，那么如果基于a来对z中的变量x求导的时候，由于 
+
+\begin{displaymath}
+\frac{\partial a}{\partial x} = \frac{\partial a}{\partial z}\cdot \frac{\partial z}{\partial x} = f_1^{'}(z)\frac{\partial z}{\partial x}
+\end{displaymath}
+
+上式也就是链式求导。更一般的链式求导法则为：
+\begin{displaymath}
+\frac{\partial a}{\partial x} = \sum_{i} \frac{\partial a}{\partial z_i}\cdot \frac{\partial z_i}{\partial x}
+\end{displaymath}
+
+显然只要乘以激活函数f1的导数，就不用操心激活函数的输出以及更后面的事儿了（这里的“后面”指的是神经网络的输出端方向），只需要将精力集中在前面的东西，即只需要关注z以及z之前的那些变量和函数就可以了。因此，误差反向传播到某非线性映射层的输出时，只需要乘上该非线性映射函数在z点的导数就算跨过这一层啦。
+
+而由于$f2(\cdot)$是个线性映射函数，即 $f_2(x)=\omega \cdot x + b$，因此
+\begin{displaymath}
+\frac{\partial z}{\partial x} = \omega
+\end{displaymath}
+因此，当误差反向传播到线性映射层的输出时，若想跨过该层，只需要乘以线性映射函数的参数就可以啦~即乘上$\omega$。
+
+而这里的x，又是更前面的非线性映射层的输出，因此误差在深度前馈网络中反向传播时，无非就是反复的跨过非线性层和线性层，也就是反复的乘以非线性函数的导数(即激活函数的导数)和线性函数的导数（即神经网络的参数/权重/连接边）。
+
+也就是下面这张图啦（从右往左看）：
+
+\begin{figure}[!bthp]
+\centering
+\includegraphics[width=0.75\textwidth]{DLTips/BP0.jpg}
+\caption{BP计算过程示意图}
+\label{BP0}
+\end{figure}
+
+\section{神经网络中的Attention机制}
+
+参考文献：\href{https://zhuanlan.zhihu.com/p/35571412}{浅谈Attention机制-知乎}
+
+\subsection{Recurrent Models of Visual Attention}
+
+参考文献：\cite{Attention2014}
+
+Our model considers attention-based processing of a visual scene as a control problem and is general enough to be applied to static images, videos,
+or as a perceptual module of an agent that interacts with a dynamic visual environment (e.g. robots,
+computer game playing agents).
+
+Instead of processing an entire image or even bounding box at once, at each step, the model
+selects the next location to attend to based on past information and the demands of the task.
+
+We describe an end-to-end
+optimization procedure that allows the model to be trained directly with respect to a given task and
+to maximize a performance measure which may depend on the entire sequence of decisions made by
+the model. This procedure uses backpropagation to train the neural-network components and policy
+gradient to address the non-differentiabilities due to the control problem
+
+目标检测的几种方法：
+\begin{itemize}
+\item 基于窗口的分类器，包括Proposal等, 计算量大
+\item 基于Saliency Detection的， 不能Interate information across fixations, 仅利用底层图像特征， 忽略了Semantic Content of a scene and task demands.
+\item 一些工作把视觉问题当做Sequential decision task，本文也是
+\item 
+\end{itemize}
+
+Our formulation which employs an RNN to integrate visual
+information over time and to decide how to act is, however, more general, and our learning procedure
+allows for end-to-end optimization of the sequential decision process instead of relying on greedy
+action selection.
+
+我们的模型，既可以实现性质图像的Object Recognition, 而且还适用于动态环境，以一种Task-driven的方式。
+
+\subsubsection{The Recurrent Attention Model - RAM }
+
+In this paper we consider the attention problem as the sequential decision process of a goal-directed
+agent interacting with a visual environment.
+
+这篇文章里面，感觉这意思，Attention机制不就是Reinforcement Learning么？
+
+该公式包含了各种任务，如静态图像中的对象检测， 控制问题，即根据屏幕上的图像流来学习打游戏等。
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{DLTips/Attention0.png}
+\caption{Attention 模型示意图}
+\label{Attention0}
+\end{figure}
+
+图\ref{Attention0}中，$x_t$表示第$t$时刻的输入图像，$l_{t-1}$表示位置，$\rho (x_t, l_{t-1})$表示这个位置的Retina-like representation. $g_t$为glimpse representation。 
+
+We will refer to this low-resolution representation
+as a glimpse。
+
+Action分为两个部分：
+\begin{itemize}
+\item Location actions
+
+are chosen stochastically from a distribution parameterized by the location network $f_l(h_t; \theta_t)$ at time $t$。
+
+\item Environment action
+
+The environment action a t is similarly drawn from a distribution conditioned
+on a second network output $a_t \sim p(\cdot | f_a(h_t; \theta_a))$
+
+\end{itemize}
+
+与RL里面的Partially Observable Decision Process (POMDP)的一个特例。
+
+\subsubsection{总结}
+
+感觉本文中的Attention与RL关系密切，而且与RNN网络结合起来了。那么到底什么是Attention机制，还需要阅读其它文章，现在我还不太明白。
+
+
+\section{小型网络}
+
+参考文章：\href{https://zhuanlan.zhihu.com/p/37074222}{CVPR2018高效小网络-知乎}
+
+\section{Deep Reinforcement Learning}
+
+参考文献：\href{https://deeplearning4j.org/deepreinforcementlearning}{A Beginner's Guide to Deep Reinforcement Learning}
+
+几个重要的摘抄。
+\begin{itemize}
+\item Algorithms can start from a blank slate, and under the right conditions they achieve superhuman performance. Like a child incentivized by spankings and candy, these algorithms are penalized when they make the wrong decisions and rewarded when they make the right ones – this is reinforcement.
+
+\item Reinforcement learning solves the difficult problem of correlating immediate actions with the delayed returns they produce. 
+\end{itemize}
+
+\section{为什么Python中要继承object类}
+
+参考文章：\href{https://stackoverflow.com/questions/4015417/python-class-inherits-object}{stackoverflow answer}
+
+在Python3中，除了因为要兼容于Python2，没有其它原因。而在Python2中，则有些复杂。
+
+\subsubsection{Python 2.x story}
+Python2(从python2.2开始)中，有两种类型的类(two styles of classes), 他们根据是否继承自\textbf{object}来区分。
+
+\begin{itemize}
+\item Classic style classes, they don't have object as a base class
+\item New style classes: they have, directly or indirectly (\textit{e.g.} inherit from a built-in type), \textbf{object} as a base class
+\end{itemize}
+
+那么为什么选择用新式类呢(New style classes)?几个原因如下：
+\begin{itemize}
+\item Support for descriptors. Sepcifically, the following constructs are made possible with descriptors:
+\begin{itemize}
+\item classmethod
+\item staticmethod
+\item properties with property
+\item \_\_slots\_\_
+\end{itemize}
+\item the \verb|__new__| static method
+\item method resolution order (MRO)
+\item Related to MRO
+\end{itemize}
+
+\subsubsection{Python 3.x story}
+
+In Python 3, things are simplified. Only new-style classes exist (referred to plainly as classes) so, the only difference in adding object is requiring you to type in 8 more characters. 
+
+
+\subsubsection{Choose which one}
+
+\begin{itemize}
+\item \textbf{In Python 2.x}, \textbf{always} inherit from \textbf{object} explicitly
+\item \textbf{In Python 3.x}, inherit \textbf{object} if you are writing code that tries to be Python agnostic (不可知论者), that is, it needs to work both in python 2 and in python 3. Otherwise, don't, it really makes no difference since Python inserts it for you behind the scenes.
+\end{itemize}
 
 \section{待续}
 

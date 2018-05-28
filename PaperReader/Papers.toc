@@ -240,6 +240,7 @@
 \contentsline {subsubsection}{ResNet}{89}{section*.135}
 \contentsline {subsubsection}{DenseNet}{90}{section*.136}
 \contentsline {section}{\numberline {7.7}MXNet中的Deconvolution}{90}{section.7.7}
+\contentsline {section}{\numberline {7.8}MXNet读取训练数据}{90}{section.7.8}
 \contentsline {chapter}{\numberline {8}Tips in DL}{91}{chapter.8}
 \contentsline {section}{\numberline {8.1}Enlarge the FOV}{91}{section.8.1}
 \contentsline {section}{\numberline {8.2}Upsampling}{91}{section.8.2}
@@ -279,25 +280,40 @@
 \contentsline {subsubsection}{具体的例子}{107}{section*.159}
 \contentsline {subsubsection}{Stride的计算}{108}{section*.160}
 \contentsline {subsubsection}{专业的计算}{108}{section*.161}
-\contentsline {section}{\numberline {8.16}待续}{108}{section.8.16}
-\contentsline {chapter}{\numberline {9}Image Processing}{109}{chapter.9}
-\contentsline {section}{\numberline {9.1}Feature Extraction}{109}{section.9.1}
-\contentsline {subsection}{\numberline {9.1.1}SIFT}{109}{subsection.9.1.1}
-\contentsline {chapter}{\numberline {10}Feature Extraction}{111}{chapter.10}
-\contentsline {section}{\numberline {10.1}Selective Search}{111}{section.10.1}
-\contentsline {subsection}{\numberline {10.1.1}Efficient Graph-Based Image Segmentation}{111}{subsection.10.1.1}
-\contentsline {subsection}{\numberline {10.1.2}Selective Search}{112}{subsection.10.1.2}
-\contentsline {section}{\numberline {10.2}Region CNN}{112}{section.10.2}
-\contentsline {subsection}{\numberline {10.2.1}概述}{112}{subsection.10.2.1}
-\contentsline {section}{\numberline {10.3}SPP Net}{113}{section.10.3}
-\contentsline {section}{\numberline {10.4}Fast RCNN}{113}{section.10.4}
-\contentsline {section}{\numberline {10.5}Faster RCNN}{113}{section.10.5}
-\contentsline {section}{\numberline {10.6}R FCN}{113}{section.10.6}
-\contentsline {section}{\numberline {10.7}FPN}{113}{section.10.7}
-\contentsline {section}{\numberline {10.8}Mask RCNN}{113}{section.10.8}
-\contentsline {section}{\numberline {10.9}YOLO}{113}{section.10.9}
-\contentsline {section}{\numberline {10.10}YOLO v2}{113}{section.10.10}
-\contentsline {section}{\numberline {10.11}YOLO v3}{113}{section.10.11}
-\contentsline {section}{\numberline {10.12}SSD}{113}{section.10.12}
-\contentsline {section}{\numberline {10.13}DSSD}{113}{section.10.13}
-\contentsline {section}{\numberline {10.14}Retina Net (Focal Loss)}{113}{section.10.14}
+\contentsline {section}{\numberline {8.16}神经网络中的初始化}{110}{section.8.16}
+\contentsline {subsubsection}{回答一}{110}{section*.164}
+\contentsline {subsection}{\numberline {8.16.1}Xavier}{111}{subsection.8.16.1}
+\contentsline {section}{\numberline {8.17}计算图的后向传播计算}{112}{section.8.17}
+\contentsline {subsubsection}{简单的说明}{112}{section*.165}
+\contentsline {section}{\numberline {8.18}神经网络中的Attention机制}{113}{section.8.18}
+\contentsline {subsection}{\numberline {8.18.1}Recurrent Models of Visual Attention}{113}{subsection.8.18.1}
+\contentsline {subsubsection}{The Recurrent Attention Model - RAM }{114}{section*.167}
+\contentsline {subsubsection}{总结}{115}{section*.169}
+\contentsline {section}{\numberline {8.19}小型网络}{115}{section.8.19}
+\contentsline {section}{\numberline {8.20}Deep Reinforcement Learning}{115}{section.8.20}
+\contentsline {section}{\numberline {8.21}为什么Python中要继承object类}{115}{section.8.21}
+\contentsline {subsubsection}{Python 2.x story}{115}{section*.170}
+\contentsline {subsubsection}{Python 3.x story}{116}{section*.171}
+\contentsline {subsubsection}{Choose which one}{116}{section*.172}
+\contentsline {section}{\numberline {8.22}待续}{116}{section.8.22}
+\contentsline {chapter}{\numberline {9}Image Processing}{117}{chapter.9}
+\contentsline {section}{\numberline {9.1}Feature Extraction}{117}{section.9.1}
+\contentsline {subsection}{\numberline {9.1.1}SIFT}{117}{subsection.9.1.1}
+\contentsline {chapter}{\numberline {10}Feature Extraction}{119}{chapter.10}
+\contentsline {section}{\numberline {10.1}Selective Search}{119}{section.10.1}
+\contentsline {subsection}{\numberline {10.1.1}Efficient Graph-Based Image Segmentation}{119}{subsection.10.1.1}
+\contentsline {subsection}{\numberline {10.1.2}Selective Search}{120}{subsection.10.1.2}
+\contentsline {section}{\numberline {10.2}Region CNN}{120}{section.10.2}
+\contentsline {subsection}{\numberline {10.2.1}概述}{120}{subsection.10.2.1}
+\contentsline {section}{\numberline {10.3}SPP Net}{121}{section.10.3}
+\contentsline {section}{\numberline {10.4}Fast RCNN}{121}{section.10.4}
+\contentsline {section}{\numberline {10.5}Faster RCNN}{121}{section.10.5}
+\contentsline {section}{\numberline {10.6}R FCN}{121}{section.10.6}
+\contentsline {section}{\numberline {10.7}FPN}{121}{section.10.7}
+\contentsline {section}{\numberline {10.8}Mask RCNN}{121}{section.10.8}
+\contentsline {section}{\numberline {10.9}YOLO}{121}{section.10.9}
+\contentsline {section}{\numberline {10.10}YOLO v2}{121}{section.10.10}
+\contentsline {section}{\numberline {10.11}YOLO v3}{121}{section.10.11}
+\contentsline {section}{\numberline {10.12}SSD}{121}{section.10.12}
+\contentsline {section}{\numberline {10.13}DSSD}{121}{section.10.13}
+\contentsline {section}{\numberline {10.14}Retina Net (Focal Loss)}{121}{section.10.14}
