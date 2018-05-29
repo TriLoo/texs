@@ -207,7 +207,7 @@ James Liu的回答：
 那么当反向传播时又会如何呢？首先我们已经有从更深层的网络中得到的$\frac{\partial Loss}{\partial y}$.
 
 \begin{displaymath}
-\frac{\partial{Loss}}{\partial{x_j}} = \sum_{i}\frac{\partial{Loss}}{\partial y_i} \frac{\partial y_i}{\partial{x_j}} = \sum_{i} \frac{\partial{Loss}}{\partial y_i} C_{i, j} = \frac{\partial{Loss}}{y} \cdot C_{*, j} = C_{*, j} \frac{\partial{Loss}}{\partial y}
+\frac{\partial{Loss}}{\partial{x_j}} = \sum_{i}\frac{\partial{Loss}}{\partial y_i} \frac{\partial y_i}{\partial{x_j}} = \sum_{i} \frac{\partial{Loss}}{\partial y_i} C_{i, j} = \frac{\partial{Loss}}{y} \cdot C_{*, j} = C_{*, j}^T \frac{\partial{Loss}}{\partial y}
 \end{displaymath}
 
 回想第一句话，你猜的没错，所谓逆卷积其实就是正向时左乘$C^T$，而反向时左乘$(C^T)^T$，即C的运算。
@@ -985,6 +985,35 @@ In Python 3, things are simplified. Only new-style classes exist (referred to pl
 \item \textbf{In Python 2.x}, \textbf{always} inherit from \textbf{object} explicitly
 \item \textbf{In Python 3.x}, inherit \textbf{object} if you are writing code that tries to be Python agnostic (不可知论者), that is, it needs to work both in python 2 and in python 3. Otherwise, don't, it really makes no difference since Python inserts it for you behind the scenes.
 \end{itemize}
+
+\section{1*1卷积}
+
+参考文章：\href{https://www.zhihu.com/question/56024942}{1*1卷积的作用与好处-知乎}
+
+1*1卷积 和正常的卷积一样，唯一不同的是它的大小是1*1，没有考虑在前一层局部信息之间的关系， 所以这里跟普通说卷积的时候一样，都是自动忽略了在Channel上的维度，而只是空间域的维度是1*1或3*3或5*5等。最早出现在 Network In Network的论文中 ，使用1*1卷积是想加深加宽网络结构 ，在Inception网络（ Going Deeper with Convolutions ）中用来降维，
+
+由于3*3卷积或者5*5卷积在几百个filter的卷积层上做卷积操作时相当耗时，所以1*1卷积在3*3卷积或者5*5卷积计算之前先降低维度。(说的是Channel的维度。)
+
+所以1*1卷积的主要作用有以下几点：
+\begin{itemize}
+\item 降维
+
+比如，一张500 * 500且厚度depth为100 的图片在20个filter上做1*1的卷积，那么结果的大小为500*500*20。
+
+\item 加入非线性
+
+卷积层之后经过激励层，1*1的卷积在前一层的学习表示上添加了非线性激励（ non-linear activation ），提升网络的表达能力。类似于在一个像素位置，在所有Channel上进行非线性变换，而不考虑附近的信息。
+
+\end{itemize}
+
+所以1*1卷积实际上是对每个像素点，在不同的Channel上进行线性组合， 即信息整合，且保留图像的原有平面结构，调控Depth， 自动完成升维、降维的作用。如下图所示，如果选择2个filter的1*1,那么数据就从原来的depth为3变为depth为2.若用4个filter，则起到了升维的作用。
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{DLTips/OneOneConv0.jpg}
+\caption{1*1 Convolutoin 的作用示意图}
+\label{OneOneConv0}
+\end{figure}
+
 
 \section{待续}
 

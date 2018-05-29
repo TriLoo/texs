@@ -706,12 +706,45 @@ net.add(resnet_block(64, 2, first_block=True),
 
 由于\verb|Conv2DTranspose|这个函数回引起棋盘状 Artifacts，所以在MXNet里面，还有一个上采样卷积的函数：\verb|mxnet.ndarray.UpSampling()|， \textbf{但是}， 听说目前还不好用啊。
 
+参考\href{https://discuss.gluon.ai/t/topic/3041/14}{FCN讨论区-chen0510566}回答，\verb|gluon.nn.Conv2DTranspose|的文档，\verb|Conv2DTranspose|输出的size是这样计算的：
+\begin{displaymath}
+\begin{gathered}
+Out\_height = (height - 1) * strides[0] - 2 * padding[0] + kernel\_size[0] + output\_padding[0] \\
+Out\_width = (width - 1) * strides[1] - 2 * padding[1] + kernel\_size[1] + output\_padding[1]
+\end{gathered}
+\end{displaymath}
+
+$\uparrow$正确性有待验证。
+
 \section{MXNet读取训练数据}
 
 重要，我发现，对于我这样的新手来说，如何处理数据也是个问题，尤其现在，我感觉一头雾水。
 
+参考文章：\href{https://www.jianshu.com/p/38d55c9dbdb8}{MXNet常见加载数据的方式-简书}
 
+有必要对MXNet的数据结构进行说明一下！尤其对于axes的概念。在MXNet中，我认为axes可以取四个值，分别对应一下概念：
+\begin{itemize}
+\item axes = 0, Batches， 比如batchsize=8, 那么axes就对应这8个样本
+\item axes = 1, Channels, 比如输入彩色图像，那么axes对应的就是RGB三个通道
+\item axes = 2, Width or Height, 还不太确定，与axes=3共同确定每一个Channel的尺寸
+\end{itemize}
 
+接下来就是本小节的重点内容，也就是如果处理训练数据，这是开始的一步，但我感觉也是容易被各种教程忽视的一步，如果这步不清楚，那么会影响整个后面的学习与实践过程。
+
+{\bfseries 正如参考文献中所总结的那样，一共可以分为类。分别如下！}
+
+\begin{itemize}
+\item 基于mxnet.io读取数据
+\item 使用mxnet.iamge读取数据
+\item 使用gluon接口读取数据， 这个部分是重点
+\end{itemize}
+
+此外，作者还提到了几种支持的数据结构，貌似就这几种么？
+\begin{itemize}
+\item .rec文件
+\item raw image
+\item .lst文件，使用mx.image.ImageIter接口读取，这个接口可以读.rec的文件
+\end{itemize}
 
 
 

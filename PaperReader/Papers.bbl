@@ -80,6 +80,11 @@ Trung~T. Pham, Markus Eich, Ian Reid, and Gordon Wyeth.
 \newblock In {\em Ieee/rsj International Conference on Intelligent Robots and
   Systems}, pages 4199--4204, 2016.
 
+\bibitem{U-Net2015}
+O.~{Ronneberger}, P.~{Fischer}, and T.~{Brox}.
+\newblock {U-Net: Convolutional Networks for Biomedical Image Segmentation}.
+\newblock {\em ArXiv e-prints}, May 2015.
+
 \bibitem{Silvia2018Recurrent}
 Jan C. van~Gemert Silvia L.~Pintea, Yue~Liu.
 \newblock {Recurrent knowledge distillation}.
@@ -101,6 +106,13 @@ J.~R.~R. Uijlings, K.~E.~A. van~de Sande, T.~Gevers, and A.~W.~M. Smeulders.
 \newblock Selective search for object recognition.
 \newblock {\em International Journal of Computer Vision}, 104(2):154--171, Sep
   2013.
+
+\bibitem{ReSeg2015}
+F.~{Visin}, M.~{Ciccone}, A.~{Romero}, K.~{Kastner}, K.~{Cho}, Y.~{Bengio},
+  M.~{Matteucci}, and A.~{Courville}.
+\newblock {ReSeg: A Recurrent Neural Network-based Model for Semantic
+  Segmentation}.
+\newblock {\em ArXiv e-prints}, November 2015.
 
 \bibitem{WangWang2018DeLS}
 P.~{Wang}, R.~{Yang}, B.~{Cao}, W.~{Xu}, and Y.~{Lin}.

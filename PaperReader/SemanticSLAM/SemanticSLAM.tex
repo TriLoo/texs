@@ -1203,6 +1203,9 @@ E_m = \min_{\xi_m} \left( E_m^{icp} + E_m^{rgb} \right)
 
 {\color{red} 时间：2018.05.25}
 
+
+
+
 \section{图像语义分割之FCN和CRF}
 
 参考文章：\href{https://zhuanlan.zhihu.com/p/22308032}{图像分割2017.7-知乎}
@@ -1348,17 +1351,178 @@ FCN具有以下限制：
 
 每张图片被裁剪为很多子图片，每张子图片包含一个目标实例。每张子图片作为输入，得到分割结果，再把这些分割结果聚合起来，得到整张图片的分割图。
 
+\section[ReSeg 2015]{ReSeg: A RNN-based Model for Semantic Segmentation}
+
+参考文献：\cite{ReSeg2015}
+
+基于ReNet实现，每一层ReNet基于四个RNN实现，这四个RNN分别对应水平、垂直方向的双向信息。此外， ReNet is stacked在CNN之上，可以利用Generic local features。在ReNet之后，是提高分辨率的网络。
+
+\subsection{背景 \& 相关工作}
+
+普通的CNN会极大降低分辨率。FCN类的方法不能很好的利用local和global contextual dependencies, 而这些已被证明对分割具有较大帮助。因此，这些模型也经常利用CRF等作为后端处理，来locally smooth the model predictions, 但对于long-range contextual dependencies还是没有被很好的研究过。
+
+而RNN可已被用于retrieve global spatial dependencies， 但是计算量较大。In this paper, we aim at the efficient application of Recurrent Neural Networks RNN to retrieve contextual information from images.
+
+ReNet的每一层可以通过先水平扫描，然后垂直扫描来提高获取global information的能力。
+
+在相关工作中，RNN可以实现分析长距离像素之间的关系，因此被用于语义分割中。ReNet具有很高的并行性，因为每一行之间的计算是相互独立的，每一列的处理也是独立并可以并行计算。
+
+\subsection{Model Description}
+
+首先，输入图像被送入在ImageNet上预训练好的VGG16网络。
+
+然后，输出的Feature Maps被送进ReNet层，该结构可以sweep over输入的feature maps。
+
+最后，多个Upsampling layer被用于把最后的Feature map的分辨率恢复到输入图像的分辨率的大小，接着，用Softmax进行分类。
+
+使用GRU来很好的平衡存储量与计算能力的开销。
+
+\subsubsection{Recurrent layer}
+
+结构如图\ref{ReSeg0}所示。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{SemanticSLAM/ReSeg0.png}
+\caption{ReNet layer结构}
+\label{ReSeg0}
+\end{figure}
+
+其中， $f^{\downarrow}$与$f^{\uparrow}$分别表示垂直方向两个方向的RNN， 具有U Recurrent unit结构？
 
 
 
+\subsubsection{Upsampling layer}
+
+作者说有三种提高分辨率的方法：
+\begin{itemize}
+\item Fully Connected layers
+
+这种方法不适合，没有考虑输入的拓扑结构
+
+\item Full convolutions
+
+这种方法需要大的Kernel与Stride size等
+
+\item Transposed Convolutions
+
+这个方法好，既Memory efficient又Computation Efficient。
+
+\end{itemize}
+
+Transposed Convolution, 又被称为 Fractionally strided convolutions.下面是比较有意思的解释：
+\begin{quote}
+Convolution is based
+on the observation that direct convolutions can be expressed
+as a dot product between the flattened input and a sparse
+matrix, whose non-zero elements are elements of the convolutional kernel. The equivalence with the convolution is
+granted by the connectivity pattern defined by the matrix.
+
+Transposed convolutions apply the transpose (转置) of this
+transformation matrix to the input, resulting in an operation whose input and output shapes are inverted with respect to the original direct convolution.
+\end{quote}
+
+上一段的引用，详情可以从参考第八章中关于Deconvolution的说明，是一致的，且还有例子！
+
+关于Deconvolution的更多说明可以参考：A guide to convolution arithmetic for deep learning.
+
+\subsection{实验结果}
+
+数据集：
+
+Weizmann Horse, Oxford Flowers 17, CamVid Dataset.
+
+使用IoU。
+
+一个重要的现象：当数据集是Highly imbalanced, 分割效果会极大的变差， 因为此时网络会最大化那些经常出现的类别的分数， 而忽略不经常出现的类别？。为了解决这个问题，作者在Corss-entropy loss中加入了一个新的项，来bias the prediction towards the low-occurrence classes.
+
+具体的就是：\textbf{Median Frequency Balancing}。
+
+which re-weights the class predictions by the ratio between the median of the frequencies of the classes
+(computed on the training set) and the frequency of each class. This increases the score of the low frequency classes (see Table 4) at the price of a more noisy segmentation mask, as the probability of the underrepresented classes is overestimated and can lead to an increase in misclassified pixels in the output segmentation mask.
+
+\subsection{总结}
+
+The proposed architecture shows state-of-the-art performances on
+CamVid, a widely used dataset for urban scene semantic
+segmentation, as well as on the much smaller Oxford Flowers dataset. We also report state-of-the-art performances on the Weizmann Horses.
+
+\section[U-Net]{U-Net: CNN for Biomedical Image Segmentation}
+
+参考文献：\cite{U-Net2015}
+
+本文的一大贡献：证明通过更好的使用数据增广来提高现有训练数据的利用率。
+
+另一大贡献，是提出一种结构，该结构由Contracting和Expanding两个部分组成，这一点与FlowNet类似啊。	
+
+结果表明，仅需要非常少的图像数据就可以实现不错的效果。
+
+\subsection{Network Architecture}
+
+本文提出的网络结构实在FCN基础上进行的改进。
+
+网络结构如图\ref{U-Net0}所示。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.8\textwidth]{SemanticSLAM/U-Net0.png}
+\caption{U-Net结构示意图}
+\label{U-Net0}
+\end{figure}
+
+与FCN不同的是，U-Net把结构分成Contracting与Expanding两个Path， Contracting部分与普通的卷及网络相同。It consists of the repeated
+application of two 3x3 convolutions (unpadded convolutions), each followed by
+a rectified linear unit (ReLU) and a 2x2 max pooling operation with stride 2
+for downsampling. At each downsampling step we double the number of feature
+channels.
+
+而Expanding部分与FCN中不同的在于，其Feature Channel特别多，与Contracting中基本对称的一样多。每一层包含一个'Up-Convolution'， 同时把Feature Channel数量减半。
+
+在最后一层，一个1 * 1 的Convolution被用于把64-Component feature vector映射到目标的number of classes。
+
+Contracting部分的Feature Map与Expanding Path部分的Feature Map会进行\textbf{Concatenation}， 这一点与FCN也不同。U-Net是在Channel维度进行拼接，而FCN是逐点相加！参考文章：\href{https://zhuanlan.zhihu.com/p/31428783}{FCN/U-Net结构解析-知乎}， 这一点属于特征融合步骤的不同！
+
+在训练过程中，用到了Cross Entropy作为目标函数，同时进行数据增广：Shift, Rotation, Deformation, Gray value variantions.
+
+貌似Random elastic deformation对于训练少量Label的数据来说非常重要。We generate smooth
+deformations using random displacement vectors on a coarse 3 by 3 grid. The
+displacements are sampled from a Gaussian distribution with 10 pixels standard
+deviation. Per-pixel displacements are then computed using bicubic interpola-
+tion. Drop-out layers at the end of the contracting path perform further implicit
+data augmentation.
 
 
+\subsection{Conclusion}
 
+Thanks to data augmentation with elastic deformations (弹性变形), it only needs very few annotated images and has a very reasonable training time of only 10 hours on a NVidia Titan GPU (6 GB).
 
+\subsection{补充}
+\begin{itemize}
+\item U-Net中的'Up-Convolution'是什么意思？
 
+知乎上有文章说，就是用的Deconv来实现的。
 
+\item 在最后的几层，如何把Feature map映射成语义分割图像呢？这在FCN\cite{Fcn2014}中也是之前被忽略的问题。
 
+其实在最后的输出层也是一个Feature map， 它的Channel数量就是目标类别的数量，比如，在在Pacal中类别数为21(包括Background)， 所以输出的最后的Feature Map具有21个Channel，这个可以参考FCN论文中的图1.另外，在图\ref{U-Net0}中也可以看出，最后的输出通道数为2,即每一类别代表一个channel，然后利用SoftMax进行在Channel维度上进行计算，得到对应像素的类别结果。这一步一般通过一个1*1的Convolution来实现。这一点也可以参考下面FCN论文中的原话：
+\begin{quote}
+	We append a 1 × 1 convolution with chan-
+	nel dimension 21 to predict scores for each of the PAS-
+	CAL classes (including background) at each of the coarse
+	output locations, followed by a deconvolution layer to bi-
+	linearly upsample the coarse outputs to pixel-dense outputs
+	as described in Section 3.3.
+\end{quote}
 
+这么说来，原来Fully Convolution是这个意思，即相当于在原来Fully Connect的层在空间维度上进行扩充扩充，最终的结果是，现在每一个像素位置都对应于一个原来Fully Connect的维度的Vector！
+\end{itemize}
+
+总结一下， CNN图像分割基本上套路是：
+\begin{itemize}
+\item 下采样 + 上采样： Convolution + Deconvolution /Resize
+\item 多尺度特征特征融合：如Concatenate或者逐点相加
+\item 获得像素级的Segment Map， 一般通过n * 1*1 Convolution得到，其中$n$为类别数目。
+\end{itemize}
 
 
 
