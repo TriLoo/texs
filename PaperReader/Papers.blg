@@ -5,44 +5,44 @@ The style file: plain.bst
 A level-1 auxiliary file: CUDAImageProcessing/CUDAImageProcessing.aux
 A level-1 auxiliary file: FPGAs/FPGAs.aux
 Database file #1: reference.bib
-You've used 25 entries,
+You've used 26 entries,
             2118 wiz_defined-function locations,
-            631 strings with 8426 characters,
-and the built_in function-call counts, 8865 in all, are:
-= -- 841
-> -- 520
+            635 strings with 8595 characters,
+and the built_in function-call counts, 9169 in all, are:
+= -- 868
+> -- 543
 < -- 5
-+ -- 202
-- -- 177
-* -- 630
-:= -- 1511
-add.period$ -- 78
-call.type$ -- 25
-change.case$ -- 161
++ -- 211
+- -- 185
+* -- 653
+:= -- 1568
+add.period$ -- 81
+call.type$ -- 26
+change.case$ -- 168
 chr.to.int$ -- 0
-cite$ -- 25
-duplicate$ -- 331
-empty$ -- 612
-format.name$ -- 177
-if$ -- 1824
+cite$ -- 26
+duplicate$ -- 341
+empty$ -- 629
+format.name$ -- 185
+if$ -- 1882
 int.to.chr$ -- 0
-int.to.str$ -- 25
-missing$ -- 25
-newline$ -- 128
-num.names$ -- 52
-pop$ -- 173
+int.to.str$ -- 26
+missing$ -- 26
+newline$ -- 133
+num.names$ -- 54
+pop$ -- 180
 preamble$ -- 1
-purify$ -- 136
+purify$ -- 142
 quote$ -- 0
-skip$ -- 247
+skip$ -- 254
 stack$ -- 0
-substring$ -- 410
-swap$ -- 81
+substring$ -- 415
+swap$ -- 82
 text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 100
+type$ -- 104
 warning$ -- 0
-while$ -- 72
-width$ -- 27
-write$ -- 264
+while$ -- 74
+width$ -- 28
+write$ -- 274

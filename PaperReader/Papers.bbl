@@ -85,6 +85,11 @@ O.~{Ronneberger}, P.~{Fischer}, and T.~{Brox}.
 \newblock {U-Net: Convolutional Networks for Biomedical Image Segmentation}.
 \newblock {\em ArXiv e-prints}, May 2015.
 
+\bibitem{SemanticVisualLocalization2017}
+J.~L. {Sch{\"o}nberger}, M.~{Pollefeys}, A.~{Geiger}, and T.~{Sattler}.
+\newblock {Semantic Visual Localization}.
+\newblock {\em ArXiv e-prints}, December 2017.
+
 \bibitem{Silvia2018Recurrent}
 Jan C. van~Gemert Silvia L.~Pintea, Yue~Liu.
 \newblock {Recurrent knowledge distillation}.

@@ -1524,6 +1524,202 @@ Thanks to data augmentation with elastic deformations (弹性变形), it only ne
 \item 获得像素级的Segment Map， 一般通过n * 1*1 Convolution得到，其中$n$为类别数目。
 \end{itemize}
 
+\section{Semantic Visual Localization}
+
+参考文献: \cite{SemanticVisualLocalization2017}
+妹的，21页。
+
+看样子，本文的主要主要关注点在于建立：Robust visual localization under a wide range of viewing condition.
+
+本文提出利用使用联合\textbf{3D Geometry }和 \textbf{Semantic understanding of the world} 来帮助解决这个问题。
+
+提出的算法， 利用一个新提出的生成模型来完成descriptor learning， 该过程trained on semantic scene completion as an auxiliary task.
+
+最终，得到的3D descriptors可以很鲁棒，可以借助高层的3D geometric 以及 语义信息来处理丢失Observe的情况。
+
+看样子，本文算法比较新颖，效果也很好，一个比较大的优势是采用了生成模型，而不是常用的判别模型。
+
+\subsection{背景 \& 相关工作}
+
+其实这篇文章主要的关注点是Localization, 也就是新的传感器数据来了后，怎么更加准确的与地图中的信息进行匹配，难点在于：The main challenge in this setting is successful data association between the query and the database.
+
+为什么难呢，因为实际的场景是经常变化的，所以很容易就匹配错误了。一般的做法是基于描述子之间的匹配来定位，且通过提高描述子的质量来提高定位的质量。这种方法还是不好，比如尺度性不好、需要大量的匹配计算等。
+
+本文提出了一种高效的描述子学习算法， 是基于生成模型而不是判别模型实现的。本文证明了，通过引入Semantics提供了strong cues 对于场景补全。而且不需要人为操作，就可以泛化到其它数据集以及其它传感器类型，并且都不需要重新训练！(生成模型这么强么还是本文的算法很强？)
+
+生成的是3D 描述子。需要解决的一个重要问题是物体遮挡的场景(Occlusion)，本文提出的算法通过借助Semantic Completion这一辅助任务来实现遮挡问题的解决。
+
+本文的算法本质上还是提高Descriptor的生成质量以及匹配速度，在Euclidean space内完成。效果来看，可以在不同光照、季节变换等场景下实现定位。
+
+优点没看明白。在相关工作中，作者分析了大量的已有的算法的缺点，我记得的主要的缺点就是：生成的Descriptor不鲁棒或不满足要求、匹配过程复杂、对多变场景处理不好等等。
+
+\subsection{Semantic Visual Localization}
+
+从上文可以看出，作者的主要贡献是：在Eculidean生成包含语义的3D Descriptor， 可以满足场景的多变、快速匹配、很高的精确度等需求。 
+
+模型的输入数据：1) A set of color images with associated depth maps, 2) database image, including their respective camera poses.
+
+算法过程：
+\begin{enumerate}
+\item 对于Database的一个子set， 预先生成其语义地图：$M_D$
+\item 对于Query的一张或多张图像生成其语义地图$M_Q$
+\item 建立$M_D$与$M_Q$之间的匹配，得到相机的位姿估计$\mathcal{P}_Q$
+\end{enumerate}
+
+上述算法过程，得到的结果，作者认为就可以实现对Extreme viewpoint和光照的鲁棒了。Semantic information is
+comparatively invariant to these types of transformations through higher-level scene abstraction.
+
+额，貌似走着不是对输入的RGB图像进行提取Descriptor， 而是对Semantic Maps提取Descriptors！这也行么？
+
+按照上面三个步骤，具体内容如下：
+\begin{itemize}
+\item Semantic Segmentation and Fusion
+
+首先生成所有输入图像的Dense pixelwise semantic segmentation， 然后把这些分割结果融合到\textbf{3D} Voxel maps $M_D$与$M_Q$。 
+
+任务的目的是计算把Query 和 database map之间最佳匹配的位姿$P \in SE(3)$。
+
+下面给出如何在缺少观察的情况下，通过对场景的语义理解来建立鲁棒的Semantic Maps。
+
+\item Generative Descriptor Learning
+
+又强调了一次：Semantic scene understanding is key to learning such an invariant function.
+
+传统方案中， 有两种方式提高这种Invariant， 一种是学习更好的Matching function， 一种是学一种更好的Embedding。前者效果较好，但计算量很大，因为要比较每一对的Descriptor， 后者计算量小，本文的算法只需要每一个Descriptor计算一次就好。
+
+具体使用一个Encoder来对Scene Semantics 和 Geometry进行编码。为了可以推理出没观察到的部分，算法还涉及一个Semantic scene completion的辅助任务， 同时推理Scenen Semantic 和 Geometry。整个结构如图\ref{SemanticVisualLoc0}所示：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.85\textwidth]{SemanticSLAM/SemanticVisualLoc0.png}
+\caption{Generative Descriptor Learning的示意图}
+\label{SemanticVisualLoc0}
+\end{figure}
+
+\item Bags of Semantic Words
+
+ Note that given an incomplete map, the bag of semantic words is a description of its complete
+semantic scene layout. Our localization pipeline uses this representation to robustly match the query map to the database map, as detailed in the following.
+
+这个bag of semantic words是通过计算属于$M$的所有subvolume来得到集合。也就是Encoder部分的输出构成的集合，具体得看论文吧。
+
+\item Semantic Vocabulary for Indexing and Search
+
+基于Euclidean metric来计算Query和Database之间的相似性，具体是利用Encoder部分的输出来计算距离。
+
+\item Semantic Alignment and Verification
+
+计算一组Query在不同Rotation下与Database之间的相似性，这些计算结果作为准确定位的基础，这就是这一小节要说明的内容。
+
+通过类似于一种重投影误差的方式来判断计算的位姿的效果的好坏。
+
+\end{itemize}
+
+\subsection{Experiments}
+
+用到了KITTI， NCLT数据集。
+
+重复的场景结构容易引入Local Ambiguities， 会导致错误的定位。Global Ambiguities发生的较少，但会导致上百米的定位错误。通过考虑多帧的数据可以有效降低上述两种Ambiguities。此外，可以增加训练数据的多样性对于提高精度或许也有帮助。
+
+\subsection{Conclusions}
+
+In this paper, we proposed a novel method for localization using a joint semantic and geometric  understanding of the 3D world.
+
+At its core lies a novel approach to learning robust 3D semantic descriptors. 
+
+\section{小结3}
+
+在前面两个小结的基础上，这里在强调一下几个重要的改进点！：
+
+{\color{red} \bfseries 首先，实验目的是什么，有一些是实现Semantic SLAM， 也有提高定位信息的！然后，输入数据是什么， 现在趋势是借助多模态的数据，最经常用的是 Depth和RGB图像，此外，还有前面涉及到的Contour以及Semantic Information 和 3D Geometry信息，还有就是多帧数据实现非监督什么的。所以，一个可选的工作是，怎么把这些数据最高效的整合起来，可以借助RNN中的Gate思想，也可以看一下Knowledge 蒸馏法，以及Attention机制什么的！！！}
+
+
+\section{常用数据集}
+
+\subsection{KITTI}
+
+数据集官网：\href{http://www.cvlibs.net/datasets/kitti/index.php}{KITTI Dataset}
+
+参考文章：
+
+[1] \href{https://blog.csdn.net/Solomon1558/article/details/70173223}{KITTI数据集简介和使用-CSDN}
+
+KITTI数据集由德国卡尔斯鲁厄理工学院和丰田美国技术研究院联合创办，是目前国际上最大的自动驾驶场景下的计算机视觉算法评测数据集。该数据集用于评测立体图像(stereo)，光流(optical flow)，视觉测距(visual odometry)，3D物体检测(object detection)和3D跟踪(tracking)等计算机视觉技术在车载环境下的性能。KITTI包含市区、乡村和高速公路等场景采集的真实图像数据，每张图像中最多达15辆车和30个行人，还有各种程度的遮挡与截断。整个数据集由389对立体图像和光流图，39.2 km视觉测距序列以及超过200k 3D标注物体的图像组成[1] ，以10Hz的频率采样及同步。总体上看，原始数据集被分类为’Road’, ’City’, ’Residential’, ’Campus’ 和 ’Person’。对于3D物体检测，label细分为car, van, truck, pedestrian, pedestrian(sitting), cyclist, tram以及misc组成。
+
+\subsection{官网资源介绍}
+
+最官网页面顶部，一共分了13栏，如图\ref{KITTI0}所示。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{SemanticSLAM/KITTI0.png}
+\caption{KITTI官网截图}
+\label{KITTI0}
+\end{figure}
+
+其中，这些栏分别对应不同的应用目的提供单独的数据集，如Stereo, flow, sceneflow, depth, odometry, object, tracking, road, semantics, row data等。其中前三个貌似是对应同一个数据集。在depth中会有深度预测和深度补全等功能，semantics等包含一些标注好的图像数据等。Odometry等数据集比较大！
+
+此外，作者还提供了一个Submit results栏，可以上传自己的测试结果等。但不能造假，即训练过程中，需要自己负责把训练数据分成train data 和 validate data， 然后用test data对模型进行测试。
+
+\subsection{详述}
+
+主要参考本小节的参考文章。
+
+原始数据采集于2011年的5天，共有180GB数据。 
+
+\subsubsection{组织形式}
+
+图所示为早期的数据组织形式，与目前KITTI数据集官网公布的形式不同。在这早期的版本中，一个视频序列的所有的传感器数据都存储于data\_drive文件下， 其中data和driver是占位符，表示采集数据的日期和视频编号。时间戳记录在Timestamps.txt文件中。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{SemanticSLAM/KITTI1.png}
+\caption{早期的数据文件组织格式}
+\label{KITTI1}
+\end{figure}
+
+而现在，对于从官网下载的各个分任务的数据集，其文件组织形式比较简单，以Object Detection为例，下面是Object detection Evaluation 2012 标准数据集中left color images 文件的目录结构，样本分别存储在testing和training数据集中。
+
+\begin{verbatim}
+data_object_image_2/
+| -- testing/
+|      | -- image_2/
+| -- training/
+|      | -- image_2/
+|      | -- label_2/
+\end{verbatim}
+
+\subsubsection{Development Kit}
+
+KITTI各个子数据集都提供开发工具 development kit，主要由cpp文件夹，matlab文件夹，mapping文件夹和readme.txt组成。
+
+cpp文件夹主要包含评估模型的源代码evaluate\_object.cpp。Mapping文件夹中的文件记录训练集到原始数据集的映射，从而开发者能够同时使用激光雷达点云，gps数据，右边彩色摄像机数据以及灰度摄像机图像等多模态数据。Matlab文件夹中的工具包含读写标签，绘制2D/3D标注框，运行demo等工具。Readme.txt文件非常重要，详述介绍了某个子数据集的数据格式，benchmark介绍，结果评估方法等详细内容。
+
+\subsection{Cityscape}
+
+数据集官网：\href{https://www.cityscapes-dataset.com/}{Cityscapes Datasets}
+
+
+
+\subsection{TUM}
+
+数据集官网：\href{https://vision.in.tum.de/data/datasets}{TUM Datasets}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

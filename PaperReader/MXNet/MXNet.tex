@@ -720,9 +720,14 @@ $\uparrow$正确性有待验证。
 
 重要，我发现，对于我这样的新手来说，如何处理数据也是个问题，尤其现在，我感觉一头雾水。
 
-参考文章：\href{https://www.jianshu.com/p/38d55c9dbdb8}{MXNet常见加载数据的方式-简书}
+参考文章：
 
-有必要对MXNet的数据结构进行说明一下！尤其对于axes的概念。在MXNet中，我认为axes可以取四个值，分别对应一下概念：
+[1] \href{https://www.jianshu.com/p/38d55c9dbdb8}{MXNet常见加载数据的方式-简书}
+
+[2] \href{https://mxnet.incubator.apache.org/api/python/io/io.html}{MXNet API}
+
+
+有必要对MXNet的数据结构进行说明一下！尤其对于axes的概念。在MXNet中，我认为axes可以取四个值，分别对应以下概念：
 \begin{itemize}
 \item axes = 0, Batches， 比如batchsize=8, 那么axes就对应这8个样本
 \item axes = 1, Channels, 比如输入彩色图像，那么axes对应的就是RGB三个通道
@@ -731,12 +736,12 @@ $\uparrow$正确性有待验证。
 
 接下来就是本小节的重点内容，也就是如果处理训练数据，这是开始的一步，但我感觉也是容易被各种教程忽视的一步，如果这步不清楚，那么会影响整个后面的学习与实践过程。
 
-{\bfseries 正如参考文献中所总结的那样，一共可以分为类。分别如下！}
+{\bfseries 正如参考文献中所总结的那样，一共可以分为三类。分别如下！}
 
 \begin{itemize}
 \item 基于mxnet.io读取数据
 \item 使用mxnet.iamge读取数据
-\item 使用gluon接口读取数据， 这个部分是重点
+\item \textbf{使用gluon接口读取数据}， 这个部分是重点
 \end{itemize}
 
 此外，作者还提到了几种支持的数据结构，貌似就这几种么？
@@ -745,6 +750,231 @@ $\uparrow$正确性有待验证。
 \item raw image
 \item .lst文件，使用mx.image.ImageIter接口读取，这个接口可以读.rec的文件
 \end{itemize}
+
+大概流程：传data iter对象给base\_module，把数据对象变为iterator。
+下面分别对三种数据读取方式进行示例。
+
+\subsection{使用mx.io读取数据}
+
+\subsubsection{从内存中读取}
+
+调用\verb|mx.io.NDArrayIter|接口，以MXNet官方的train\_mnist.py为例。
+
+\lstset{language=Python, caption={train\_mnist.py例子}}
+\begin{lstlisting}
+def read_data(label, image):
+   """
+   download and read data into numpy
+   """
+   base_url = 'http://yann.lecun.com/exdb/mnist/'
+   with gzip.open(download_file(base_url+label, os.path.join('data',label))) as flbl:
+       magic, num = struct.unpack(">II", flbl.read(8))
+       label = np.fromstring(flbl.read(), dtype=np.int8)
+   with gzip.open(download_file(base_url+image, os.path.join('data',image)), 'rb') as fimg:
+       magic, num, rows, cols = struct.unpack(">IIII", fimg.read(16))
+       image = np.fromstring(fimg.read(), dtype=np.uint8).reshape(len(label), rows, cols)
+   return (label, image)
+
+
+def to4d(img):
+   """
+   reshape to 4D arrays
+   """
+   return img.reshape(img.shape[0], 1, 28, 28).astype(np.float32)/255
+
+def get_mnist_iter(args, kv):
+   """
+   create data iterator with NDArrayIter
+   """
+   (train_lbl, train_img) = read_data(
+           'train-labels-idx1-ubyte.gz', 'train-images-idx3-ubyte.gz')
+   (val_lbl, val_img) = read_data(
+           't10k-labels-idx1-ubyte.gz', 't10k-images-idx3-ubyte.gz')
+   train = mx.io.NDArrayIter(
+       to4d(train_img), train_lbl, args.batch_size, shuffle=True)
+   val = mx.io.NDArrayIter(
+       to4d(val_img), val_lbl, args.batch_size)
+   return (train, val)
+#参考train_mnist.py
+\end{lstlisting}
+
+详解如下：
+\begin{itemize}
+\item 顶层函数为\verb|get_mnist_iter|函数
+
+该函数的参数是：包含batch size的类arg。kv参数，但貌似没用到。
+
+函数\verb|get_mnist_iter|调用\verb|read_data|函数，返回图像数据及其对应的label。该函数的
+
+将\verb|read_data|函数的返回值传入\verb|mx.io.NDArrayIter|函数，该函数返回名称为\verb|train|和\verb|val|的data iterator. 分别作用与训练图像与训练标签。\verb|NDAarrayIter|函数的使用参数解释在下文单独总结。
+
+返回data iterator的训练图像与训练标签。
+
+\item 被调用函数\verb|read_data|
+
+该函数在这里主要负责下载数据文件(download\_file())、解压缩(struct.unpack)等。各个函数的输入输出可参考源代码。
+
+\item 被调用函数\verb|to4d|
+
+负责把输入图片rehape成四维数据结构，维度分解见上文中的axes的解释。
+
+\end{itemize}
+
+所以总结一下的话，就是这样的，首先下载文件并解压缩，然后读取数据，送入\verb|mx.io.NDArrayIter|产生data iterator.
+
+\subsubsection{从.csv文件中读取数据}
+
+\lstset{language=Python, caption={Read .csv 数据}}
+\begin{lstlisting}
+#lets save `data` into a csv file first and try reading it back
+np.savetxt('data.csv', data, delimiter=',')
+data_iter = mx.io.CSVIter(data_csv='data.csv', data_shape=(3,), batch_size=30)
+for batch in data_iter:
+   print([batch.data, batch.pad])
+\end{lstlisting}
+
+详解：
+\begin{itemize}
+\item 调用\verb|mx.io.CSVIter|读取.csv格式文件，同时输入数据shape以及batch size。返回的就是一个 data iterator。
+\end{itemize}
+
+\subsubsection{使用mx.io.ImageRecordIter接口，需要定制KVStore}
+
+这一部分还没看明白，可以看一下原文。
+
+\subsection{常用的系统提供的接口函数}
+分析以上实现方式，主要涉及以下几个系统接口函数。
+\begin{itemize}
+\item \verb|mx.io.NDArrayIter|
+
+原型：class mxnet.io.NDArrayIter(data, label=None, batch\_size=1, shuffle=False, last\_batch\_handle='pad', data\_name='data', label\_name='softmax\_label')
+
+其中，data, label为array 或list of array or dict of string to array。
+
+last\_batch\_handle为最后一个batch的处理，即训练数据的数目不能被batch size整除时的处理方式，可以选取'pad', 'discard' or 'roll\_over'等。
+
+更多细节见文档吧。
+
+Returns an iterator for mx.nd.NDArray, numpy.ndarray, h5py.Dataset mx.nd.sparse.CSRNDArray or scipy.sparse.csr\_matrix.
+
+
+\item \verb|mx.io.CSVIter|
+
+return the CSV file iterator，详情见文档吧。
+
+\item \verb|struct.unpack|
+
+原型：\verb|struct.unpack(fmt, buffer)|
+
+Unpack from the buffer buffer (presumably packed by pack(fmt, ...)) according to the format string fmt. The result is a tuple even if it contains exactly one item. The buffer’s size in bytes must match the size required by the format, as reflected by calcsize().关于fmt的具体格式，参考\href{https://docs.python.org/3/library/struct.html}{struct library python}
+
+\item \verb|gzip.read()|
+
+原型：\verb|read(size=-1)|
+
+Read and return up to size bytes. If the argument is omitted, None, or negative, data is read and returned until EOF is reached. An empty bytes object is returned if the stream is already at EOF.
+
+If the argument is positive, and the underlying raw stream is not interactive, multiple raw reads may be issued to satisfy the byte count (unless EOF is reached first). But for interactive raw streams, at most one raw read will be issued, and a short result does not imply that EOF is imminent.
+
+所以参数是要读取的byte的数目。
+
+\end{itemize}
+
+\subsection{使用mx.image读取数据}
+
+从imagelist中读取可迭代的数据。
+
+\lstset{language=Python, caption={mx.image使用示例}}
+\begin{lstlisting}
+data_iter = mx.image.ImageIter(batch_size=4, data_shape=(3, 224, 224), label_width=1,
+data_iter.reset()
+for data in data_iter:
+d = data.data[0]
+print(d.shape)
+# we can apply lots of augmentations as well
+data_iter = mx.image.ImageIter(4, (3, 224, 224), path_imglist='data/custom.lst',
+data = data_iter.next()
+# specify augmenters manually is also supported
+data_iter = mx.image.ImageIter(32, (3, 224, 224), path_rec='data/caltech.rec',
+\end{lstlisting}
+
+详解：
+\begin{itemize}
+\item 调用\verb|mx.image.ImageIter|实现
+\end{itemize}
+
+\subsection{使用Gluon接口读取数据}
+
+由于用的比较多，所以这部分是重点，起码目前来看是重点。
+
+使用Gluon接口时，我觉着主要分为两步：产生Dataset，基于Dataset产生 Mini-batch iterator!
+
+下面分别对这两个步骤进行简单说明，后续有时间在详细说一下吧。通过本小节的简单解释，然后再看这个文档，应该就不那么难了吧，就知道各个部分是什么意思了，怎么组织在一起的了。
+
+具体的参考文档：\href{https://mxnet.incubator.apache.org/api/python/gluon/data.html}{Gluon API 文档}
+
+\subsubsection{产生Dataset}
+
+Dataset的生成主要分为几种方式，这里主要讨论三种形式：
+\begin{itemize}
+\item Gluon自带的数据库，包括：MNIST, FashionMNIST, CIFAR10, CIFAR100等。
+
+产生Dataset的方式为：
+
+\begin{verbatim}
+data_set = gluon.data.vision.Dataset
+\end{verbatim}
+
+其中， Dataset需要替换成提到的提供的自带数据库。
+
+\item 来自目录生成Dataset， 调用：\verb|ImageFolderDataset|， 目录中保存的raw image。
+
+产生Dataset的方式：
+
+\begin{verbatim}
+data_set = gluon.data.vision.ImageFolderDataset(root, flag=1, tranform=None)
+\end{verbatim}
+
+A dataset for loading image files stored in a folder structure like:看文档，ImageFolderDataset的说明文档。其中,flag=1说明把读入的图像转换成三通道彩色的，若flag=0那么读入的是灰度图像。
+
+\item 自己生成Dataset类！
+
+产生自定义Dataset的方式：
+
+\begin{verbatim}
+class myDatasetName(gluon.data.Dataset)
+    ... other functions, to process image as your need
+    def __getitem__(..):
+        ....
+    def __len__(..):
+        ....
+\end{verbatim}
+
+从上面的代码可以看出，生成自定义的Dataset时，需要继承\verb|gluon.data.Dataset|类，同时，必须override \verb|__getitem__|和\verb|__len__|两个函数！实际使用中，该类可以按照自己数据库的格式，在myDatasetName类中定义其它帮助处理数据的函数，一个更具体点的例子是\href{http://zh.gluon.ai/chapter_computer-vision/fcn.html}{FCN-Gluon}这个文档的代码！
+
+\end{itemize}
+
+\subsubsection{产生Mini-batch iterator}
+
+在上一步，\textbf{无论用哪一种方式}产生了Dataset后，就可以送入\verb|DataLoader|产生data iterator了！
+
+这一步主要通过借助\verb|gluon.data.Dataloader|这一Iterator类来实现。此外还有一些基于Sample的函数，具体看文档。
+
+产生Mini-batch Iterator的方式：
+
+\begin{verbatim}
+data_iter = gluon.data.DataLoader(dataset, batch_size=Noen,  
+                                          shuffle=False, ....)
+\end{verbatim}
+
+后面还有很多参数，可以去文档查看。
+
+这里的第一个参数：\verb|dataset|也就是上文提到的生成Dataset的结果了。
+
+\section{Gluon中的数据结构}
+
+这一部分，我主要想总结一下Gluon中的各种部件的数据结构，如Net = gluon.nn.Sequentional()后，net的数据结构到底是什么样的，还有就是网络的参数又是什么结构的， 比如Parameter类到底长什么样，又该如何使用等。有时间慢慢写吧。
+
 
 
 
