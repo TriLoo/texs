@@ -30,6 +30,13 @@ Ian Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley,
   Weinberger, editors, {\em Advances in Neural Information Processing Systems
   27}, pages 2672--2680. Curran Associates, Inc., 2014.
 
+\bibitem{he2014spatial}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Spatial pyramid pooling in deep convolutional networks for visual
+  recognition.
+\newblock In {\em european conference on computer vision}, pages 346--361.
+  Springer, 2014.
+
 \bibitem{Hui2018LiteFlowNet}
 T.-W. {Hui}, X.~{Tang}, and C.~{Change Loy}.
 \newblock {LiteFlowNet: A Lightweight Convolutional Neural Network for Optical

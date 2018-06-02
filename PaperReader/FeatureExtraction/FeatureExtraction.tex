@@ -45,23 +45,138 @@ M Int(C_1, C_2) = \min (Int(C_1) + \tau (C_1), Int(C_2) + \tau (C_2) )
 
 \subsection{概述}
 
-\begin{figure}[!htbp]
+\begin{figure}[!htbp] 
 \centering
 \includegraphics[width=0.85\textwidth]{FeatureExtraction/RCNN0.jpg}
-\caption{RCNN整体思想}
+\caption{RCNN整体思想 }
 \label{RCNN0}
 \end{figure}
 
 这里的 Extract region proposals 是基于Selective Search实现的,然后将这些候选框输入到CNN进行特征提取，最后利用SVM对提取的特征进行分类。
 
 
-
+\subsubsection{Boundingbox 回归}
 
 
 
 
 \section{SPP Net}
 
+参考文献：\cite{he2014spatial}
+
+在这之前的网络都要求输入图像数据的大小是固定的，而本文提出了Spatial pyramid pooling， 可以允许输入图像是任意大小，并且都会生成一个固定大小的表示。
+
+此外，Pyramid pooling用于目标检测时，可以提高RCNN的速度，因为只需要对整幅图像提取一次特征，然后在Pooling层进行获取sub-images。
+
+\subsection{背景与相关工作}
+
+固定输入图像的大小，不利于识别在不同Scale下的目标。
+
+那么为什么会有这种限制呢？传统的CNN结构可以认为由Convolution lyaers和Fully connected layers两部分组成，前者对输入尺寸没有要求，且可以输出任意的尺寸；但是后者的输入对尺寸有要求，所以限制了输入图像的尺寸。训练的时候也可以使用不同尺寸的
+图像进行训练。
+
+改进的Spatial Pyramid Pooling在网络结构中的位置：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{FeatureExtraction/SPPNet0.png}
+\caption{Pyramid Pooling在网络结构中的示意图，与传统CNN结构的比较}
+\label{SPPNet0}
+\end{figure}
+
+即在Convolution部分的最后一层之后，加入了Pyramid Layer， 可以认为是一种Information Aggregation。
+
+本文在Feature Map上对识别器进行训练与测试。
+
+基于最近新提出的一个Fast proposal method of EdgeBoxes。
+
+\subsection{网络结构}
+
+\subsubsection{Fisher Kernel}
+
+参考文献：\href{https://en.wikipedia.org/wiki/Fisher_kernel}{Fisher Kernel Wikipedia}
+
+目的是，通过对两个object进行一系列的Measurements和一个Statistical model， 得到两个Object的相似性。
+
+在分类中，可以通过最小化New object与each known number of the given class之间的Fisher Kernel distance来实现分类。
+
+Fisher Kernel 借鉴了生成模型和判别模型：
+\begin{itemize}
+\item 生成模型可以处理任意长的数据
+\item 判别模型可以have flexible criteria和得到更好的结果
+\end{itemize}
+
+Fisher Kernel基于Fisher Score来实现：
+\begin{displaymath}
+U_X = \nabla_\theta \log P(X | \theta)
+\end{displaymath}
+
+其中，$\theta$ 是模型参数，$\log P(X|\theta)$是对数似然。
+
+然后Fisher Kernel如下：
+\begin{displaymath}
+K(X_i, X_j) = U_{X_i}^TI^{-1}U_{X_j}
+\end{displaymath}
+
+其中， $I$是Fisher Information matrix，比较复杂，查Wikipedia吧。
+
+一种应用是：用在图像分类和Retrieval中，由于Bag of visual words模型 suffer from sparsity 和 high dimensionality。而Fisher Kernel可以产生稠密、Compact的Representation。
+
+\subsubsection{Convolutional Layers and Feature Maps}
+
+在强调一下，对输入图像固定尺寸这一限制来自于全连接层的输入要求。基于传统的特征表示的，会再利用其他技术进行表示的处理，如上文提到的Fisher Kernel等。
+
+\subsubsection{The Spatial Pyramid Pooling Layer}
+
+相比于传统的基于BoW的模型，Spatial pyramid pooling还可以保留空间信息 by pooling in local spatial bins, These spatial bins have sizes proportional to the image size, so the number of bins is fixed regardless of the image size.(这句话有错误吧，先说这些Spatial bins与输入图像大小成正比，但又说the number of bins是固定的，与图像尺寸无关。？？？)
+
+图表示了提出的Pyramid Pooling Layer的示意图。在每一个Spatial bin， 作者对每一个filter 的 response进行Pool(MaxPooling)。 而输出是$kM$， 其中，$k$是filter的数目，$M$是the number of bins？ 这里的bin是指Pooling后的结果么？然后结果被输入到Fully connected层。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{FeatureExtraction/SPPNet1.png}
+\caption{Pyramid Pooling的计算过程示意图}
+\label{SPPNet1}
+\end{figure}
+
+作者证明，在深度网络中，多尺度对提高精度同样重要。
+
+作者认为：The global pooling operation corresponds to the traditional BoW method.?
+
+\subsubsection{Training}
+
+在这部分，作者貌似提到了Pyramid Pooling是怎么进行的。得到最后一层的$a \times a$ 大小的 Feature Map进行Pooling操作，操作时，Sliding window Pooling 的 window size 是 $win = \lceil a / n \rceil$， 然后Pooling的stride是$\lfloor a / n \rfloor$。
+
+基于 cuda-convnet 和 caffe实现。
+
+\subsection{Object Detection Experiments}
+
+在分类的试验中，实验结果表明，Multi-level Pooling提高精度， Multi-size也提高精度， Fully-image representation 提高精度、
+
+Model Combination是提高CNN-based 分类器精度的一种重要手段。实验表明，这种提升貌似来自于Convolutional layer。如果组合两个具有一样结构的Conv，那么效果貌似并没有提升。
+
+这个细节还是有必要说一下。
+
+RCNN的工作流程是：首先用Selective search在输入图像上得到候选框，然后进行在每一个候选框输入到CNN进行特征提取，提取的特征送入SVM进行分类。
+
+注意，因为与之前的方法相比，在目标识别中，本分的方法只对整幅图像进行一次卷积，然后在Feature Map进行选框操作(Candidate window of feature maps)。那么这个在Feature Map中的候选框是怎么来的呢？
+
+看文章附件的意思：
+
+首先在输入图像中生成候选框，可以用相同的Selective方法等， 在Image Domain生成一系列的候选框，然后把这个候选框的位置映射到Feature Map中，得到其在Feature map中的Corner point。由于在得到Feature Map的过程中涉及很多的下采样过程，所以，在映射的过程中需要注意映射的准确性。本文用到的映射公式如下：
+\begin{displaymath}
+\begin{gathered}
+x' = \lfloor x/S  \rfloor + 1 \qquad  (left top corner)\\
+x' = \lfloor x/S \rfloor - 1 \qquad (right bottom corner)
+\end{gathered}
+\end{displaymath}
+
+其中$S$是当前层的Stride。上述过程的前提是，Padding为$\lfloor p/2 \rfloor$。$p$为Pooling的size。
+
+\subsection{Conclusion}
+
+SPP is a flexible solution for handling different scales, sizes, and aspect ratios. The resulting SPP-net shows outstanding accuracy in classification/detection tasks and greatly accelerates DNN-based detection.
+
+还有就是，一些经典的视觉算法在深度学习中，同样可以发挥重要的作用！
 
 \section{Fast RCNN}
 

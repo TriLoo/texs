@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  31 MAY 2018 15:31
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  1 JUN 2018 09:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2083,15 +2083,20 @@ Chapter 9.
 Chapter 10.
 [137]
 File: FeatureExtraction/RCNN0.jpg Graphic file (type QTm)
- <use  "FeatureExtraction/RCNN0.jpg" >)
-Underfull \vbox (badness 10000) has occurred while \output is active []
+ <use  "FeatureExtraction/RCNN0.jpg" > [138]
+File: FeatureExtraction/SPPNet0.png Graphic file (type QTm)
 
- [138]
-[139] [140
+<use  "FeatureExtraction/SPPNet0.png" > [139]
+File: FeatureExtraction/SPPNet1.png Graphic file (type QTm)
 
-] (./Papers.bbl [141
+<use  "FeatureExtraction/SPPNet1.png" > [140])
+Underfull \vbox (badness 6125) has occurred while \output is active []
 
-]) (./Papers.ind [142] [143
+ [141]
+[142] (./Papers.bbl [143
+
+
+]) (./Papers.ind [144] [145] [146
 
 
 ])
@@ -2108,12 +2113,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
  ) 
 Here is how much of TeX's memory you used:
- 29026 strings out of 495525
- 536228 string characters out of 6184337
- 745065 words of memory out of 5000000
- 31746 multiletter control sequences out of 15000+600000
+ 29036 strings out of 495525
+ 536433 string characters out of 6184337
+ 745241 words of memory out of 5000000
+ 31754 multiletter control sequences out of 15000+600000
  12233 words of font info for 90 fonts, out of 8000000 for 9000
  80 hyphenation exceptions out of 8191
  45i,14n,58p,10437b,1780s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Papers.pdf (153 pages).
+Output written on Papers.pdf (156 pages).

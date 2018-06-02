@@ -81,4 +81,6 @@
 \contentsline {figure}{\numberline {8.20}{\ignorespaces 1*1 Convolutoin 的作用示意图\relax }}{133}{figure.caption.187}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {10.1}{\ignorespaces RCNN整体思想\relax }}{138}{figure.caption.188}
+\contentsline {figure}{\numberline {10.1}{\ignorespaces RCNN整体思想 \relax }}{138}{figure.caption.188}
+\contentsline {figure}{\numberline {10.2}{\ignorespaces Pyramid Pooling在网络结构中的示意图，与传统CNN结构的比较\relax }}{139}{figure.caption.190}
+\contentsline {figure}{\numberline {10.3}{\ignorespaces Pyramid Pooling的计算过程示意图\relax }}{140}{figure.caption.194}
