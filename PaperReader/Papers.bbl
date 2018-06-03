@@ -97,6 +97,13 @@ J.~L. {Sch{\"o}nberger}, M.~{Pollefeys}, A.~{Geiger}, and T.~{Sattler}.
 \newblock {Semantic Visual Localization}.
 \newblock {\em ArXiv e-prints}, December 2017.
 
+\bibitem{scona2018staticfusion}
+Raluca Scona, Mariano Jaimez, Yvan~R Petillot, Maurice Fallon, and Daniel
+  Cremers.
+\newblock Staticfusion: Background reconstruction for dense rgb-d slam in
+  dynamic environments.
+\newblock Institute of Electrical and Electronics Engineers, 2018.
+
 \bibitem{Silvia2018Recurrent}
 Jan C. van~Gemert Silvia L.~Pintea, Yue~Liu.
 \newblock {Recurrent knowledge distillation}.

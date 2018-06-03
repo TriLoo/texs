@@ -1632,6 +1632,85 @@ At its core lies a novel approach to learning robust 3D semantic descriptors.
 
 {\color{red} \bfseries 首先，实验目的是什么，有一些是实现Semantic SLAM， 也有提高定位信息的！然后，输入数据是什么， 现在趋势是借助多模态的数据，最经常用的是 Depth和RGB图像，此外，还有前面涉及到的Contour以及Semantic Information 和 3D Geometry信息，还有就是多帧数据实现非监督什么的。所以，一个可选的工作是，怎么把这些数据最高效的整合起来，可以借助RNN中的Gate思想，也可以看一下Knowledge 蒸馏法，以及Attention机制什么的！！！}
 
+\section[StaticFusion]{StaticFusion: Background reconstruction for dense RGBD SLAM Dynamic Environments}
+
+参考文献：\cite{scona2018staticfusion}
+
+主要目的：提出一个鲁棒的、稠密的、基于RDBD的、可处理Dynamic Environment的　SLAM系统。
+
+可以实现对Static和Dynamic　Environment的分割，以及只对Static部分建模，来提高相机位姿估计的精度，降低overal drift的影响。
+
+\subsection{背景}
+
+现有的SLAM系统都假设场景是静态的，所以通过图像对之间的匹配可以得到相机的变换关系。但是现在场景中存在动态目标，那么图像之间的匹配就不单单是由于相机变换引起的了，所以需要区分静态场景和动态场景，并且动态场景对地图的构建也会产生不可逆的影响。
+
+主要做了两件事：
+\begin{itemize}
+\item 同时估计相机的位姿以及对static和Dynamic场景的分割
+
+其中，RGBD相机估计，通过把新来的图像帧与一个稠密的surfel-based SLAM model一起实现，如ElasticFusion。
+
+\item 使用Static场景对环境进行了更具有一致性的建模
+\end{itemize}
+
+作者有公开源码。
+
+\subsection{动态场景下SLAM系统的相关工作}
+
+ElasticFusion是首个基于RGBD的SLAM系统，现在在Scalable estnesion、loop clusure capabilities、consider run-time limitations等方面改进，这一小节主要总结在Dynamic Environment场景下的一些改进方法。主要有三个方面：
+\begin{itemize}
+\item Implicit Handing of Dynamic Elements
+
+这一类算法通过对High-residual points施加惩罚项来提高位姿估计的鲁棒性。其他的如ElasticFusion等算法在构建地图之前，需要目标在连续的多帧图像中都可以观察到，才会被认为是Static部分，加入到地图构建中。但这些算法并不会明确的对Dynamic Object进行处理，只能适用于运动物体在图像中范围比较小或者相机的运动幅度很小。
+
+\item Outlier Rejection Strategies
+
+一种常用的方法是把Dynamic moving object当做噪声来处理，被检测出来然后被滤波去除。
+
+这一类的方法包括：DTAM、ORB-SLAM等。通过非常保守的关键帧选取策略来提高系统的鲁棒性。但这些算法并没有考虑在连续帧中检测Dynamic points是使用Spatial和temporal上面的Coherence。
+
+{\color{red} \textbf{评语}：所以在Temporal上的Coherence可以使用RNN来帮助解决，而在Spatial上面的Coherence可以通过CRF之类的算法实现，最近不是也有ConvCRF的算法出现么！可以考虑考虑。}
+
+\item Methods Enforcing Spatial on temporal Coherence
+
+此外，还可以借助IMU以及Robot's odometry来提高Dynamic下的SLAM的鲁棒性，但本文主要基于单目RGBD相机来做。
+
+\end{itemize}
+
+\subsection{Framework和Notation}
+
+主要的流程：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{SemanticSLAM/StaticFusion0.png}
+\caption{StaticFusion算法的三个主要流程}
+\label{StaticFusion0}
+\end{figure}
+
+三个步骤：
+\begin{enumerate}
+\item From incoming pair $I_D, Z_D$ 得到3D Geometry Cluters $\mathbf{C}$
+
+其中， $C_D$是输入的彩色图像， $Z_D$是输入的Depth图像, $I_D$是基于$C_D$得到的Intensity image。这个分割算法来自于：Fast odometry and scene flow from RGB-D cameras based on geometric clustering.作者假设分割后的每一个cluster是rigid body.
+
+\item 根据上一帧的相机位姿预测这一时刻的场景图片$C_M, D_M$， 然后这个预测结果与这一时刻实际的数据的分割结果来联合估计相机的运动$\xi \in \mathfrak{se}(3)$, 与此同时，这一步还会得到一个基于运动的场景分割，对于每一Cluster，我们分配一个Score， $b_i \in [0, 1]$， 来表示这一个Cluster属于Dynamic还是Static, 本文中，$b_i = 1$是Static， $b_i=0$是Dynamic， 在之间则表明不同程度的不确定性。
+
+具体还会用到到上一时刻截止的Map信息。
+
+\item 最后，利用上一步计算得到的$\xi$和运动分割结果， 得到一个pixel-wise的分割图\ref{StaticFusion0}中的$B_D$, 这一步只处理输入上一步计算的Static部分来计算。然后这个计算结果与输入$C_D, Z_D$进行加权\textbf{3D} Fusion。
+
+\end{enumerate}
+
+每一步的具体实现，还需要下面的讲解。
+
+\subsubsection{第二步的计算}
+
+
+
+
+
+
+
 
 \section{常用数据集}
 
