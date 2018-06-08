@@ -1711,8 +1711,134 @@ ElasticFusion是首个基于RGBD的SLAM系统，现在在Scalable estnesion、lo
 
 
 
+\section{Convolutional CRFs for Semantic Segmentation}
+
+参考文献：\cite{marvin2018crf}
+
+之前的研究人员会用CRF作为语义分割的后处理步骤，但CRF有两个缺点：训练困难，推理计算速度慢。
+
+为了解决这两个问题，作者在本文中提出在全连接CRF中引入条件独立性的假设。这样的后果就是，我们可以以卷积的形式重新组织CRF的推理计算过程，而且可以通过后向传播的方式在训练过程中优化模型参数。最终可以借助GPU进行加速训练，效果是速度可以提高两个数量级。
+
+\subsection{背景 \& 相关工作}
+
+传统用于语义分割的CNN的缺点是：只能提取局部特征，不能利用全局的Contexture。所以有人认为简单的前向CNN不能满足Structured Predictions类任务。
+
+在FCN的基础上，Transposed convolution layer用于提高Feature Map的分辨率，Dilated convolutions用于提取空间信息(Spatial information)。很多网络结构都是基于这种思路来做的！而这一类做法严重依赖于CNN提取特征的能力，进行pixel-wise的预测。stuctured knowledge and background context被忽略。
+
+一种在CNN中加入sturctured predictions into CNN的方法是在CNN的输出上加入fully-conneced CRF进行后续处理。Pyramid pooling是另一种与CRF类似作用的方法， 用于提高CNN的感受野，但并不会提供真正的structured reasoning。
+
+还是那句话，主要是两个问题，那么现在有哪些方法来解决这两个问题呢？
+\begin{itemize}
+\item Parameter Learning in CRFs
+
+一些方法包括：EM和Grid-search， Gradient Decent， Quadratic Optimization等。但都不太适合CNN的训练流程。
+
+\item Inference speed of CRFs
+
+一些方法输出降维的数据，但会影响预测能力。据作者所知，目前还没有一种可以有效提高FullCRFs推理速度的方法。
+
+\end{itemize}
+
+\subsection{Fully Connected CRFs}
+
+CRF嘛，基于随机场的原理来实现的。首先说明下符号：$I$是输入图像，具有$\mathbf{n}$个像素；$\mathbf{X}\in \{ X_1, \ldots, X_n \}$表示每一个像素的标签，即分割结果中的类别；假设共有$k$个类别，即每一个$X_i$都有$k$个可能的取值。所以得到的条件随机场模型，以吉布斯分布的形式(基于成本函数表示的吧应该)：
+\begin{displaymath}
+P(X=\hat{x}|\tilde{I}=I) = \frac{1}{Z(I)}\exp(-E(\hat{x}|I))
+\end{displaymath}
+
+其中，$E(\hat{x}|I)$表示能量函数，由下式给出：
+\begin{displaymath}
+E(\hat{x}|I) = \sum_{i \le N}\psi_u(\hat{x}_i|I) + \sum_{i\ne j \le N}\psi(\hat{x}_i, \hat{x}_j | I)
+\end{displaymath}
+
+上式中的第一项是Unary Potential，传统的来自于普通的CNN的语义分割结果可以认为就是这一项的具体取值了。那么还有后一项，后一项包含两个像素的分割结果，表示的就是利用Spatial Information了。重点说一下这一项。
+
+后一项叫做Pairwise Potential，表示$\hat{x}_i, \hat{x}_j$的联合分布，这里的$x_i, x_j$其实也是可以是来自于CNN的语义分割预测结果，与Unary potential中的输入是一样的！可以用于明确表示这两个像素之间的联系，如近似的颜色等。在FullCRFs中，这一项是基于weighted sum of M个 gaussian kernels来实现的。
+\begin{displaymath}
+\psi(x_i, x_j | I) = \mu(x_i, x_j)\sum_{m=1}^{M}\omega^{(m)}k_G^{(m)}\left( f_i^I, f_j^I \right)
+\end{displaymath}
+
+其中，$\omega^{(m)}$是可以学习的参数，特征向量$f_i^I, f_j^I$可以任意选择，并可以依赖于输入图像$I$。但是最开始的那个函数$\mu(x_i, x_j)$是the compatibility transformation，只与$x_i, x_j$有关，而与输入无关。接下来重点说一下这个函数的选择。
+
+一种普遍的选择是用Patts Model来做$\mu(x_i, x_j) = |x_i \ne x_j |$，关于这个模型，可以参考Wikipedia，我记得笔记中也有，但记不清了。而在CRFasRNN中，提出利用1*1的卷积来做Compatibility transformation。这样一种函数可以让模型学习更多的structured interactions between predictions。
+
+说完了$\mu$函数，那么来看一下在FullCRF中，是怎么实现后面对Gaussian kernel的加权的吧。在FullCRF中，有两个Gaussian Kernelz作为hand-crafted features。Appearance kernel $k_\alpha$考虑了颜色的取值$I_i, I_j$作为特征; smoothness kernel基于spatial corrdinates$p_i, p_j$来实现。整个的Pairwise potential 由下式给出：
+\begin{displaymath} 
+k(f_i^I, f_j^I) = \omega^{(1)}\exp\left( -\frac{|p_i - p_j|^2}{2\theta_\alpha^2} -\frac{|I_i - I_j|^2}{2\theta_\beta^2} \right) + \omega^{(2)}\exp\left( -\frac{|p_i - p_j|^2}{2\theta_\gamma^2} \right)
+\end{displaymath}
+
+其中, $\omega, \theta$都是可以学习的参数。需要指出的是，这是一种Hand-crafted feature，有助于提高CRF的优化效率。
+
+\subsubsection{Full CRF的Mean field inference}
+
+FullCRF的推理主要基于Mean Field inference来实现的。具体步骤如图\ref{ConvCRF0}所示。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.85\textwidth]{SemanticSLAM/ConvCRF0.png}
+\caption{Mean field inference算法步骤}
+\label{ConvCRF0}
+\end{figure}
+
+
+对这个算法，简单说两句，除了message passing这一步之外，其它的几个步骤都是可以高度并行的。可以用GPU进行加速。 Message Passing也是CRF计算的瓶颈，计算量与输入图像的像素数的平方成正比，有研究人员提出利用Permutohedral lattice模型来近似，从而提高计算效率，这个近似模型是一种高维的滤波算法。但这种模型是基于一种很复杂的数据结构来实现的，存在基于CPU的复杂但快速的实现，但不适合GPU的实现。实际上，Permutohedral lattice模型的梯度求解也是一件很麻烦的事情，这也是为什么FullCRF之类的算法基于Hand-crafted features来做。
+
+\subsection{Convolutional CRFs}
+
+Convolution CRF其实就是在Full CRF的基础上引入了条件独立假设，即如果两个特征之间的Manhattan距离超过一个阈值$k$即$d(i, j) > k$那么就认为这两个点之间是独立的，这个$k$作者称为filter-size。
+
+在Pairwise Potentional上面的体现就是，若大于这个阈值，$\psi_p$为0。
+
+\subsubsection{Efficient Message Passing in ConvCRFs }
+
+上面也提到了，Message Passing是CRF的计算瓶颈，本文提出的方法可以有效解决这个瓶颈，这是本文的主要贡献之一， 就不需要再使用Permutohedral模型近似了，也可以借助GPU加速计算了。为了实现这个目标，作者提出利用截断Gaussian Kernel实现的卷积操作来完成Message Passing这一步，这样就可以利用普通的CNN来完成了。
+
+假设输入$P$是的尺寸是$[bs, c, h, w]$， 分别对应Batch size、通道数、高度、宽度。最终可以得到下面的公式，具体的构成看论文吧，那个公式有点复杂。
+
+\begin{displaymath}
+Q[b, c, x, y] = \sum_{dx, dy \le k} K[b, dx, dy, x, y] \cdot P[b, c, x+dx, y+dy]
+\end{displaymath}
+
+可以看出滤波器的取值还与Spatial dimension有关，需要注意的地方是，卷及操作实在通道为度上进行的。{\bfseries 这里进行的信号处理中的卷及操作，而不是NN中的卷及操作，后者其实是相关操作。}
+
+这一步可以基于GPU来加速，但会涉及GPU中数据的重新组织，而实际上90\%的GPU运算时间都花在了数据重新组织上了。有一段关于卷积运算的阐述看论文。
+
+\subsubsection{Additional implementation details}
+
+ConvCRF中的设计策略与FullCRF中相同，即使用Softmax进行归一化、使用Potts model以及Hand-crafted gaussian featreu等。同样的，对Pairwise kernels做Gaussian blur，这样可以增加滤波器的有效大小变成4倍，这是为什么！
+
+作者也实现了基于1*1卷积的实现，作为实验结果进行分析， 或者在Pairwise 中的输入换成可以学习的Feature数值。
 
 \section{常用数据集}
+
+使用VOC2012。使用ResNet101作为Unary potentials。
+
+训练的时候，采用Decoupled Training的策略。即首先训练CNN模型，以语义分割为目标；然后固定CNN的输出，进行CRF的训练。
+
+{\color{red} \bfseries 评语： 可以看得出来，作者是用CNN输出的完整分辨率的CRF进行训练的，这得多耗时，所以，下一步就是在Feature领域进行CRF操作！}
+
+
+\subsection{总结}
+
+通过增加条件独立的假设，我们可以去除Permutohedral lattice approximation，从而可以借助GPU完成高效的消息传递的计算，并是以卷积的方式进行。
+
+下面，作者说还是要如何更好的捕获全局信息。也会把ConvCRF应用于Instance Segmentation以及Landmark recognition等应用中看一下效果怎么样！
+
+
+
+
+\section[Co-Fusion]{Co-Fusion: Real time segmentation tracking and fusion of multiple objects}
+
+参考文献：\cite{runz2017co}
+
+输入的数据是RGBD， 主要通过对运动物体进行建模，完成场景的描述，可以作用在动态场景下。
+
+表现在：把场景分割成多个Objects， 并实时的对他们进行跟踪和Shape建模。
+
+
+
+
+
 
 \subsection{KITTI}
 

@@ -1,5 +1,7 @@
 \chapter{Tips in DL}
 
+重要的一点说明：CNN中的卷积操作其实是信号处理中的相关操作(Correlation Operation)。
+
 \section{Enlarge the FOV}
 
 增加网络的感受野。目前看到的主要方法如下：
@@ -935,6 +937,55 @@ on a second network output $a_t \sim p(\cdot | f_a(h_t; \theta_a))$
 
 参考文章：\href{https://zhuanlan.zhihu.com/p/37074222}{CVPR2018高效小网络-知乎}
 
+\subsection{理论分析}
+
+先说结论：卷积层主要引入了计算量，全连接层主要引入了参数数量。
+
+参数数量用params表示，关系到模型大小，单位通常为M，通常参数用float32表示，所以模型大小是参数数量的4倍。
+
+理论计算量用FLOPs或者M-Adds表示，这里用FLOPs写起来简单，关系到算法速度，大模型的单位通常为G，小模型通道为M。
+
+需要注意的两点：
+\begin{itemize}
+\item 理论计算量通常只考虑乘加操作(Multi-Adds)的数量，而且只考虑CONV和FC等参数层的计算量，忽略BatchNorm和PReLU等等。一般情况，CONV和FC层也会忽略仅纯加操作的计算量，如bias偏置加和shotcut残差加等，\textbf{目前技术有BN的CNN可以不加bias}。
+
+\item 理论计算量通常和实际ARM实测速度会有不一致，主要是理论计算量太过理论化，没有考虑不同硬件IO速度和计算力差异，最重要的是inference framework部署框架优化水平和程度差异，不同框架的优化的关注点不一样，同一框架对不同层的优化程度也不一样。Inference Framework以我用过的ncnn为代表。
+\end{itemize}
+
+假设，卷积核大小为$k_h * k_w$， 输入的特征的通道为$C_{in}$,输出的Feature Map的数量为$C_{out}$, Feature Map的尺寸是$H*W$。那么，\textbf{卷积层}对应的参数量\textit{params}和计算量\textit{FLOPs}分别是：
+
+\begin{displaymath}
+\begin{gathered}
+\#Params: (k_h * k_w * c_{in} + 1) * c_{out} \\
+\#FLOPs: k_w * k_h * c_{in} * c_{out} * W * H
+\end{gathered}
+\end{displaymath}
+
+相对比的，\textbf{全连接层}对应的上述两个参数分别是：
+\begin{displaymath}
+\begin{gathered}
+\#Params: (c_{in} + 1) * C_{out} \\
+\#FLOPs: c_{in} * c_{out}
+\end{gathered}
+\end{displaymath}
+
+\subsection{GCONV \& DWCONV}
+
+有时间在整理吧，细节见原文。
+
+结论就是，通过输入通道的分组，可以降低参数量以及计算量$g$倍，其中$g$是输入通道的分组数，并且在DWCONV中这个分组数$g$就是输入的通道数$C_{in}$。
+
+其它的一点说明：
+
+设计CNN目前都采用堆block的方式，后面对每个模型只集中分析其block的设计。堆Block简化了网络设计问题：只要设计好block结构，对于典型224 $\times$ 224输入，设计CNN只需要考虑112$\times$112、56$\times$56、28$\times$28、14$\times$14、7$\times$7 这5个分辨率阶段(stage)的block数量和通道数量就可以了。
+
+CNN加深度一般都选择14$\times$14这个分辨率阶段，多堆几个block，这一层的参数数量和计算量占比最大，所以我们选这一层作为特例分析每种block的参数数量和计算量，量化说明选择$14\times14\times512$的输入和输出情况。
+
+\subsection{NiN及相关}
+
+
+
+
 \section{Deep Reinforcement Learning}
 
 参考文献：\href{https://deeplearning4j.org/deepreinforcementlearning}{A Beginner's Guide to Deep Reinforcement Learning}
@@ -1013,6 +1064,16 @@ In Python 3, things are simplified. Only new-style classes exist (referred to pl
 \caption{1*1 Convolutoin 的作用示意图}
 \label{OneOneConv0}
 \end{figure}
+
+\section{目标检测中完整流程}
+
+由于几个经典的目标检测模型的实现不是很复杂，所以这里主要记录数据的处理过程。首先输入是什么数据、用到了哪些增广技术、输入图像的尺寸、输出是什么形式、目标函数怎么实现怎么优化、怎么评估结果等等。
+
+在目标检测中，主要用到的评估指标是：mAP、IOU。但是怎么实现呢？
+
+目标函数是什么，如何实现BBox的确定等等，好麻烦啊。
+
+
 
 
 \section{待续}

@@ -114,6 +114,11 @@ N.~{S{\"u}nderhauf}, T.~T. {Pham}, Y.~{Latif}, M.~{Milford}, and I.~{Reid}.
 \newblock {Meaningful Maps With Object-Oriented Semantic Mapping}.
 \newblock {\em ArXiv e-prints}, September 2016.
 
+\bibitem{teichmann2018convolutional}
+Marvin~TT Teichmann and Roberto Cipolla.
+\newblock Convolutional crfs for semantic segmentation.
+\newblock {\em arXiv preprint arXiv:1805.04777}, 2018.
+
 \bibitem{toet2016multiscale}
 Alexander Toet and Maarten~A Hogervorst.
 \newblock Multiscale image fusion through guided filtering.
