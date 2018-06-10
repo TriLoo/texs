@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  5 JUN 2018 17:40
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  10 JUN 2018 23:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1496,7 +1496,9 @@ ation with a 2D Semantic Map[[]][][] [][]
 \tf@lof=\write6
 \openout6 = `Papers.lof'.
 
- [10]
+ [10] [11] [12
+
+]
 Underfull \hbox (badness 10000) in paragraph at lines 75--76
 
  []
@@ -1516,9 +1518,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 79--80
 
  []
 
-[1
-
-]
+[1]
 \openout2 = `CUDAImageProcessing/CUDAImageProcessing.aux'.
 
  (./CUDAImageProcessing/CUDAImageProcessing.tex [2
@@ -1887,16 +1887,19 @@ File: ueuf.fd 2013/01/14 v3.01 Euler Fraktur
 File: SemanticSLAM/ConvCRF0.png Graphic file (type QTm)
 
 <use  "SemanticSLAM/ConvCRF0.png" > [73] [74]
-File: SemanticSLAM/KITTI0.png Graphic file (type QTm)
+File: SemanticSLAM/SENet0.png Graphic file (type QTm)
 
-<use  "SemanticSLAM/KITTI0.png" > [75]
+<use  "SemanticSLAM/SENet0.png" > [75]
+File: SemanticSLAM/KITTI0.png Graphic file (type QTm)
+ <use  "SemanticSLAM/KITTI0.png" >
+[76]
 File: SemanticSLAM/KITTI1.png Graphic file (type QTm)
- <use  "SemanticSLAM/KITTI1.png" >
-[76]) (./OpenSetRecognition/OpenSetRecognition.tex [77] [78
+ <use  "SemanticSLAM/KITTI1.png" > [77])
+(./OpenSetRecognition/OpenSetRecognition.tex [78]
+Chapter 6.
+[79
 
 ]
-Chapter 6.
-[79]
 File: OpenSetRecognition/GANTraining0.jpg Graphic file (type QTm)
  <use  "OpenSetRecognition/GANTraining0.jpg" > [80]
 Overfull \hbox (48.0701pt too wide) in paragraph at lines 93--93
@@ -2137,12 +2140,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
  ) 
 Here is how much of TeX's memory you used:
- 29064 strings out of 495525
- 536923 string characters out of 6184337
- 745660 words of memory out of 5000000
- 31774 multiletter control sequences out of 15000+600000
+ 29069 strings out of 495525
+ 536990 string characters out of 6184337
+ 745972 words of memory out of 5000000
+ 31778 multiletter control sequences out of 15000+600000
  13649 words of font info for 96 fonts, out of 8000000 for 9000
  80 hyphenation exceptions out of 8191
  45i,14n,58p,10437b,1780s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Papers.pdf (166 pages).
+Output written on Papers.pdf (168 pages).

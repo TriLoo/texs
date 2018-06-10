@@ -1836,8 +1836,37 @@ ConvCRF中的设计策略与FullCRF中相同，即使用Softmax进行归一化�
 表现在：把场景分割成多个Objects， 并实时的对他们进行跟踪和Shape建模。
 
 
+\section{Squeeze-and-Excitation Networks}
+
+参考文献：
+
+本文主要的关注点是如何更好的处理Channel-wise的信息。普通的卷及操作，会同时考虑局部的区域特征以及不同特征图之间的组合，而本文主要考虑Channel wise信息的提取，作者认为这样可以提高模型的表示能力！
+
+具体结构如下图所示：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.85\textwidth]{SemanticSLAM/SENet0.png}
+\caption{SENet结构示意图}
+\label{SENet0}
+\end{figure}
+
+图\ref{SENet0}需要注意以下几点：
+\begin{itemize}
+\item $F_{sq}(\cdot)$表示文中所说的Sequeeze,这是基于Global Max Pooling (GAP)实现的，所以这一步并不会引入额外的参数，只又很少量的计算代价.这一步的结果就是输入的Feature Map编程$1 \times 1 \times C$的向量，作者把这个vector称为Channel Descriptor。
+\item $F_{ex}(\cdot, \omega)$表示文中所说的Excitation，这是由Sigmoid和Bottleneck结构实现的。Bottleneck结构是两层具有不同输出维度的全连接层，可以表示成:
+\begin{displaymath}
+\mathbf{s} = F_{ex}(\mathbf{z}, \mathbf{W})=\sigma(g(\mathbf{z}, \mathbf{W})) = \sigma(\mathbf{W}_2 \sigma (\mathbf{W}_1 \mathbf{z}))
+\end{displaymath}
 
 
+其中$\sigma$为ReLU，$W_1 \in R^{\frac{C}{r}\times C}$， $W_2 \in R^{C \times \frac{C}{r}}$, 其中C表示输入Feature Map的通道数，也就是$\mathbf{U}$的通道数，这一结构也称为Bottleneck,是为了降低参数数量，r是ratio，作者实验证明了可以选择16。
+
+\item $F_{scale}(\cdot, \cdot)$表示Channel-wise的相乘
+
+\item 作者的实验表明，这个S-and-E Block放在网络结构的中部、前部比较好，放在后面效果不是特别很好，但会增加比较多的参数，因为后面的通道数C比较大，所以可以去掉。这是基于ResNet验证的。
+\end{itemize}
+
+如何把SE Block加入到ResNet等网络中，可以看文章。
 
 
 \subsection{KITTI}

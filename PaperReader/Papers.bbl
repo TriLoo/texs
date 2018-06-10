@@ -92,6 +92,13 @@ O.~{Ronneberger}, P.~{Fischer}, and T.~{Brox}.
 \newblock {U-Net: Convolutional Networks for Biomedical Image Segmentation}.
 \newblock {\em ArXiv e-prints}, May 2015.
 
+\bibitem{runz2017co}
+Martin R{\"u}nz and Lourdes Agapito.
+\newblock Co-fusion: Real-time segmentation, tracking and fusion of multiple
+  objects.
+\newblock In {\em Robotics and Automation (ICRA), 2017 IEEE International
+  Conference on}, pages 4471--4478. IEEE, 2017.
+
 \bibitem{SemanticVisualLocalization2017}
 J.~L. {Sch{\"o}nberger}, M.~{Pollefeys}, A.~{Geiger}, and T.~{Sattler}.
 \newblock {Semantic Visual Localization}.
