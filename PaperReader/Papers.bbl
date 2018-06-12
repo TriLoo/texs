@@ -37,6 +37,11 @@ Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
 \newblock In {\em european conference on computer vision}, pages 346--361.
   Springer, 2014.
 
+\bibitem{senet2017hu}
+J.~{Hu}, L.~{Shen}, and G.~{Sun}.
+\newblock {Squeeze-and-Excitation Networks}.
+\newblock {\em ArXiv e-prints}, September 2017.
+
 \bibitem{Hui2018LiteFlowNet}
 T.-W. {Hui}, X.~{Tang}, and C.~{Change Loy}.
 \newblock {LiteFlowNet: A Lightweight Convolutional Neural Network for Optical

@@ -220,6 +220,26 @@ James Liu的回答：
 
 而事实是，转置卷积只能还原shape大小，不能还原value.
 
+\subsection{Deconvolution输出的大小计算}
+
+好吧，我初步知道是怎么做的了：
+
+首先看正向卷积时，假设输入时$1 * 1 * N_{in} * N_{in}$得到的Feature Map是(1 * 1 * $N_{out}$ * $N_{out}$)，该过程中，假设步长为$S$， 卷积核为$K$, Padding为$P$，那么输入输出大小的关系是：
+\begin{displaymath}
+N_{out} = \frac{N_{in} - K + 2 * P}{S} + 1
+\end{displaymath}
+
+那么在转置卷积时，要得到与输入同等大小的Feature Map，需要确定Transpose Convolution的步长、卷积核大小、Padding的大小，那么应该怎么求呢，只需要把上式取反函数就行：
+\begin{displaymath}
+N_{in} = (N_{out} - 1) * S + K - 2 * P
+\end{displaymath}
+一般来说，$S$取正向卷积计算中的Strides大小，$K$也可以去相同的，也可以取不同的，这时候只需要确定K与P的合适关系就行。
+
+起码MXNet中的Conv2Transpose可以这样设置参数。
+
+
+
+
 \section{Dilated Network与Deconv Network之间的区别}
 Dilated Convolution主要用于增加感受野，而不是Upsampling；Deconv Network主要用于Upsample，即增加图像分辨率。
 
@@ -717,7 +737,7 @@ The first layer is the input layer, which always has n = image size, r = 1, j = 
 
 对Raw Image进行kernel\_size=3, stride 2的卷积操作所得到的fmap1 (fmap为feature map的简称，为每一个conv层所产生的输出)的结果是显而易见的。序列[1 2 3]表示fmap1的第一个单元能看见原图像中的1，2，3这三个像素，而第二个单元则能看见3，4，5。这两个单元随后又被kernel\_size=2，stride 1的Filter 2进行卷积，因而得到的fmap2的第一个单元能够看见原图像中的1,2,3,4,5共5个像素（即取[1 2 3]和[3 4 5]的并集）。
 
-接下来我们尝试一下如何用公式来表述上述过程。可以看到，[1 2 3]和[3 4 5]之间因为Filter 1的stride 2而错开（偏移）了两位，而3是重叠的。对于卷积两个感受野为3的上层单元，下一层最大能获得的感受野为 $3\times2=6$ ，但因为有重叠，因此要减去(kernel\_size - 1)个重叠部分，而重叠部分的计算方式则为感受野减去前面所说的偏移量，这里是2. 因此我们就得到 $r_2=r_1\times k_2-(r_1-s_1)\times(k_2-1)=3\times2-(3-2)\times(2-1)=5$ 。
+接下来我们尝试一下如何用公式来表述上述过程。可以看到，[1 2 3]和[3 4 5]之间因为Filter 1的stride 2而错开（偏移）了两位，而3是重叠的。对于卷积两个感受野为3的上层单元，下一层最大能获得的感受野为 $3\times2=6$ ，但因为有重叠，因此要减去(kernel\_size - 1)个重叠部分， Kernel的size是本层的Kernel的尺寸，而重叠部分的计算方式则为上一层的感受野减去前面所说的本层的偏移量，这里是2. 因此我们就得到 $r_2=r_1\times k_2-(r_1-s_1)\times(k_2-1)=3\times2-(3-2)\times(2-1)=5$ 。
 
 继续往下一层看，我们会发现[1 2 3 4 5]和[3 4 5 6 7]的偏移量仍为2，并不简单地等于上一层的 $s_2$ ，\textbf{这是因为之前的stride对后续层的影响是永久性的}，而且是累积相乘的关系（例如，在fmap3中，偏移量已经累积到4了），也就是说 $r_3$ 应该这样求 
 
@@ -855,6 +875,139 @@ Var = \frac{(b - a)^2}{12}
 \caption{BP计算过程示意图}
 \label{BP0}
 \end{figure}
+
+\subsection{Notes on CNNs}
+
+参考文献：\href{https://zhuanlan.zhihu.com/p/29458808}{CNN反向求导理解-知乎}
+
+\subsubsection{CNN的目标函数，包含Weight Decay的形式}
+
+假设共有m个样本$(x_i, y_i)$，CNN网络共有L层，中间包含若干卷积层和Pooling层，最后一层的输出为$f(x_i)$，那么目标函数是(交叉熵的形式):
+\begin{displaymath}
+Loss = -\frac{1}{m}\sum_{i=0}^{m-1}y_i^{'}\log f(x_i) + \lambda \sum_{k=1}^{L}\parallel W_k \parallel^2
+\end{displaymath}
+其中， $W_k$为每一层卷积层的权重。
+
+\subsubsection{求解输出层的误差敏感项}
+
+现在只考虑一个输入样本(x, y）的情形，loss函数和上面的公式类似，使用交叉熵来表示的，暂时不考虑权值规则项，样本标签采用One-Hot编码，CNN网络的最后一层采用SoftMax输出，样本(x, y)经过CNN网络后，输出用f(x)表示，则对应该样本的loss是：
+\begin{displaymath}
+l(f(\mathbf{x}, y)) = -\sum_{c}1_{(y=c)} \log f(x)_c = -\log f(x)_y
+\end{displaymath}
+
+其中， $f(x)_c = p(y = c|x)$。因为x通过CNN后得到的输出f(x)是一个向量，该向量的元素值都是概率值，分别代表着x被分到各个类中的概率，而f(x)中下标c的意思就是输出向量中取对应c那个类的概率值。
+
+采用上面的符号，可以求得此时loss值对输出层的误差敏感性表达式为：
+\begin{displaymath}
+\nabla_{\mathbf{a}^{(L+1)(\mathbf{x})}} - \log f(\mathbf{x})_y = -(\mathbf{e}(y) - f(x))
+\end{displaymath}
+
+其中, $\mathbf{a}^{(L+1)(\mathbf{x})}$是最后一层卷积的输出，有$f(x) = softmax(\mathbf{a}^{(L+1)(\mathbf{x})})$, $e(y)$为样本x标签值的one-hot表示，其中只有一个元素是1， 其它的都为0。
+
+
+推到如下：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.85\textwidth]{DLTips/BP1.jpg}
+\caption{目标函数对最后一层卷积层的输出，即最后一层Softmax的输入的求导}
+\label{BP1}
+\end{figure}
+
+注意的是，是对任意一个$f(x)_c$求到的过程，但目标函数是根据正确的标签来确定的，也就是$-\log f(x)_y$中的y与分母中的c是不同的！前者是标签，后者是Softmax的第c个输入。
+
+由上面公式可知，如果输出层采用sfotmax，且loss用交叉熵形式，则最后一层的误差敏感值就等于CNN网络输出值f(x)减样本标签值e(y),即f(x)-e(y),其形式非常简单，这个公式是不是很眼熟？很多情况下如果model采用MSE的loss，即$loss=1/2*(e(y)-f(x))^2$，那么loss对最终的输出f(x)求导时其结果就是f(x)-e(y),虽然和上面的结果一样，但是大家不要搞混淆了，这2个含义是不同的，一个是对输出层节点输入值的导数(softmax激发函数)，一个是对输出层节点输出值的导数(任意激发函数）。而在使用MSE的loss表达式时，输出层的误差敏感项
+为$(f(x)-e(y)).*f(x)'$，两者只相差一个因子。
+
+这样就可以求出第L层的权值W的偏导数：
+
+\begin{displaymath}
+\frac{\partial Loss}{\partial W_L} = \frac{\partial Loss}{\partial (-\log f(x)_y)} \cdot \frac{f(x)}{\partial W} + \lambda W_L
+\end{displaymath}
+
+对输出偏置层的偏导数是：
+\begin{displaymath}
+\frac{\partial Loss}{\partial b_L} = -\frac{1}{m} * (e(y) - f(x))
+\end{displaymath}
+
+\subsubsection{当卷积层的下一层是Pooling层时，求解卷积层的误差敏感项}
+
+若第l层为卷积层，第l+1层为Pooling层，且Pooling层的误差敏感项是：
+\begin{displaymath}
+\delta_j^{l+1}
+\end{displaymath}
+卷积层的误差敏感项为：
+\begin{displaymath}
+\delta_j^l
+\end{displaymath}
+
+那么两者的关系是：
+\begin{displaymath}
+\delta_j^l = upsample(\delta_j^{l+1}) \cdot h(\delta_j^l)'
+\end{displaymath}
+
+其中， $\cdot$ 是矩阵的点积，即对应元素的乘积。卷积层与Upsample后的Pooling的输出层的节点是一一对应的，所以可以都用下标j表示。后面的符号：
+$h(\delta_j^l)'$表示的是第l层第j个节点处激活函数的导数，是对节点输入的导数？也就是第l层卷积层的第j个节点。
+
+那么问题来了，重点就是这个Upsample怎么实现了！而具体的形式是与采用什么Pooling方法有关的。但unsample的大概思想为：pooling层的每个节点是由卷积层中多个节点(一般为一个矩形区域)共同计算得到，所以pooling层每个节点的误差敏感值也是由卷积层中多个节点的误差敏感值共同产生的，只需满足两层见各自的误差敏感值相等，下面以mean-pooling和max-pooling为例来说明。
+
+　假设卷积层的矩形大小为4×4, pooling区域大小为$2×2$, 很容易知道pooling后得到的矩形大小也为2*2（本文默认pooling过程是没有重叠的，卷积过程是每次移动一个像素，即是有重叠的，后续不再声明）,如果此时pooling后的矩形误差敏感值如下：
+　
+\begin{figure}[!htp]
+\centering
+\subfigure[输出的2*2Pooling结果]{
+\includegraphics[width=0.45\textwidth]{DLTips/BP2.png}
+}
+\;
+\subfigure[输入的4*4卷积层输出]{
+\includegraphics[width=0.45\textwidth]{DLTips/BP3.jpg}
+}
+\caption{则按照mean-pooling，首先得到的卷积层应该是4×4大小，其值分布为(等值复制).}
+\end{figure}
+
+因为得满足反向传播时各层间误差敏感总和不变，所以卷积层对应每个值需要平摊（除以pooling区域大小即可，这里pooling层大小为2×2=4)），最后的卷积层值
+
+分布为：
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.65\textwidth]{DLTips/BP4.jpg}
+\caption{反向传播时的误差}
+\end{figure}
+
+mean-pooling时的unsample操作可以使用matalb中的函数kron()来实现，因为是采用的矩阵Kronecker乘积。C=kron(A, B)表示的是矩阵B分别与矩阵A中每个元素相乘，然后将相乘的结果放在C中对应的位置。
+
+上面说的是Avg Pooling的计算，下面说一下MaxPooling的计算：
+
+需要记录前向传播过程中pooling区域中最大值的位置，这里假设pooling层值1,3,2,4对应的pooling区域位置分别为右下、右上、左上、左下。则Upsample时，在相应的位置放置误差敏感项，其余的位置填0.
+
+\subsubsection{当Pooling的下一层为卷积层时，求该Pooling层的误差敏感项}
+
+假设第l层(pooling层)有N个通道，即有N张特征图，第l+1层(卷积层)有M个特征，l层中每个通道图都对应有自己的误差敏感值，其计算依据为第l+1层所有特征核的贡献之和。
+
+下面是第l+1层中第j个核对第l层中第i个通道的误差敏感值计算方法：
+\begin{displaymath}
+\delta_i^l = \sum_{j=1}^{M}\delta_j^{l+1} \star K_{ij}
+\end{displaymath}
+其中，$\star$是矩阵的卷及操作。
+
+如果不明白，或者更多的内容，还是看原文吧。
+
+
+
+
+
+
+
+
+\subsection{Pooling层的反向传播}
+
+前面一直关注了正向卷积的求导问题了，现在应该关注下Pooling层的求导问题！
+
+
+
+
+
+
 
 \section{神经网络中的Attention机制}
 
@@ -1072,6 +1225,24 @@ In Python 3, things are simplified. Only new-style classes exist (referred to pl
 在目标检测中，主要用到的评估指标是：mAP、IOU。但是怎么实现呢？
 
 目标函数是什么，如何实现BBox的确定等等，好麻烦啊。
+
+\section{Batch Size的影响}
+
+打的批量通常能够让训练收敛更快、性能更强，但会增加内存的开销。
+
+为什么批量更大，能提升性能的两个重要参数：
+\begin{itemize}
+\item 较大的批量，'可能'会提高优化步骤的有效性，从而导致模型参数更快的收敛
+\item 较大的批量也可以减少把训练数据移动到GPU导致的通信开销来提高性能
+\end{itemize}
+
+
+
+
+\section{机器学习面试博客总结2018.06.11}
+
+
+
 
 
 

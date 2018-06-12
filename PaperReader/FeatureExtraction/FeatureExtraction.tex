@@ -180,6 +180,41 @@ SPP is a flexible solution for handling different scales, sizes, and aspect rati
 
 \section{Fast RCNN}
 
+参考文献：
+
+[2] \href{https://zhuanlan.zhihu.com/p/27640199}{详解ROI-Pooling层的实现-知乎}
+
+\subsection{ROI-Pooling层的实现-知乎}
+
+Fast-RCNN的大体步骤：
+\begin{itemize}
+\item 输入： images的shape是(N, W, H, C)这是Tensorflow的输入。Rois的shape是（nums\_rois, 4）这里注意了，ROI也是输入的参数，那么这些ROI怎么来的呢，可能是Selective Search的结果。
+
+\item VGG网络对输入的Image部分提取特征，走到最后一层卷积层
+
+\item 最后一个卷积层的输出作为OI Pooling层的输入
+
+\item ROI Pooling的输出在做分类和回归
+\end{itemize}
+
+\subsubsection{ROI Pooling层}
+
+输入Shape: (N, W/16, H/16, channels)， 因为是使用VGG16实现，经过4次2*2的Max Pooling，所以降维16倍，这里的Pooling默认Strides为2.
+
+输出Shape: (num\_rois, expected\_H, expected\_W, channels)， 论文中提到如果使用VGG16, 则输出是W= H = 7。
+
+由于输入的图像下采样了16倍，所以输入的ROI也会缩小16倍，包括索引、长宽等。
+
+
+
+
+
+ 
+\subsection{RoI Pooling}
+
+
+
+
 \section{Faster RCNN}
 
 \section{R FCN}
@@ -207,4 +242,30 @@ SPP is a flexible solution for handling different scales, sizes, and aspect rati
 
 
 \section{Retina Net (Focal Loss)}
+
+\section{Feature Pyramid Network}
+
+在处理高层但分辨率小的特征图与底层但分辨率高的特征图的时候，使用Nearest neighbor interpolation的方法进行Upsample。
+
+\subsection{Nearest Neighbor Interpolation}
+
+参考：\href{https://blog.csdn.net/linqianbi/article/details/78593724}{最近邻插值}
+
+这是一种简单的插值算法：不需要计算，在待求象素的四邻象素中，将距离待求象素最近的邻象素灰度赋给待求象素
+
+设i+u, j+v(i, j为正整数， u, v为大于零小于1的小数，下同)为待求象素坐标，则待求象素灰度的值 f(i+u, j+v)
+
+如果(i+u, j+v)落在A区，即u<0.5, v<0.5，则将左上角象素的灰度值赋给待求象素，同理，落在B区则赋予右上角的象素灰度值，落在C区则赋予左下角象素的灰度值，落在D区则赋予右下角象素的灰度值。
+最邻近元法计算量较小，但可能会造成插值生成的图像灰度上的不连续，在灰度变化的地方可能出现明显的锯齿状。
+
+\section{ResNet}
+
+最需要明确的是：ResNet现在基本上作为各种视觉算法的Backbone了！！！要知道Backbone的牛逼。
+
+然后需要注意以下两点：再由ResNet18 到ResNet50的时候是把基本block扩展为bottleneck，这个bottleneck就是输出Channel先变小在变大！第二点是：Identity 和 Non-Identity两条路径的结果是通过相加实现的，分辨率不同的时候会先通过Maxpooling降维！
+
+
+
+
+
 

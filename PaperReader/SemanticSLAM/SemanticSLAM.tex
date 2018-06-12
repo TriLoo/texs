@@ -1809,8 +1809,6 @@ ConvCRF中的设计策略与FullCRF中相同，即使用Softmax进行归一化�
 
 作者也实现了基于1*1卷积的实现，作为实验结果进行分析， 或者在Pairwise 中的输入换成可以学习的Feature数值。
 
-\section{常用数据集}
-
 使用VOC2012。使用ResNet101作为Unary potentials。
 
 训练的时候，采用Decoupled Training的策略。即首先训练CNN模型，以语义分割为目标；然后固定CNN的输出，进行CRF的训练。
@@ -1838,7 +1836,7 @@ ConvCRF中的设计策略与FullCRF中相同，即使用Softmax进行归一化�
 
 \section{Squeeze-and-Excitation Networks}
 
-参考文献：
+参考文献：\cite{senet2017hu}
 
 本文主要的关注点是如何更好的处理Channel-wise的信息。普通的卷及操作，会同时考虑局部的区域特征以及不同特征图之间的组合，而本文主要考虑Channel wise信息的提取，作者认为这样可以提高模型的表示能力！
 
@@ -1868,6 +1866,126 @@ ConvCRF中的设计策略与FullCRF中相同，即使用Softmax进行归一化�
 
 如何把SE Block加入到ResNet等网络中，可以看文章。
 
+\section{Deep Multi-scale Architectures For Monocular Depth Estimation}
+
+参考文献：
+
+本文主要回顾使用Multi-scale的网络结构进行深度估计，表明相比于只使用一种Scale的Feature,可以提高精度、定性上更好的深度图。在NYU Depth上实现了SOTA。
+
+\subsection{背景与相关工作}
+
+有学者指出，受人类视觉的激发，发展了一些算法，人类视觉会利用Texture， Perspective, defocus等信息。
+
+最早的两篇基于深度学习来做的工作是：
+
+\begin{itemize}
+\item Deep Deconvolutional Networks for Scene Parsing
+\item Depth map prediction from a single image using a multi-scale deep network
+\end{itemize}
+
+基于这两个工作，后面提出了非常多的改进方法，但比较少关注多尺度问题。本文的实验表明，如果在小的数据集上，多尺度网络可以比精心设计的单尺度网络更好一点的话，那么在打的数据集上，就会有SOTA结果。
+
+相关工作有：
+\begin{itemize}
+\item Depth map prediction from a single image using a multi-scale deep network， 2014
+
+网络结构包含两个部分，由两个网络Stack而成。第一个网络输出Coarse depth map， 第二个网络对输出的这个粗糙的深度图进行Refines， 后一个网络通过3 successive卷积实现，用Coarse depth map和RGB image作为输入。
+
+\item Predicting depth, surface normals and semantic labels with a common multi-scale convolutional architecture. 2015
+
+增加了一个新的CNN模块，同时多任务预测。
+
+\item Towards unified depth and semantic prediction from a single image, 2015
+
+使用语义信息帮助深度估计。
+
+\item Learning depth from single monocular image using deep convolutional neural fields, 2016
+
+\item Deep convolution neural fields for depth estimation from a single image, 2015
+
+\item Depth and surface normal estimation from monocular images using regression on deep features and hierarchical crfs. 2015
+
+\item Monocular depth estimation using neural regression forest. 2015
+
+\item Depth from a single image by harmonizing overcomplete local network predictions, 2016
+
+\item Deeper depth prediction with fully convolutional residual network, 2016
+
+Encoder-decoder network。 实验表明使用BerHu loss可以提高精度。是下了SOTA的实验结果。
+
+\end{itemize}
+
+
+\section{Depth Map Prediction from a single image usign a multi-Scale Deep Network}
+
+参考文献：
+
+基于单目图像预测深度需要来自于多个Cues的both global and local信息。本文的两个主要贡献：
+\begin{itemize}
+\item 提出利用two network stack完成深度预测，一个完成coarse global prediction based on entire image, 另一个完成refines this prediction locally.
+\item 提出一个scale-invariant error，帮助测量深度
+\end{itemize}
+
+整体结构如图\ref{DepthPrediction2014_0}所示：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.85\textwidth]{SemanticSLAM/DepthPrediction2014_0.png}
+\caption{网络结构示意图}
+\label{DepthPrediction2014_0}
+\end{figure}
+
+在第一个部分，也就是得到Coarse Depth Map的部分，通过全连接层实现输入图像的全局视野，此外，在中间几层使用Max Pooling增加局部的感受野。但有一地方是如何根据Coarse6的输出得到Coarse7。作者也没说明白！全连接中还应用了Dropout。
+
+在第二部分，首先对输入图像进行一次卷积运算，然后结果与上面的Coarse7的输出进行Concatenate，后面的卷积运算都会有Zero padding保持输出的大小一致。
+
+第二个贡献是提出了一个Scale-Invariant Error (Metric)， 因为单目预测深度的时候会有尺度问题，所以作者用下面的公式：
+\begin{displaymath}
+D(y, y^{*})  = \frac{1}{2n}\sum_{i=1}^{n} \left( \log y_i - \log y^{*}_i  \alpha(y, y^{*}) \right)^2
+\end{displaymath}
+其中，$ \alpha(y, y^{*})= \frac{i}{n}\sum_{i}(\log y_i - \log y^{*}_i)$.$n$为像素的个数，$i$为像素的索引。
+
+最后作者的目标函数就是基于这个Scale-Invriant Error来做的。
+
+\begin{displaymath}
+See the paper.
+\end{displaymath}
+
+由于网络最后的输出是下采样了4倍，所以，在训练的时候需要把depth和mask都直接下采样比例为4。
+
+\section{Mask R-CNN}
+
+参考文献：
+
+这篇文章的重要贡献是实现了Instance-Level的语义分割，具体是实现实在Faster-RCNN的基础上，新增了一个Branch用于预测Object Mask。它与物体检测(Object Detection)的区别是，提供Mask的预测结果而不是Boundingbox；它与语义分割的区别是，它是Instace-level的分割，而不是像素级的、不区分Instance的分割。
+
+示意图如图所示：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.85\textwidth]{SemanticSLAM/MaskRCNN0.png}
+\caption{Mask RCNN示意图，在class box的基础上增加了预测mask的分支。}
+\label{MaskRCNN0}
+\end{figure}
+
+\subsection{研究现状与相关背景}
+
+在Faster-RCNN的基础上实现的，但是由于Faster-RCNN中的RoI Pooling会导致网络的输出与输入并不是Pixel-by-pixel的Alignment， 所以，在得到Mask的时候，作者提出利用RoIAlign的结构，可以faithfully preserves exact spatial locations.
+
+{\bfseries 非常重要的一点是：mask和class 的预测是分离的(decouple)的两个过程，而FCN之类的算法是既需要perform per-pixel multi-class categorization, which couples segmentation and classification，后一种方式对Instance segmentation的效果较差。}
+
+
+\subsection{Mask RCNN}
+
+
+\subsection{实验}
+
+
+\subsection{总结}
+
+
+
+
+
+\subsection{常用数据集}
 
 \subsection{KITTI}
 
@@ -1937,6 +2055,44 @@ cpp文件夹主要包含评估模型的源代码evaluate\_object.cpp。Mapping�
 \subsection{TUM}
 
 数据集官网：\href{https://vision.in.tum.de/data/datasets}{TUM Datasets}
+
+\section{实例分割-图像分割2018.06.11博客总结}
+
+\subsection{Mask R-CNN狙击目标实例分割}
+
+参考文献：\href{https://zhuanlan.zhihu.com/p/26047813}{Mask R-CNN 狙击目标实例分割-知乎}
+
+\subsubsection{什么是实例分割}
+
+举例子的方式：简单讲，一群人在图片里面，我希望把\textbf{每个人}都给我分割出来。分类只能做到识别这个图片是人；目标检测只能检测到这个图片里有人，把人的地方框出来，对每一个人这个个体不一样是没有判断的，统一认为是人；而图像分割主要是将人和背景分割出来，而实例分割就是要把每个人清晰的分割出来。
+
+总的来说，Mask R-CNN是基于Faster R-CNN的基于上演进改良而来，FasterR-CNN并不是为了输入输出之间进行像素对齐的目标而设计的，为了弥补这个不足，我们提出了一个简洁非量化的层，名叫RoIAlign，RoIAlign可以保留大致的空间位置，除了这个改进之外，RoIAlign还有一个重大的影响：那就是它能够相对提高10\%到50\%的掩码精确度（Mask Accuracy），这种改进可以在更严格的定位度量指标下得到更好的度量结果。第二，我们发现分割掩码和类别预测很重要：为此，我们为每个类别分别预测了一个\textbf{二元}掩码。
+
+\subsubsection{Mask RCNN介绍}
+Mask R-CNN拥有简洁明了的思想：对于Faster R-CNN来说，对于每个目标对象，它有两个输出，一个是类标签（classlabel），一个是边界框的Offset（bounding-box offset），在此基础上，Mask R-CNN方法增加了第三个分支的输出：目标掩码。目标掩码与已有的class和box输出的不同在于它需要对目标的空间布局有一个更精细的提取。
+
+\subsubsection{Mask RCNN的工作机理}
+
+在Faster RCNN中，相比于Fast RCNN，多了一个Stage，那就是Region Proposal Network。所以在Faster RCNN中，整个算法由两个Stage构成，第一个Stage， 就是RPN， 这一步产生ROI，前面也提到了，在Fast RCNN中，输入既包括Image也包括一个ROI， 所以这里采用RPN来生成ROI。在第二Stage中，其实和Fast RCNN是一样的，都是借助ROI Pool来完成目标检测(目标分类+Bounding box offsets)。
+
+那么在Mask RCNN中，在第二步骤中，与预测目标类别与Offset\textbf{平行的是}还会对每一个ROI输出一个Binary mask。所以Mask的branch, 会输出一个K*m*m大小的张量，其中K表示类别的个数。在实现过程中，
+
+相应的，在训练的时候，也会采用一个多任务Loss Function：
+\begin{displaymath}
+L = L_{cls} + L_{box} + L_{mask}
+\end{displaymath}
+
+前两个Loss和Fast RCNN中是一样的，后面的mask的loss。有很多不懂的地方啊。
+
+\subsubsection{Tensorflow + Keras实现实例分割}
+
+参考文献：\href{https://mp.weixin.qq.com/s/Fo1yd6W1EdCQGEflP26tHA}{Tensorflow+Keras实现实例分割-微信公众号}
+
+分割掩码是输入目标的空间布局编码，不像类别标签或边界框偏移量那样将特征经过全连接层“坍缩”到短的输出向量，而是自然地采用卷积实现“像素到像素”的变换，抽取掩码空间结构信息。使用 FCN 网络为每个 RoI 预测一个 mxm 掩码，这样允许它们保持 mxm 目标空间布局信息。
+
+Mask RCNN 中使用 RoIAlign 替换了 RoIPool，RoIPool 没有考虑保留尽可能多的空间布局信息，难以实现输入图片/输出掩码像素一一对应。
+
+
 
 
 

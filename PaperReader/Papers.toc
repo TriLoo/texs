@@ -201,186 +201,215 @@
 \contentsline {subsection}{\numberline {5.21.3}Convolutional CRFs}{74}{subsection.5.21.3}
 \contentsline {subsubsection}{Efficient Message Passing in ConvCRFs }{74}{section*.105}
 \contentsline {subsubsection}{Additional implementation details}{75}{section*.106}
-\contentsline {section}{\numberline {5.22}常用数据集}{75}{section.5.22}
-\contentsline {subsection}{\numberline {5.22.1}总结}{75}{subsection.5.22.1}
-\contentsline {section}{\numberline {5.23}Co-Fusion}{75}{section.5.23}
-\contentsline {section}{\numberline {5.24}Squeeze-and-Excitation Networks}{75}{section.5.24}
-\contentsline {subsection}{\numberline {5.24.1}KITTI}{76}{subsection.5.24.1}
-\contentsline {subsection}{\numberline {5.24.2}官网资源介绍}{77}{subsection.5.24.2}
-\contentsline {subsection}{\numberline {5.24.3}详述}{77}{subsection.5.24.3}
-\contentsline {subsubsection}{组织形式}{77}{section*.109}
-\contentsline {subsubsection}{Development Kit}{77}{section*.111}
-\contentsline {subsection}{\numberline {5.24.4}Cityscape}{78}{subsection.5.24.4}
-\contentsline {subsection}{\numberline {5.24.5}TUM}{78}{subsection.5.24.5}
-\contentsline {chapter}{\numberline {6}Open Set Recognition}{79}{chapter.6}
-\contentsline {section}{\numberline {6.1}GAN}{79}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}GAN 原理笔记}{79}{subsection.6.1.1}
-\contentsline {subsubsection}{GAN原理}{79}{section*.112}
-\contentsline {subsubsection}{GAN公式}{80}{section*.113}
-\contentsline {subsubsection}{训练过程}{80}{section*.114}
-\contentsline {subsubsection}{Loss Function中的两个小问题}{81}{section*.116}
-\contentsline {section}{\numberline {6.2}从头开始GAN}{81}{section.6.2}
-\contentsline {subsection}{\numberline {6.2.1}定义}{82}{subsection.6.2.1}
-\contentsline {subsection}{\numberline {6.2.2}DCGAN： Deep Convolution GAN}{82}{subsection.6.2.2}
-\contentsline {subsection}{\numberline {6.2.3}CGAN: Conditional Generative Adversarial Nets}{83}{subsection.6.2.3}
-\contentsline {subsection}{\numberline {6.2.4}InfoGAN}{83}{subsection.6.2.4}
-\contentsline {section}{\numberline {6.3}Generative Adversarial Nets}{84}{section.6.3}
-\contentsline {section}{\numberline {6.4}Towards Open Set Deep Networks}{84}{section.6.4}
-\contentsline {subsection}{\numberline {6.4.1}Introduction \& Related Works}{84}{subsection.6.4.1}
-\contentsline {section}{\numberline {6.5}Probability Models for Open Set Recognition}{84}{section.6.5}
-\contentsline {subsection}{\numberline {6.5.1}背景及相关工作}{85}{subsection.6.5.1}
-\contentsline {chapter}{\numberline {7}MXNet}{87}{chapter.7}
-\contentsline {section}{\numberline {7.1}Optimizing Memory Consumption in DL}{87}{section.7.1}
-\contentsline {subsection}{\numberline {7.1.1}Computation Graph}{87}{subsection.7.1.1}
-\contentsline {subsection}{\numberline {7.1.2}What Can be Optimized?}{89}{subsection.7.1.2}
-\contentsline {subsubsection}{In-place Operations}{89}{section*.121}
-\contentsline {subsubsection}{Standard Memory Sharing}{89}{section*.122}
-\contentsline {subsection}{\numberline {7.1.3}Memory Allocation Algorithm}{89}{subsection.7.1.3}
-\contentsline {subsection}{\numberline {7.1.4}Static vs. Dynamic Allocation}{91}{subsection.7.1.4}
-\contentsline {subsection}{\numberline {7.1.5}Memory Allocation for Parallel Operations}{91}{subsection.7.1.5}
-\contentsline {subsubsection}{Be Correct and Safe First}{91}{section*.127}
-\contentsline {subsubsection}{Try to Allow More Parallelization}{92}{section*.128}
-\contentsline {subsection}{\numberline {7.1.6}How Much Can we Save ?}{92}{subsection.7.1.6}
-\contentsline {subsection}{\numberline {7.1.7}References}{93}{subsection.7.1.7}
-\contentsline {section}{\numberline {7.2}Deep Learning Programming Style}{93}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1}Symbolic vs. Imperative Program}{93}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2}Imperative Programs Tend to be More Flexible}{93}{subsection.7.2.2}
-\contentsline {subsection}{\numberline {7.2.3}Symbolic Programs Tend to be More Efficient}{93}{subsection.7.2.3}
-\contentsline {subsection}{\numberline {7.2.4}Case Study: Backprop and AutoDiff}{94}{subsection.7.2.4}
-\contentsline {subsubsection}{基于命令式编程的自动求导}{94}{section*.131}
-\contentsline {subsubsection}{基于符号式编程的自动求导}{94}{section*.132}
-\contentsline {subsubsection}{Analysis}{94}{section*.133}
-\contentsline {subsection}{\numberline {7.2.5}Model Checkpoint}{95}{subsection.7.2.5}
-\contentsline {subsection}{\numberline {7.2.6}Big vs. Small Operations}{95}{subsection.7.2.6}
-\contentsline {subsection}{\numberline {7.2.7}Mix The Approaches}{96}{subsection.7.2.7}
-\contentsline {section}{\numberline {7.3}Dependency Engine for Deep Learning}{96}{section.7.3}
-\contentsline {subsection}{\numberline {7.3.1}Problems in Dependency Scheduling}{96}{subsection.7.3.1}
-\contentsline {subsubsection}{Design a Generic Dependency Engine}{97}{section*.134}
-\contentsline {subsection}{\numberline {7.3.2}Implementing the Generic Dependency Engine}{98}{subsection.7.3.2}
-\contentsline {subsection}{\numberline {7.3.3}Discussion}{98}{subsection.7.3.3}
-\contentsline {section}{\numberline {7.4}Designing Efficient Data Loaders for DL}{98}{section.7.4}
-\contentsline {subsection}{\numberline {7.4.1}Design Insight}{99}{subsection.7.4.1}
-\contentsline {subsubsection}{Data Preparation}{99}{section*.138}
-\contentsline {subsubsection}{Data Loading}{99}{section*.139}
-\contentsline {subsection}{\numberline {7.4.2}Data Format}{99}{subsection.7.4.2}
-\contentsline {subsubsection}{Access Arbitrary Parts of Data}{99}{section*.142}
-\contentsline {subsection}{\numberline {7.4.3}Data Loading and Preprocessing}{99}{subsection.7.4.3}
-\contentsline {subsubsection}{Loading and Preprocessing on the Fly}{99}{section*.143}
-\contentsline {subsubsection}{Hide IO Cost Using Threadediter}{101}{section*.145}
-\contentsline {subsection}{\numberline {7.4.4}MXNet IO Python Interface}{101}{subsection.7.4.4}
-\contentsline {section}{\numberline {7.5}Except Handling in MXNet}{102}{section.7.5}
-\contentsline {subsubsection}{Exception Handling for Iterators}{102}{section*.147}
-\contentsline {subsubsection}{Except Handling for Operators}{102}{section*.148}
-\contentsline {section}{\numberline {7.6}MXNet-Gluon创建模型}{103}{section.7.6}
-\contentsline {subsection}{\numberline {7.6.1}模型构造}{103}{subsection.7.6.1}
-\contentsline {subsubsection}{两种稍微不同的实现}{103}{section*.149}
-\contentsline {subsection}{\numberline {7.6.2}自定义层}{104}{subsection.7.6.2}
-\contentsline {subsubsection}{带参数的自定义层}{105}{section*.150}
-\contentsline {subsection}{\numberline {7.6.3}实际例子}{105}{subsection.7.6.3}
-\contentsline {subsubsection}{ResNet}{105}{section*.151}
-\contentsline {subsubsection}{DenseNet}{106}{section*.152}
-\contentsline {section}{\numberline {7.7}MXNet中的Deconvolution}{106}{section.7.7}
-\contentsline {section}{\numberline {7.8}MXNet读取训练数据}{107}{section.7.8}
-\contentsline {subsection}{\numberline {7.8.1}使用mx.io读取数据}{107}{subsection.7.8.1}
-\contentsline {subsubsection}{从内存中读取}{107}{section*.153}
-\contentsline {subsubsection}{从.csv文件中读取数据}{109}{section*.154}
-\contentsline {subsubsection}{使用mx.io.ImageRecordIter接口，需要定制KVStore}{109}{section*.155}
-\contentsline {subsection}{\numberline {7.8.2}常用的系统提供的接口函数}{109}{subsection.7.8.2}
-\contentsline {subsection}{\numberline {7.8.3}使用mx.image读取数据}{110}{subsection.7.8.3}
-\contentsline {subsection}{\numberline {7.8.4}使用Gluon接口读取数据}{110}{subsection.7.8.4}
-\contentsline {subsubsection}{产生Dataset}{110}{section*.156}
-\contentsline {subsubsection}{产生Mini-batch iterator}{111}{section*.157}
-\contentsline {section}{\numberline {7.9}Gluon中的数据结构}{112}{section.7.9}
-\contentsline {section}{\numberline {7.10}MXNet中的Confusing参数}{112}{section.7.10}
-\contentsline {subsection}{\numberline {7.10.1}mx.symbol.reshape}{112}{subsection.7.10.1}
-\contentsline {subsection}{\numberline {7.10.2}mx.symbol.transpose}{112}{subsection.7.10.2}
-\contentsline {chapter}{\numberline {8}Tips in DL}{113}{chapter.8}
-\contentsline {section}{\numberline {8.1}Enlarge the FOV}{113}{section.8.1}
-\contentsline {section}{\numberline {8.2}Upsampling}{113}{section.8.2}
-\contentsline {section}{\numberline {8.3}Multiscale Ability}{114}{section.8.3}
-\contentsline {section}{\numberline {8.4}Dilated Convolution}{114}{section.8.4}
-\contentsline {section}{\numberline {8.5}Deconvolutional Network}{115}{section.8.5}
-\contentsline {subsection}{\numberline {8.5.1}Convolutional Spare Coding}{115}{subsection.8.5.1}
-\contentsline {subsection}{\numberline {8.5.2}CNN可视化}{115}{subsection.8.5.2}
-\contentsline {subsection}{\numberline {8.5.3}Upsampling}{116}{subsection.8.5.3}
-\contentsline {subsection}{\numberline {8.5.4}补充}{116}{subsection.8.5.4}
-\contentsline {subsection}{\numberline {8.5.5}Deconvolution与Upsample的区别}{116}{subsection.8.5.5}
-\contentsline {subsubsection}{理解深度学习中的Deconvolution Networks}{117}{section*.161}
-\contentsline {section}{\numberline {8.6}Dilated Network与Deconv Network之间的区别}{118}{section.8.6}
-\contentsline {section}{\numberline {8.7}目标检测中的mAP的含义}{119}{section.8.7}
-\contentsline {section}{\numberline {8.8}统计学习方法}{119}{section.8.8}
-\contentsline {section}{\numberline {8.9}Distillation Module}{119}{section.8.9}
-\contentsline {subsection}{\numberline {8.9.1}Knowledge Distillation}{120}{subsection.8.9.1}
-\contentsline {subsubsection}{什么是Distilling the knowledge}{120}{section*.165}
-\contentsline {subsubsection}{Disilling the knowledge in a Neural Network}{120}{section*.166}
-\contentsline {subsection}{\numberline {8.9.2}Recurrent Knowledge Distillation \cite {Silvia2018Recurrent}}{120}{subsection.8.9.2}
-\contentsline {section}{\numberline {8.10}光流估计中的Average end-point error}{120}{section.8.10}
-\contentsline {section}{\numberline {8.11}CNN中的卷及方式汇总}{120}{section.8.11}
-\contentsline {subsection}{\numberline {8.11.1}Inception}{121}{subsection.8.11.1}
-\contentsline {subsection}{\numberline {8.11.2}空洞卷积, Dilation}{121}{subsection.8.11.2}
-\contentsline {subsection}{\numberline {8.11.3}深度可分离卷积, Depthwise Separable Convolution}{122}{subsection.8.11.3}
-\contentsline {subsection}{\numberline {8.11.4}可变性卷积}{122}{subsection.8.11.4}
-\contentsline {subsection}{\numberline {8.11.5}特征重标定卷积}{125}{subsection.8.11.5}
-\contentsline {subsection}{\numberline {8.11.6}小结-比较}{126}{subsection.8.11.6}
-\contentsline {section}{\numberline {8.12}全连接与卷积的异同}{126}{section.8.12}
-\contentsline {section}{\numberline {8.13}Pooling}{128}{section.8.13}
-\contentsline {subsubsection}{Global Average Pooling}{128}{section*.175}
-\contentsline {subsubsection}{Unpooling}{128}{section*.176}
-\contentsline {section}{\numberline {8.14}Local Response Normalization}{129}{section.8.14}
-\contentsline {subsubsection}{到底什么是LRN}{129}{section*.178}
-\contentsline {subsubsection}{如何实现LRN}{129}{section*.179}
-\contentsline {section}{\numberline {8.15}CNN中感受野的计算}{129}{section.8.15}
-\contentsline {subsubsection}{具体的例子}{130}{section*.180}
-\contentsline {subsubsection}{Stride的计算}{131}{section*.181}
-\contentsline {subsubsection}{专业的计算}{131}{section*.182}
-\contentsline {section}{\numberline {8.16}神经网络中的初始化}{133}{section.8.16}
-\contentsline {subsubsection}{回答一}{133}{section*.185}
-\contentsline {subsection}{\numberline {8.16.1}Xavier}{134}{subsection.8.16.1}
-\contentsline {section}{\numberline {8.17}计算图的后向传播计算}{135}{section.8.17}
-\contentsline {subsubsection}{简单的说明}{135}{section*.186}
-\contentsline {section}{\numberline {8.18}神经网络中的Attention机制}{136}{section.8.18}
-\contentsline {subsection}{\numberline {8.18.1}Recurrent Models of Visual Attention}{136}{subsection.8.18.1}
-\contentsline {subsubsection}{The Recurrent Attention Model - RAM }{137}{section*.188}
-\contentsline {subsubsection}{总结}{138}{section*.190}
-\contentsline {section}{\numberline {8.19}小型网络}{138}{section.8.19}
-\contentsline {subsection}{\numberline {8.19.1}理论分析}{138}{subsection.8.19.1}
-\contentsline {subsection}{\numberline {8.19.2}GCONV \& DWCONV}{139}{subsection.8.19.2}
-\contentsline {subsection}{\numberline {8.19.3}NiN及相关}{139}{subsection.8.19.3}
-\contentsline {section}{\numberline {8.20}Deep Reinforcement Learning}{139}{section.8.20}
-\contentsline {section}{\numberline {8.21}为什么Python中要继承object类}{139}{section.8.21}
-\contentsline {subsubsection}{Python 2.x story}{139}{section*.191}
-\contentsline {subsubsection}{Python 3.x story}{140}{section*.192}
-\contentsline {subsubsection}{Choose which one}{140}{section*.193}
-\contentsline {section}{\numberline {8.22}1*1卷积}{140}{section.8.22}
-\contentsline {section}{\numberline {8.23}目标检测中完整流程}{141}{section.8.23}
-\contentsline {section}{\numberline {8.24}待续}{141}{section.8.24}
-\contentsline {chapter}{\numberline {9}Image Processing}{143}{chapter.9}
-\contentsline {section}{\numberline {9.1}Feature Extraction}{143}{section.9.1}
-\contentsline {subsection}{\numberline {9.1.1}SIFT}{143}{subsection.9.1.1}
-\contentsline {chapter}{\numberline {10}Feature Extraction}{145}{chapter.10}
-\contentsline {section}{\numberline {10.1}Selective Search}{145}{section.10.1}
-\contentsline {subsection}{\numberline {10.1.1}Efficient Graph-Based Image Segmentation}{145}{subsection.10.1.1}
-\contentsline {subsection}{\numberline {10.1.2}Selective Search}{146}{subsection.10.1.2}
-\contentsline {section}{\numberline {10.2}Region CNN}{146}{section.10.2}
-\contentsline {subsection}{\numberline {10.2.1}概述}{146}{subsection.10.2.1}
-\contentsline {subsubsection}{Boundingbox 回归}{146}{section*.196}
-\contentsline {section}{\numberline {10.3}SPP Net}{146}{section.10.3}
-\contentsline {subsection}{\numberline {10.3.1}背景与相关工作}{146}{subsection.10.3.1}
-\contentsline {subsection}{\numberline {10.3.2}网络结构}{147}{subsection.10.3.2}
-\contentsline {subsubsection}{Fisher Kernel}{147}{section*.198}
-\contentsline {subsubsection}{Convolutional Layers and Feature Maps}{148}{section*.199}
-\contentsline {subsubsection}{The Spatial Pyramid Pooling Layer}{148}{section*.200}
-\contentsline {subsubsection}{Training}{149}{section*.202}
-\contentsline {subsection}{\numberline {10.3.3}Object Detection Experiments}{149}{subsection.10.3.3}
-\contentsline {subsection}{\numberline {10.3.4}Conclusion}{149}{subsection.10.3.4}
-\contentsline {section}{\numberline {10.4}Fast RCNN}{150}{section.10.4}
-\contentsline {section}{\numberline {10.5}Faster RCNN}{150}{section.10.5}
-\contentsline {section}{\numberline {10.6}R FCN}{150}{section.10.6}
-\contentsline {section}{\numberline {10.7}FPN}{150}{section.10.7}
-\contentsline {section}{\numberline {10.8}Mask RCNN}{150}{section.10.8}
-\contentsline {section}{\numberline {10.9}YOLO}{150}{section.10.9}
-\contentsline {section}{\numberline {10.10}YOLO v2}{150}{section.10.10}
-\contentsline {section}{\numberline {10.11}YOLO v3}{150}{section.10.11}
-\contentsline {section}{\numberline {10.12}SSD}{150}{section.10.12}
-\contentsline {section}{\numberline {10.13}DSSD}{150}{section.10.13}
-\contentsline {section}{\numberline {10.14}Retina Net (Focal Loss)}{150}{section.10.14}
+\contentsline {subsection}{\numberline {5.21.4}总结}{75}{subsection.5.21.4}
+\contentsline {section}{\numberline {5.22}Co-Fusion}{75}{section.5.22}
+\contentsline {section}{\numberline {5.23}Squeeze-and-Excitation Networks}{75}{section.5.23}
+\contentsline {section}{\numberline {5.24}Deep Multi-scale Architectures For Monocular Depth Estimation}{76}{section.5.24}
+\contentsline {subsection}{\numberline {5.24.1}背景与相关工作}{76}{subsection.5.24.1}
+\contentsline {section}{\numberline {5.25}Depth Map Prediction from a single image usign a multi-Scale Deep Network}{77}{section.5.25}
+\contentsline {section}{\numberline {5.26}Mask R-CNN}{78}{section.5.26}
+\contentsline {subsection}{\numberline {5.26.1}研究现状与相关背景}{79}{subsection.5.26.1}
+\contentsline {subsection}{\numberline {5.26.2}Mask RCNN}{79}{subsection.5.26.2}
+\contentsline {subsection}{\numberline {5.26.3}实验}{79}{subsection.5.26.3}
+\contentsline {subsection}{\numberline {5.26.4}总结}{79}{subsection.5.26.4}
+\contentsline {subsection}{\numberline {5.26.5}常用数据集}{79}{subsection.5.26.5}
+\contentsline {subsection}{\numberline {5.26.6}KITTI}{79}{subsection.5.26.6}
+\contentsline {subsection}{\numberline {5.26.7}官网资源介绍}{80}{subsection.5.26.7}
+\contentsline {subsection}{\numberline {5.26.8}详述}{80}{subsection.5.26.8}
+\contentsline {subsubsection}{组织形式}{80}{section*.111}
+\contentsline {subsubsection}{Development Kit}{81}{section*.113}
+\contentsline {subsection}{\numberline {5.26.9}Cityscape}{81}{subsection.5.26.9}
+\contentsline {subsection}{\numberline {5.26.10}TUM}{81}{subsection.5.26.10}
+\contentsline {section}{\numberline {5.27}实例分割-图像分割2018.06.11博客总结}{82}{section.5.27}
+\contentsline {subsection}{\numberline {5.27.1}Mask R-CNN狙击目标实例分割}{82}{subsection.5.27.1}
+\contentsline {subsubsection}{什么是实例分割}{82}{section*.114}
+\contentsline {subsubsection}{Mask RCNN介绍}{82}{section*.115}
+\contentsline {subsubsection}{Mask RCNN的工作机理}{82}{section*.116}
+\contentsline {subsubsection}{Tensorflow + Keras实现实例分割}{83}{section*.117}
+\contentsline {chapter}{\numberline {6}Open Set Recognition}{85}{chapter.6}
+\contentsline {section}{\numberline {6.1}GAN}{85}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}GAN 原理笔记}{85}{subsection.6.1.1}
+\contentsline {subsubsection}{GAN原理}{85}{section*.118}
+\contentsline {subsubsection}{GAN公式}{86}{section*.119}
+\contentsline {subsubsection}{训练过程}{86}{section*.120}
+\contentsline {subsubsection}{Loss Function中的两个小问题}{87}{section*.122}
+\contentsline {section}{\numberline {6.2}从头开始GAN}{87}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}定义}{88}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}DCGAN： Deep Convolution GAN}{88}{subsection.6.2.2}
+\contentsline {subsection}{\numberline {6.2.3}CGAN: Conditional Generative Adversarial Nets}{89}{subsection.6.2.3}
+\contentsline {subsection}{\numberline {6.2.4}InfoGAN}{89}{subsection.6.2.4}
+\contentsline {section}{\numberline {6.3}Generative Adversarial Nets}{90}{section.6.3}
+\contentsline {section}{\numberline {6.4}Towards Open Set Deep Networks}{90}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}Introduction \& Related Works}{90}{subsection.6.4.1}
+\contentsline {section}{\numberline {6.5}Probability Models for Open Set Recognition}{90}{section.6.5}
+\contentsline {subsection}{\numberline {6.5.1}背景及相关工作}{91}{subsection.6.5.1}
+\contentsline {chapter}{\numberline {7}MXNet}{93}{chapter.7}
+\contentsline {section}{\numberline {7.1}Optimizing Memory Consumption in DL}{93}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}Computation Graph}{93}{subsection.7.1.1}
+\contentsline {subsection}{\numberline {7.1.2}What Can be Optimized?}{95}{subsection.7.1.2}
+\contentsline {subsubsection}{In-place Operations}{95}{section*.127}
+\contentsline {subsubsection}{Standard Memory Sharing}{95}{section*.128}
+\contentsline {subsection}{\numberline {7.1.3}Memory Allocation Algorithm}{95}{subsection.7.1.3}
+\contentsline {subsection}{\numberline {7.1.4}Static vs. Dynamic Allocation}{97}{subsection.7.1.4}
+\contentsline {subsection}{\numberline {7.1.5}Memory Allocation for Parallel Operations}{97}{subsection.7.1.5}
+\contentsline {subsubsection}{Be Correct and Safe First}{97}{section*.133}
+\contentsline {subsubsection}{Try to Allow More Parallelization}{98}{section*.134}
+\contentsline {subsection}{\numberline {7.1.6}How Much Can we Save ?}{98}{subsection.7.1.6}
+\contentsline {subsection}{\numberline {7.1.7}References}{99}{subsection.7.1.7}
+\contentsline {section}{\numberline {7.2}Deep Learning Programming Style}{99}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}Symbolic vs. Imperative Program}{99}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}Imperative Programs Tend to be More Flexible}{99}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}Symbolic Programs Tend to be More Efficient}{99}{subsection.7.2.3}
+\contentsline {subsection}{\numberline {7.2.4}Case Study: Backprop and AutoDiff}{100}{subsection.7.2.4}
+\contentsline {subsubsection}{基于命令式编程的自动求导}{100}{section*.137}
+\contentsline {subsubsection}{基于符号式编程的自动求导}{100}{section*.138}
+\contentsline {subsubsection}{Analysis}{100}{section*.139}
+\contentsline {subsection}{\numberline {7.2.5}Model Checkpoint}{101}{subsection.7.2.5}
+\contentsline {subsection}{\numberline {7.2.6}Big vs. Small Operations}{101}{subsection.7.2.6}
+\contentsline {subsection}{\numberline {7.2.7}Mix The Approaches}{102}{subsection.7.2.7}
+\contentsline {section}{\numberline {7.3}Dependency Engine for Deep Learning}{102}{section.7.3}
+\contentsline {subsection}{\numberline {7.3.1}Problems in Dependency Scheduling}{102}{subsection.7.3.1}
+\contentsline {subsubsection}{Design a Generic Dependency Engine}{103}{section*.140}
+\contentsline {subsection}{\numberline {7.3.2}Implementing the Generic Dependency Engine}{104}{subsection.7.3.2}
+\contentsline {subsection}{\numberline {7.3.3}Discussion}{104}{subsection.7.3.3}
+\contentsline {section}{\numberline {7.4}Designing Efficient Data Loaders for DL}{104}{section.7.4}
+\contentsline {subsection}{\numberline {7.4.1}Design Insight}{105}{subsection.7.4.1}
+\contentsline {subsubsection}{Data Preparation}{105}{section*.144}
+\contentsline {subsubsection}{Data Loading}{105}{section*.145}
+\contentsline {subsection}{\numberline {7.4.2}Data Format}{105}{subsection.7.4.2}
+\contentsline {subsubsection}{Access Arbitrary Parts of Data}{105}{section*.148}
+\contentsline {subsection}{\numberline {7.4.3}Data Loading and Preprocessing}{105}{subsection.7.4.3}
+\contentsline {subsubsection}{Loading and Preprocessing on the Fly}{105}{section*.149}
+\contentsline {subsubsection}{Hide IO Cost Using Threadediter}{107}{section*.151}
+\contentsline {subsection}{\numberline {7.4.4}MXNet IO Python Interface}{107}{subsection.7.4.4}
+\contentsline {section}{\numberline {7.5}Except Handling in MXNet}{108}{section.7.5}
+\contentsline {subsubsection}{Exception Handling for Iterators}{108}{section*.153}
+\contentsline {subsubsection}{Except Handling for Operators}{108}{section*.154}
+\contentsline {section}{\numberline {7.6}MXNet-Gluon创建模型}{109}{section.7.6}
+\contentsline {subsection}{\numberline {7.6.1}模型构造}{109}{subsection.7.6.1}
+\contentsline {subsubsection}{两种稍微不同的实现}{109}{section*.155}
+\contentsline {subsection}{\numberline {7.6.2}自定义层}{110}{subsection.7.6.2}
+\contentsline {subsubsection}{带参数的自定义层}{111}{section*.156}
+\contentsline {subsection}{\numberline {7.6.3}实际例子}{111}{subsection.7.6.3}
+\contentsline {subsubsection}{ResNet}{111}{section*.157}
+\contentsline {subsubsection}{DenseNet}{112}{section*.158}
+\contentsline {section}{\numberline {7.7}MXNet中的Deconvolution}{112}{section.7.7}
+\contentsline {section}{\numberline {7.8}MXNet读取训练数据}{113}{section.7.8}
+\contentsline {subsection}{\numberline {7.8.1}使用mx.io读取数据}{113}{subsection.7.8.1}
+\contentsline {subsubsection}{从内存中读取}{113}{section*.159}
+\contentsline {subsubsection}{从.csv文件中读取数据}{115}{section*.160}
+\contentsline {subsubsection}{使用mx.io.ImageRecordIter接口，需要定制KVStore}{115}{section*.161}
+\contentsline {subsection}{\numberline {7.8.2}常用的系统提供的接口函数}{115}{subsection.7.8.2}
+\contentsline {subsection}{\numberline {7.8.3}使用mx.image读取数据}{116}{subsection.7.8.3}
+\contentsline {subsection}{\numberline {7.8.4}使用Gluon接口读取数据}{116}{subsection.7.8.4}
+\contentsline {subsubsection}{产生Dataset}{116}{section*.162}
+\contentsline {subsubsection}{产生Mini-batch iterator}{117}{section*.163}
+\contentsline {section}{\numberline {7.9}Gluon中的数据结构}{118}{section.7.9}
+\contentsline {section}{\numberline {7.10}MXNet中的Confusing参数}{118}{section.7.10}
+\contentsline {subsection}{\numberline {7.10.1}mx.symbol.reshape}{118}{subsection.7.10.1}
+\contentsline {subsection}{\numberline {7.10.2}mx.symbol.transpose}{118}{subsection.7.10.2}
+\contentsline {chapter}{\numberline {8}Tips in DL}{119}{chapter.8}
+\contentsline {section}{\numberline {8.1}Enlarge the FOV}{119}{section.8.1}
+\contentsline {section}{\numberline {8.2}Upsampling}{119}{section.8.2}
+\contentsline {section}{\numberline {8.3}Multiscale Ability}{120}{section.8.3}
+\contentsline {section}{\numberline {8.4}Dilated Convolution}{120}{section.8.4}
+\contentsline {section}{\numberline {8.5}Deconvolutional Network}{121}{section.8.5}
+\contentsline {subsection}{\numberline {8.5.1}Convolutional Spare Coding}{121}{subsection.8.5.1}
+\contentsline {subsection}{\numberline {8.5.2}CNN可视化}{121}{subsection.8.5.2}
+\contentsline {subsection}{\numberline {8.5.3}Upsampling}{122}{subsection.8.5.3}
+\contentsline {subsection}{\numberline {8.5.4}补充}{122}{subsection.8.5.4}
+\contentsline {subsection}{\numberline {8.5.5}Deconvolution与Upsample的区别}{122}{subsection.8.5.5}
+\contentsline {subsubsection}{理解深度学习中的Deconvolution Networks}{123}{section*.167}
+\contentsline {subsection}{\numberline {8.5.6}Deconvolution输出的大小计算}{124}{subsection.8.5.6}
+\contentsline {section}{\numberline {8.6}Dilated Network与Deconv Network之间的区别}{125}{section.8.6}
+\contentsline {section}{\numberline {8.7}目标检测中的mAP的含义}{125}{section.8.7}
+\contentsline {section}{\numberline {8.8}统计学习方法}{126}{section.8.8}
+\contentsline {section}{\numberline {8.9}Distillation Module}{126}{section.8.9}
+\contentsline {subsection}{\numberline {8.9.1}Knowledge Distillation}{126}{subsection.8.9.1}
+\contentsline {subsubsection}{什么是Distilling the knowledge}{126}{section*.171}
+\contentsline {subsubsection}{Disilling the knowledge in a Neural Network}{127}{section*.172}
+\contentsline {subsection}{\numberline {8.9.2}Recurrent Knowledge Distillation \cite {Silvia2018Recurrent}}{127}{subsection.8.9.2}
+\contentsline {section}{\numberline {8.10}光流估计中的Average end-point error}{127}{section.8.10}
+\contentsline {section}{\numberline {8.11}CNN中的卷及方式汇总}{127}{section.8.11}
+\contentsline {subsection}{\numberline {8.11.1}Inception}{127}{subsection.8.11.1}
+\contentsline {subsection}{\numberline {8.11.2}空洞卷积, Dilation}{128}{subsection.8.11.2}
+\contentsline {subsection}{\numberline {8.11.3}深度可分离卷积, Depthwise Separable Convolution}{128}{subsection.8.11.3}
+\contentsline {subsection}{\numberline {8.11.4}可变性卷积}{130}{subsection.8.11.4}
+\contentsline {subsection}{\numberline {8.11.5}特征重标定卷积}{131}{subsection.8.11.5}
+\contentsline {subsection}{\numberline {8.11.6}小结-比较}{132}{subsection.8.11.6}
+\contentsline {section}{\numberline {8.12}全连接与卷积的异同}{134}{section.8.12}
+\contentsline {section}{\numberline {8.13}Pooling}{134}{section.8.13}
+\contentsline {subsubsection}{Global Average Pooling}{134}{section*.181}
+\contentsline {subsubsection}{Unpooling}{134}{section*.182}
+\contentsline {section}{\numberline {8.14}Local Response Normalization}{135}{section.8.14}
+\contentsline {subsubsection}{到底什么是LRN}{135}{section*.184}
+\contentsline {subsubsection}{如何实现LRN}{135}{section*.185}
+\contentsline {section}{\numberline {8.15}CNN中感受野的计算}{136}{section.8.15}
+\contentsline {subsubsection}{具体的例子}{136}{section*.186}
+\contentsline {subsubsection}{Stride的计算}{137}{section*.187}
+\contentsline {subsubsection}{专业的计算}{137}{section*.188}
+\contentsline {section}{\numberline {8.16}神经网络中的初始化}{140}{section.8.16}
+\contentsline {subsubsection}{回答一}{140}{section*.191}
+\contentsline {subsection}{\numberline {8.16.1}Xavier}{140}{subsection.8.16.1}
+\contentsline {section}{\numberline {8.17}计算图的后向传播计算}{141}{section.8.17}
+\contentsline {subsubsection}{简单的说明}{141}{section*.192}
+\contentsline {subsection}{\numberline {8.17.1}Notes on CNNs}{142}{subsection.8.17.1}
+\contentsline {subsubsection}{CNN的目标函数，包含Weight Decay的形式}{142}{section*.194}
+\contentsline {subsubsection}{求解输出层的误差敏感项}{143}{section*.195}
+\contentsline {subsubsection}{当卷积层的下一层是Pooling层时，求解卷积层的误差敏感项}{144}{section*.197}
+\contentsline {subsubsection}{当Pooling的下一层为卷积层时，求该Pooling层的误差敏感项}{146}{section*.200}
+\contentsline {subsection}{\numberline {8.17.2}Pooling层的反向传播}{146}{subsection.8.17.2}
+\contentsline {section}{\numberline {8.18}神经网络中的Attention机制}{146}{section.8.18}
+\contentsline {subsection}{\numberline {8.18.1}Recurrent Models of Visual Attention}{146}{subsection.8.18.1}
+\contentsline {subsubsection}{The Recurrent Attention Model - RAM }{147}{section*.201}
+\contentsline {subsubsection}{总结}{148}{section*.203}
+\contentsline {section}{\numberline {8.19}小型网络}{148}{section.8.19}
+\contentsline {subsection}{\numberline {8.19.1}理论分析}{148}{subsection.8.19.1}
+\contentsline {subsection}{\numberline {8.19.2}GCONV \& DWCONV}{148}{subsection.8.19.2}
+\contentsline {subsection}{\numberline {8.19.3}NiN及相关}{149}{subsection.8.19.3}
+\contentsline {section}{\numberline {8.20}Deep Reinforcement Learning}{149}{section.8.20}
+\contentsline {section}{\numberline {8.21}为什么Python中要继承object类}{149}{section.8.21}
+\contentsline {subsubsection}{Python 2.x story}{149}{section*.204}
+\contentsline {subsubsection}{Python 3.x story}{150}{section*.205}
+\contentsline {subsubsection}{Choose which one}{150}{section*.206}
+\contentsline {section}{\numberline {8.22}1*1卷积}{150}{section.8.22}
+\contentsline {section}{\numberline {8.23}目标检测中完整流程}{151}{section.8.23}
+\contentsline {section}{\numberline {8.24}Batch Size的影响}{151}{section.8.24}
+\contentsline {section}{\numberline {8.25}机器学习面试博客总结2018.06.11}{151}{section.8.25}
+\contentsline {section}{\numberline {8.26}待续}{151}{section.8.26}
+\contentsline {chapter}{\numberline {9}Image Processing}{153}{chapter.9}
+\contentsline {section}{\numberline {9.1}Feature Extraction}{153}{section.9.1}
+\contentsline {subsection}{\numberline {9.1.1}SIFT}{153}{subsection.9.1.1}
+\contentsline {chapter}{\numberline {10}Feature Extraction}{155}{chapter.10}
+\contentsline {section}{\numberline {10.1}Selective Search}{155}{section.10.1}
+\contentsline {subsection}{\numberline {10.1.1}Efficient Graph-Based Image Segmentation}{155}{subsection.10.1.1}
+\contentsline {subsection}{\numberline {10.1.2}Selective Search}{156}{subsection.10.1.2}
+\contentsline {section}{\numberline {10.2}Region CNN}{156}{section.10.2}
+\contentsline {subsection}{\numberline {10.2.1}概述}{156}{subsection.10.2.1}
+\contentsline {subsubsection}{Boundingbox 回归}{156}{section*.209}
+\contentsline {section}{\numberline {10.3}SPP Net}{156}{section.10.3}
+\contentsline {subsection}{\numberline {10.3.1}背景与相关工作}{156}{subsection.10.3.1}
+\contentsline {subsection}{\numberline {10.3.2}网络结构}{157}{subsection.10.3.2}
+\contentsline {subsubsection}{Fisher Kernel}{157}{section*.211}
+\contentsline {subsubsection}{Convolutional Layers and Feature Maps}{158}{section*.212}
+\contentsline {subsubsection}{The Spatial Pyramid Pooling Layer}{158}{section*.213}
+\contentsline {subsubsection}{Training}{159}{section*.215}
+\contentsline {subsection}{\numberline {10.3.3}Object Detection Experiments}{159}{subsection.10.3.3}
+\contentsline {subsection}{\numberline {10.3.4}Conclusion}{159}{subsection.10.3.4}
+\contentsline {section}{\numberline {10.4}Fast RCNN}{159}{section.10.4}
+\contentsline {subsection}{\numberline {10.4.1}ROI-Pooling层的实现-知乎}{160}{subsection.10.4.1}
+\contentsline {subsubsection}{ROI Pooling层}{160}{section*.216}
+\contentsline {subsection}{\numberline {10.4.2}RoI Pooling}{161}{subsection.10.4.2}
+\contentsline {section}{\numberline {10.5}Faster RCNN}{161}{section.10.5}
+\contentsline {section}{\numberline {10.6}R FCN}{161}{section.10.6}
+\contentsline {section}{\numberline {10.7}FPN}{161}{section.10.7}
+\contentsline {section}{\numberline {10.8}Mask RCNN}{161}{section.10.8}
+\contentsline {section}{\numberline {10.9}YOLO}{161}{section.10.9}
+\contentsline {section}{\numberline {10.10}YOLO v2}{161}{section.10.10}
+\contentsline {section}{\numberline {10.11}YOLO v3}{161}{section.10.11}
+\contentsline {section}{\numberline {10.12}SSD}{161}{section.10.12}
+\contentsline {section}{\numberline {10.13}DSSD}{161}{section.10.13}
+\contentsline {section}{\numberline {10.14}Retina Net (Focal Loss)}{161}{section.10.14}
+\contentsline {section}{\numberline {10.15}Feature Pyramid Network}{161}{section.10.15}
+\contentsline {subsection}{\numberline {10.15.1}Nearest Neighbor Interpolation}{161}{subsection.10.15.1}
+\contentsline {section}{\numberline {10.16}ResNet}{162}{section.10.16}
