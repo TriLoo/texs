@@ -1236,10 +1236,67 @@ In Python 3, things are simplified. Only new-style classes exist (referred to pl
 \item 较大的批量也可以减少把训练数据移动到GPU导致的通信开销来提高性能
 \end{itemize}
 
+\section{非极大值抑制NMS}
 
+Non-Maximum Suppression, NMS
 
+对于相似的预测边界框，非最大抑制（Non-Maximum Suppression，NMS）只保留置信度最高的那个来去除冗余。它的工作机制如下：\textbf{对于每个类别}，我们首先拿到每个预测边界框被判断包含这个类别物体的概率。然后我们找到概率最大的那个边界框并保留它到输出，接下来移除掉（抑制）其它所有的跟这个边界框的IoU大于某个阈值的边界框。在剩下的属于该类别的边界框里我们再找出\textbf{预测概率最大}的边界框，重复前面的移除过程。到这里我们还只是对其中的一个类别做的事情；完成之后，还需要对其它类别进行同样的事情，也就是去除那些与当前这个类别的重叠较大的边界框。直到我们要么保留或者移除了每个边界框。
+
+\section{Bilinear filler初始化ConvTranspose层的权重}
+
+参考文献：\href{https://www.zhihu.com/search?type=content&q=Transpose%20Convolution%20%E5%88%9D%E5%A7%8B%E5%8C%96}{Bilinear Filler初始化-知乎}
+
+当ConvTranspose层的权重的学习率被初始化为0时，该层的权重在训练过程中保持不变，一直作为Bilineare Resize的作用。
+
+MXNet中，Bilinear Filter Initializer实现代码：
+
+\lstset{language=Python, caption={Bilinear Filter Initializer实现代码-MXNet}}
+
+\begin{lstlisting}
+class Bilinear(Initializer):
+
+"""Initialize weight for upsampling layers."""
+def __init__(self):
+    super(Bilinear, self).__init__()
+def _init_weight(self, _, arr):
+    weight = np.zeros(np.prod(arr.shape), dtype='float32')
+    shape = arr.shape
+    f = np.ceil(shape[3] / 2.)
+    c = (2 * f - 1 - f % 2) / (2. * f)
+    for i in range(np.prod(shape)):
+        x = i % shape[3]
+        y = (i / shape[3]) % shape[2]
+        weight[i] = (1 - abs(x / f - c)) * (1 - abs(y / f - c))
+    arr[:] = weight.reshape(shape)
+\end{lstlisting}
+
+上述的完成以下公式：
+
+\begin{displaymath}
+weight[i] = (1 - abs(x / f - c)) * (1 - abs(y / f - c)) 
+\end{displaymath}
+
+虽然具体的公式来源没找到，但可以借鉴下面的Bilinear Interpolation公式：
+
+%\begin{displaymath}
+\begin{align*}
+f(x, y)  & \approx \frac{y_2 - y}{y_2 - y_1} f(x, y_1) + \frac{y-y_1}{y_2 - y_1}f(x, y_2) \\
+ & =  \frac{y_2 - y}{y_2 - y_1} \left( \frac{x_2 - x}{x_2 - x_1} f(Q_{11}) + \frac{x - x_1}{x_2 - x_1} f(Q_{21}) \right) + \frac{y - y_1}{y_2 - y_1} \left( \frac{x_2 - x}{x_2 - x_1} f(Q_{12}) + \frac{x - x_1}{x_2 - x_1} f(Q_{22}) \right) \\
+ & = \frac{1}{(x_2 - x_1)(y_2 - y_1)} \left( f(Q_{11})(x_2 - x)(y_2 - y) + f(Q_{21})(x - x_1)(y_2 - y) \right.\\
+ & + \left. f(Q_{12})(x_2 - x)(y - y_1) + f(Q_{22})(x - x_1)(y - y_1) \right)
+\end{align*}
+%\end{displaymath}
+
+参考的知乎答案中，给出了一个插值的例子，可以参考下。
 
 \section{机器学习面试博客总结2018.06.11}
+
+
+\section{花书前两部分总结}
+
+\subsection{信息论}
+
+
 
 
 

@@ -131,6 +131,8 @@ K(X_i, X_j) = U_{X_i}^TI^{-1}U_{X_j}
 
 图表示了提出的Pyramid Pooling Layer的示意图。在每一个Spatial bin， 作者对每一个filter 的 response进行Pool(MaxPooling)。 而输出是$kM$， 其中，$k$是filter的数目，$M$是the number of bins？ 这里的bin是指Pooling后的结果么？然后结果被输入到Fully connected层。
 
+补充：首先从图\ref{SPPNet1}可以出以及从名字上可以看出，这个Pooling层是Pyrmid的，也就是说有几个输出大小不同但是固定的Pooling的操作同时对Conv5的结果进行Pooling，这里的M就是所有不同输出大小的Pooling的结果的Flatten起来的，然后输入到全连接层。所以才有了Fast RCNN中说的只用了一种Scale的Pooling的特殊的Spatial Pyramid Pooling Layer。这里的Spatial是指在Pooling的过程中也保持了Feature 的空间信息，这本来就是Pooling操作的本质特征之一！也就是既降维、又会保持空间位置信息！
+
 \begin{figure}[!hbtp]
 \centering
 \includegraphics[width=0.75\textwidth]{FeatureExtraction/SPPNet1.png}
@@ -184,6 +186,24 @@ SPP is a flexible solution for handling different scales, sizes, and aspect rati
 
 [2] \href{https://zhuanlan.zhihu.com/p/27640199}{详解ROI-Pooling层的实现-知乎}
 
+有几点需要注意到是:
+\begin{itemize}
+\item 引入了ROI Pooling的概念，同时每一个Minibatch的多个ROI来自同一幅图像，因此可以合并Feature Extract的过程，提高\textbf{Training}的速度！
+\item 多任务的Loss Function， 同时预测分类错误、Boundingbox回归：
+\begin{displaymath}
+Loss = L_{cls}(p, u) + \lambda [u \ge 1] L_{loc}(t^u, v)
+\end{displaymath}
+
+其中，p为预测，u为类标签。这里的$L_{loc}$采用的是Smooth L1 loss。就是YOLOv2代码中的那样。
+
+实验表明，多任务训练可以提高分类的精度。
+\item ROI Pooling Layer的后向传播，这个可以看一下DLTips那一章节的对Pooling层的后弦传播的简单说明，是Max Pooling的情况。
+\item 由于ROI很多，所以全连接层耗时非常大，所以作者用SVD对一层全连接层进行了分解，这样，本来一层的全连接层被分解成两个全连接层实现，且两个全连接层之间没有非线性激活函数。个人感觉类似于Bottleneck的结构。
+\item 使用Average Recall来判断Region Proposal 的效果
+\end{itemize}
+
+
+
 \subsection{ROI-Pooling层的实现-知乎}
 
 Fast-RCNN的大体步骤：
@@ -192,7 +212,7 @@ Fast-RCNN的大体步骤：
 
 \item VGG网络对输入的Image部分提取特征，走到最后一层卷积层
 
-\item 最后一个卷积层的输出作为OI Pooling层的输入
+\item 最后一个卷积层的输出作为ROI Pooling层的输入
 
 \item ROI Pooling的输出在做分类和回归
 \end{itemize}
@@ -205,26 +225,12 @@ Fast-RCNN的大体步骤：
 
 由于输入的图像下采样了16倍，所以输入的ROI也会缩小16倍，包括索引、长宽等。
 
-
-
-
-
- 
-\subsection{RoI Pooling}
-
-
-
-
 \section{Faster RCNN}
 
 \section{R FCN}
 
-
-\section{FPN}
-
-
 \section{Mask RCNN}
-
+见Semantic SLAM那一章。
 
 \section{YOLO}
 
@@ -236,6 +242,8 @@ Fast-RCNN的大体步骤：
 
 
 \section{SSD}
+
+
 
 
 \section{DSSD}

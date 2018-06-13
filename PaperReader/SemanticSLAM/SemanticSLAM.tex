@@ -1954,7 +1954,7 @@ See the paper.
 
 \section{Mask R-CNN}
 
-参考文献：
+参考文献：\cite{maskrcnn2017he}
 
 这篇文章的重要贡献是实现了Instance-Level的语义分割，具体是实现实在Faster-RCNN的基础上，新增了一个Branch用于预测Object Mask。它与物体检测(Object Detection)的区别是，提供Mask的预测结果而不是Boundingbox；它与语义分割的区别是，它是Instace-level的分割，而不是像素级的、不区分Instance的分割。
 
@@ -1975,12 +1975,91 @@ See the paper.
 
 \subsection{Mask RCNN}
 
+主要有以下几点需要注意的地方：
+\begin{itemize}
+\item 使用ROIAlign层代替原来的ROI Pooling层
+\item 分离Region Proposal的分类+BBox回归 和 像素级的语义分割
+\item 第三条Branch输出的二值的图像，然后与Class Prediction的结果一起计算误差
+\end{itemize}
+
+主要想明白这一点：就是如何对齐的问题！
+
+为什么在SPP Net和Fast RCNN中的ROI Pooling会对不齐呢，有两个方面的原因：
+\begin{itemize}
+\item 因方面由于存在Pooling的降维计算，会求除法一次
+\item 在Spatial Pyramid Pooling产生固定大小的输入的时候(在Mask RCNN论文里面叫做bin)，还会求除法一次
+\end{itemize}
+
+那么具体是怎么操作的呢：
+
+参看文献：\href{https://zhuanlan.zhihu.com/p/26652657}{CNN图像分割简史-知乎}
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{SemanticSLAM/MaskRCNN1_ROIAlign0.jpg}
+\caption{ROI Align的示意图, 如何将region of interest的原始图像和特征图精确对齐？}
+\label{MaskRCNN1_ROIAlign0}
+\end{figure}
+
+假设有一幅128*128大小的图像，对应的特征图大小为25*25，如果要将原始图像左上角15*15大小的像素映射到特征图中（如图16所示），如何从特征图中选择像素呢？显然原始图像中每个像素对应特征图中的25/128个像素，要选择原始图像中的15个像素，需要选择15*25/128=2.93个像素。
+
+在RoIPool中，我们会四舍五入选择3个像素，从而会导致微小的偏移。在RoIAlign中，我们要避免这样的近似。取而代之的是采用bilinear interpolation获取精确的对应值，即选择像素2.93，从而能够避免RoIPool导致的偏移。
 
 \subsection{实验}
 
+使用Averaged over IoU thresholds来计算。AP是Average Precision的意思，只不过这里只有当IoU与Ground Truth重叠到一定程度后才认为是分类正确的，作者用到的：$AP_{50}, AP_{75}$等。
 
 \subsection{总结}
 
+基于Faster RCNN实现的Mask RCNN可以出人意料简单的解决Instance Segmentation问题。
+
+\section{Learning to segment every thing}
+
+参考文献：\cite{hu2017learning}
+
+本文非常值得再读。
+
+需要注意的几个亮点：
+\begin{itemize}
+\item 提出了基于Transfer Learning的Partially supervised instance segmentation功能，可以实现3000个种类的Instance的分割。
+\item 与以往不同的是，作者是在Mask RCNN中Detection Branch Head部分的权重的基础上进行迁移学习的，学习Segmentation Head的权重参数！以往的做法可以是利用Word2Vec 或 GloVe等算法把Feature Map映射到Embedding空间中进行迁移学习，这也是Zero Shot Learning中的做法。
+\item 那么具体是怎么实现从Detection Head的圈中参数迁移到Segmentation Head部分的权重参数的呢。作者比较了两种思路：利用一个仿射变换实现、利用两三层的神经网络(MLP)+LeakyReLU来做。Ablation测试发现后者更好
+\item 前面说到了，作者测试了集中迁移结构的输入，包括Detection Head的Feature 输出、NLP算法输出的Embedding、DetectionHead的权重参数，Ablation实验发现后者更好。
+\item 需要值得注意的是，作者认为MLP的Head更适合Category Agnostic，FCN更适合Class-specific的分割，所以他们两个算法可以互补！
+\item 训练数据分成了两组，一组具有精确地Segmentation Mask，一组只有Bounding box。
+\item 比较了两种不同的训练策略。Stage Wise， 即先训练Faster RCNN部分，然后固定参数再训练Segementation任务；End-to-End训练，即整个模型一起训练，但是在训练Segmentation Head的样本时，不能对Detection Head部分的权重进行更新！
+\item 存在扩展到Open Set Recogntion的论文：Bayesian Semantic Instance Segmentation in Open set World.
+\end{itemize}
+
+暂时就只有以上几点。
+
+论文思路的整体框架如图所示：
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{SemanticSLAM/MaskXRCNN0.png}
+\caption{论文的整体结构，包括Weight Transfer 结构}
+\label{MaskXRCNN0}
+\end{figure}
+
+其中Weight Transfer结构的数学表达式是：
+\begin{displaymath}
+\omega_{seg}^c = \mathcal{T}(\omega_{det}^c; \theta)
+\end{displaymath}
+
+其中，$\omega$是权重，$\omega_{det}$来自于Mask RCNN中的Detection Head, 论文作者通过把用于分类的权重$\omega_{cls}$和用于BBox回归的权重$\omega_{box}$进行Concatenate构成$\omega_{dec}$。
+
+\section{Path aggregation network for instance segmentation}
+
+参考文献：\cite{liu2018path}
+
+根据论文题目也可以看出，作者主要的改进的是Path Aggregation. 也就是增加了Bottom->top的Feature Pyramid， 实在FPN的基础上实现的，也就是说本身就包含一条Top->Bottom的Path。
+
+此外，作者针对Mask RCNN中的三个问题，提出了三个改进的办法！
+
+
+有时间把论文细节补上。还是有很多值得学习的地方的。
+
+{\color{red} \bfseries 自从ResNet火起来后，这个Path Aggregation的方式貌似用的挺多的，关键还是让不同Level的feature更方便的信息交流！比如在本文中，低层次的Feature也可以支持Large Object， 高层次的Feature也可以支持Small Object。}
 
 
 
@@ -2093,12 +2172,44 @@ L = L_{cls} + L_{box} + L_{mask}
 Mask RCNN 中使用 RoIAlign 替换了 RoIPool，RoIPool 没有考虑保留尽可能多的空间布局信息，难以实现输入图片/输出掩码像素一一对应。
 
 
+\section{无需Proposal的实例分割论文}
 
+参考文献：\href{https://zhuanlan.zhihu.com/p/35770716}{一文介绍3篇无需Proposal的实例分割论文-知乎}
 
+基于Proposal(如：Mask R-CNN, MaskLab, PANet)的实例分割有三个根本缺陷：
+\begin{itemize}
+\item 两个物体可能共享同一个或者非常相似的边界框，此时，Mask Head无法区分要从边界框中拾取的对象。这对于其所在的边界框中具有地填充率的线状物体(如自行车和椅子)而言是非常严重的问题。
+\item 架构中没有任何能够阻止两个共享像素的东西的存在
+\item 实例的数量通常首先与网络能够处理的Proposal数量
+\end{itemize}
 
+前两点是什么意思？
 
+文章列出了三篇通过距离学习的Instance Segemantation,貌似文章的作者称之为实例嵌入。
+\begin{itemize}
+\item 基于判断损失函数的语义实例分割，使用了非成对的损失函数。使用图像中所有像素产生了特别丰富的梯度。
 
+ Semantic Instance Segmentation with a Discriminative Loss Function
 
+\item 基于深度度量学习的实例语义分割，引入了种子模型，同时帮助我们分类并拾取最佳种子，做了速度优化。
+
+Semantic Instance Segmentation via Deep Metric Learning
+
+\item 用于实例分组的递归像素嵌入，GBMS是均值漂移的一种变体，在网络内部用于训练和解析。创建了非常密集的聚类。
+
+（用于实例分组的递归像素嵌入）
+
+\end{itemize}
+
+他们比Proposal方法更简单，也可能更快，同时避免了Proposal的实例分割架构存在的三个根本缺陷。但实际效果并不如Proposald的方法。
+
+此外，作者还给出了一些其它的方法的论文：
+\begin{itemize}
+\item 基于循环注意力机制的端到端实例分割（End-to-End Instance Segmentation with Recurrent Attention）
+\item 用于实例分割的深分水岭变换（Deep Watershed Transform for Instance Segmentation）
+\item 联合嵌入：用于联合检测和分组的端到端学习（Associative Embedding: End-to-End Learning for Joint Detection and Grouping）
+\item 用于实例分割的序列分组网络（SGN: Sequential Grouping Networks for Instance Segmentation）
+\end{itemize}
 
 
 

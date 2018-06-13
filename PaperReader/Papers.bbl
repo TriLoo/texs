@@ -30,6 +30,11 @@ Ian Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley,
   Weinberger, editors, {\em Advances in Neural Information Processing Systems
   27}, pages 2672--2680. Curran Associates, Inc., 2014.
 
+\bibitem{maskrcnn2017he}
+K.~{He}, G.~{Gkioxari}, P.~{Doll{\'a}r}, and R.~{Girshick}.
+\newblock {Mask R-CNN}.
+\newblock {\em ArXiv e-prints}, March 2017.
+
 \bibitem{he2014spatial}
 Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
 \newblock Spatial pyramid pooling in deep convolutional networks for visual
@@ -41,6 +46,11 @@ Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
 J.~{Hu}, L.~{Shen}, and G.~{Sun}.
 \newblock {Squeeze-and-Excitation Networks}.
 \newblock {\em ArXiv e-prints}, September 2017.
+
+\bibitem{hu2017learning}
+Ronghang Hu, Piotr Doll{\'a}r, Kaiming He, Trevor Darrell, and Ross Girshick.
+\newblock Learning to segment every thing.
+\newblock {\em arXiv preprint arXiv:1711.10370}, 2017.
 
 \bibitem{Hui2018LiteFlowNet}
 T.-W. {Hui}, X.~{Tang}, and C.~{Change Loy}.
@@ -58,6 +68,12 @@ Chao Li, Yanjing Bi, Franck Marzani, and Fan Yang.
 Shutao Li, Xudong Kang, and Jianwen Hu.
 \newblock Image fusion with guided filtering.
 \newblock {\em IEEE Transactions on Image Processing}, 22(7):2864--2875, 2013.
+
+\bibitem{liu2018path}
+Shu Liu, Lu~Qi, Haifang Qin, Jianping Shi, and Jiaya Jia.
+\newblock Path aggregation network for instance segmentation.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 8759--8768, 2018.
 
 \bibitem{Fcn2014}
 J.~{Long}, E.~{Shelhamer}, and T.~{Darrell}.
