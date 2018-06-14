@@ -69,6 +69,11 @@ Shutao Li, Xudong Kang, and Jianwen Hu.
 \newblock Image fusion with guided filtering.
 \newblock {\em IEEE Transactions on Image Processing}, 22(7):2864--2875, 2013.
 
+\bibitem{li2016fully}
+Yi~Li, Haozhi Qi, Jifeng Dai, Xiangyang Ji, and Yichen Wei.
+\newblock Fully convolutional instance-aware semantic segmentation.
+\newblock {\em arXiv preprint arXiv:1611.07709}, 2016.
+
 \bibitem{liu2018path}
 Shu Liu, Lu~Qi, Haifang Qin, Jianping Shi, and Jiaya Jia.
 \newblock Path aggregation network for instance segmentation.
@@ -107,6 +112,11 @@ Trung~T. Pham, Markus Eich, Ian Reid, and Gordon Wyeth.
   segmentation.
 \newblock In {\em Ieee/rsj International Conference on Intelligent Robots and
   Systems}, pages 4199--4204, 2016.
+
+\bibitem{ren2017end}
+Mengye Ren and Richard~S Zemel.
+\newblock End-to-end instance segmentation with recurrent attention.
+\newblock {\em arXiv preprint arXiv:1605.09410}, 2017.
 
 \bibitem{U-Net2015}
 O.~{Ronneberger}, P.~{Fischer}, and T.~{Brox}.

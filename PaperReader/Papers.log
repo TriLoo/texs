@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  13 JUN 2018 21:00
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  14 JUN 2018 20:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1907,75 +1907,80 @@ File: SemanticSLAM/MaskRCNN1_ROIAlign0.jpg Graphic file (type QTm)
 File: SemanticSLAM/MaskXRCNN0.png Graphic file (type QTm)
 
 <use  "SemanticSLAM/MaskXRCNN0.png" > [81]
-File: SemanticSLAM/KITTI0.png Graphic file (type QTm)
- <use  "SemanticSLAM/KITTI0.png" >
+Overfull \hbox (0.7571pt too wide) in paragraph at lines 2085--2086
+[]\EU1/TimesNewRoman(0)/m/n/12 Extends the translation invariant score maps in 
+conventional FCNs to \EU1/TimesNewRoman(0)/m/it/12 position-sensitive
+ []
+
 [82]
+File: SemanticSLAM/KITTI0.png Graphic file (type QTm)
+ <use  "SemanticSLAM/KITTI0.png" > [83]
 File: SemanticSLAM/KITTI1.png Graphic file (type QTm)
- <use  "SemanticSLAM/KITTI1.png" > [83] [84] [85])
-(./OpenSetRecognition/OpenSetRecognition.tex [86]
-Chapter 6.
-[87
+ <use  "SemanticSLAM/KITTI1.png" >
+[84] [85] [86]) (./OpenSetRecognition/OpenSetRecognition.tex [87] [88
 
 ]
+Chapter 6.
+[89]
 File: OpenSetRecognition/GANTraining0.jpg Graphic file (type QTm)
- <use  "OpenSetRecognition/GANTraining0.jpg" > [88]
+ <use  "OpenSetRecognition/GANTraining0.jpg" > [90]
 Overfull \hbox (48.0701pt too wide) in paragraph at lines 93--93
 [] 
  []
 
-[89]
+[91]
 Missing character: There is no θ in font cmmi12!
 Missing character: There is no θ in font cmmi12!
 Missing character: There is no θ in font cmmi12!
 File: OpenSetRecognition/CGAN0.jpg Graphic file (type QTm)
- <use  "OpenSetRecognition/CGAN0.jpg" > [90] [91] [92]) (./MXNet/MXNet.tex
-[93] [94
+ <use  "OpenSetRecognition/CGAN0.jpg" > [92] [93] [94]) (./MXNet/MXNet.tex
+[95] [96
 
 ]
 Chapter 7.
 File: MXNet/back_graph.png Graphic file (type QTm)
-<use  "MXNet/back_graph.png" > [95]
+<use  "MXNet/back_graph.png" > [97]
 File: MXNet/back_dep_prune.png Graphic file (type QTm)
  <use  "MXNet/back_dep_prune.png" >
 File: MXNet/back_agg_grad.png Graphic file (type QTm)
 
-<use  "MXNet/back_agg_grad.png" > [96]
+<use  "MXNet/back_agg_grad.png" > [98]
 File: MXNet/alloc_normal.png Graphic file (type QTm)
  <use  "MXNet/alloc_normal.png" >
 File: MXNet/alloc_mlp.png Graphic file (type QTm)
 
-<use  "MXNet/alloc_mlp.png" > [97]
+<use  "MXNet/alloc_mlp.png" > [99]
 File: MXNet/alloc_step.png Graphic file (type QTm)
- <use  "MXNet/alloc_step.png" > [98]
+ <use  "MXNet/alloc_step.png" > [100]
 File: MXNet/parallel_alloc.png Graphic file (type QTm)
 
-<use  "MXNet/parallel_alloc.png" > [99]
+<use  "MXNet/parallel_alloc.png" > [101]
 File: MXNet/graph_color.png Graphic file (type QTm)
  <use  "MXNet/graph_color.png" >
-[100] [101]
+[102] [103]
 File: MXNet/Symbolic1.png Graphic file (type QTm)
  <use  "MXNet/Symbolic1.png" >
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
-) [102] [103]
-[104]
+) [104] [105]
+[106]
 File: MXNet/Tag1.png Graphic file (type QTm)
  <use  "MXNet/Tag1.png" >
 File: MXNet/Tag2.png Graphic file (type QTm)
- <use  "MXNet/Tag2.png" > [105]
+ <use  "MXNet/Tag2.png" > [107]
 File: MXNet/Tag3.png Graphic file (type QTm)
 
-<use  "MXNet/Tag3.png" > [106]
+<use  "MXNet/Tag3.png" > [108]
 File: MXNet/recordIO1.png Graphic file (type QTm)
  <use  "MXNet/recordIO1.png" >
 File: MXNet/recordIO2.png Graphic file (type QTm)
 
 <use  "MXNet/recordIO2.png" >
 File: MXNet/loadingData1.png Graphic file (type QTm)
- <use  "MXNet/loadingData1.png" > [107] [108]
+ <use  "MXNet/loadingData1.png" > [109] [110]
 File: MXNet/dataLoading2.png Graphic file (type QTm)
 
-<use  "MXNet/dataLoading2.png" > [109] [110]
+<use  "MXNet/dataLoading2.png" > [111] [112]
 
 LaTeX Font Warning: Font shape `EU1/SimSun(1)/m/it' undefined
 (Font)              using `EU1/SimSun(1)/m/n' instead on input line 544.
@@ -1987,7 +1992,7 @@ ntial \EU1/SimSun(1)/m/n/12 的 类 型 变 量 \EU1/TimesNewRoman(0)/m/n/12 Net
 un(1)/m/n/12 ，|  然 后 在 向 里 面 增 加[]\EU1/lmtt/m/n/12 gluon.nn.Layer
  []
 
-[111] [112] [113]
+[113] [114] [115]
 Overfull \hbox (19.36221pt too wide) in paragraph at lines 697--698
 []\EU1/SimSun(1)/m/n/12 需 要 注 意 的 是，|  即 使 在[]\EU1/lmtt/m/n/12 class \EU1/SimSu
 n(1)/m/n/12 里 面 也 可 以 调 用 底 层 的 自 定 义 模 块，|  如 在[]\EU1/lmtt/m/n/12 resnet_block
@@ -2007,7 +2012,7 @@ Overfull \hbox (54.65408pt too wide) detected at line 715
 [] []
  []
 
-[114] [115]
+[116] [117]
 Overfull \hbox (4.77385pt too wide) in paragraph at lines 809--810
 \EU1/SimSun(1)/m/n/12 为[]\EU1/lmtt/m/n/12 train \EU1/SimSun(1)/m/n/12 和[]\EU1/l
 mtt/m/n/12 val \EU1/SimSun(1)/m/n/12 的 \EU1/TimesNewRoman(0)/m/n/12 data iterat
@@ -2015,13 +2020,13 @@ or. \EU1/SimSun(1)/m/n/12 分 别 作 用 与 训 练 图 像 与 训 练 标 �
 rrayIter
  []
 
-[116]
+[118]
 Overfull \hbox (66.09253pt too wide) in paragraph at lines 858--859
 []\EU1/TimesNewRoman(0)/m/n/12 Returns an iterator for mx.nd.NDArray, numpy.nda
 rray, h5py.Dataset mx.nd.sparse.CSRNDArray
  []
 
-[117] [118]
+[119] [120]
 Overfull \hbox (64.02332pt too wide) in paragraph at lines 936--936
  []\EU1/lmtt/m/n/12 data_set = gluon.data.vision.ImageFolderDataset(root, flag=
 1, tranform=None)[] 
@@ -2034,7 +2039,7 @@ Overfull \hbox (15.27353pt too wide) in paragraph at lines 953--954
 a.Dataset
  []
 
-[119]
+[121]
 Overfull \hbox (67.60858pt too wide) in paragraph at lines 985--985
 []\EU1/lmtt/m/n/12 reshape(data=None, shape=_null, reverse = _Null, target_shap
 e=_Null, target_shape=[] 
@@ -2046,16 +2051,16 @@ Overfull \hbox (32.58852pt too wide) in paragraph at lines 985--985
  out=None, **kwargs)[] 
  []
 
-) (./DLTips/DLTips.tex [120]
+) (./DLTips/DLTips.tex [122]
 Chapter 8.
-[121
+[123
 
 ]
 File: DLTips/DilatedConv1.jpg Graphic file (type QTm)
  <use  "DLTips/DilatedConv1.jpg" >
 File: DLTips/WaveNet1.jpg Graphic file (type QTm)
- <use  "DLTips/WaveNet1.jpg" > [122]
-[123]
+ <use  "DLTips/WaveNet1.jpg" > [124]
+[125]
 File: DLTips/Deconvolution0.jpg Graphic file (type QTm)
  <use  "DLTips/Deconvolution0.jpg" >
 Overfull \hbox (25.44086pt too wide) in paragraph at lines 141--142
@@ -2063,20 +2068,20 @@ Overfull \hbox (25.44086pt too wide) in paragraph at lines 141--142
  sense as ConvolutionLayer.ConvolutionLayer
  []
 
-[124]
+[126]
 File: DLTips/Deconvolution1.png Graphic file (type QTm)
  <use  "DLTips/Deconvolution1.png" >
 File: DLTips/Deconvolution2.jpg Graphic file (type QTm)
  <use  "DLTips/Deconvolution2.jpg" >
-[125] [126] [127]
+[127] [128] [129]
 File: DLTips/ThreeDistillationModules1.png Graphic file (type QTm)
- <use  "DLTips/ThreeDistillationModules1.png" > [128]
+ <use  "DLTips/ThreeDistillationModules1.png" > [130]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\@ifnextchar' on input line 346.
 
 File: DLTips/Inception0.jpg Graphic file (type QTm)
-<use  "DLTips/Inception0.jpg" > [129]
+<use  "DLTips/Inception0.jpg" > [131]
 File: DLTips/Inception1.jpg Graphic file (type QTm)
  <use  "DLTips/Inception1.jpg" >
 File: DLTips/DepthwiseSeparable0.jpg Graphic file (type QTm)
@@ -2084,13 +2089,13 @@ File: DLTips/DepthwiseSeparable0.jpg Graphic file (type QTm)
 <use  "DLTips/DepthwiseSeparable0.jpg" >
 File: DLTips/DepthwiseSeparable1.jpg Graphic file (type QTm)
 
-<use  "DLTips/DepthwiseSeparable1.jpg" > [130] [131]
+<use  "DLTips/DepthwiseSeparable1.jpg" > [132] [133]
 File: DLTips/DeformableConv0.jpg Graphic file (type QTm)
 
-<use  "DLTips/DeformableConv0.jpg" > [132]
+<use  "DLTips/DeformableConv0.jpg" > [134]
 File: DLTips/DeformableConv1.jpg Graphic file (type QTm)
 
-<use  "DLTips/DeformableConv1.jpg" > [133]
+<use  "DLTips/DeformableConv1.jpg" > [135]
 File: DLTips/SENetConv0.jpg Graphic file (type QTm)
  <use  "DLTips/SENetConv0.jpg" >
 File: DLTips/SEInception0.jpg Graphic file (type QTm)
@@ -2100,20 +2105,20 @@ File: DLTips/SEResNet0.jpg Graphic file (type QTm)
  <use  "DLTips/SEResNet0.jpg" >
 File: DLTips/Conv0.jpg Graphic file (type QTm)
 
-<use  "DLTips/Conv0.jpg" > [134] [135]
+<use  "DLTips/Conv0.jpg" > [136] [137]
 File: DLTips/Unpooling0.png Graphic file (type QTm)
- <use  "DLTips/Unpooling0.png" > [136]
-[137] [138]
+ <use  "DLTips/Unpooling0.png" > [138]
+[139] [140]
 File: DLTips/PerceptionField1.png Graphic file (type QTm)
- <use  "DLTips/PerceptionField1.png" > [139]
+ <use  "DLTips/PerceptionField1.png" > [141]
 File: DLTips/PerceptionField0.jpg Graphic file (type QTm)
 
-<use  "DLTips/PerceptionField0.jpg" > [140] [141] [142] [143]
+<use  "DLTips/PerceptionField0.jpg" > [142] [143] [144] [145]
 File: DLTips/BP0.jpg Graphic file (type QTm)
 
-<use  "DLTips/BP0.jpg" > [144]
+<use  "DLTips/BP0.jpg" > [146]
 File: DLTips/BP1.jpg Graphic file (type QTm)
- <use  "DLTips/BP1.jpg" > [145]
+ <use  "DLTips/BP1.jpg" > [147]
 File: DLTips/BP2.png Graphic file (type QTm)
 
 <use  "DLTips/BP2.png" >
@@ -2121,37 +2126,37 @@ File: DLTips/BP3.jpg Graphic file (type QTm)
  <use  "DLTips/BP3.jpg" >
 File: DLTips/BP4.jpg Graphic file (type QTm)
  <use  "DLTips/BP4.jpg" >
-[146] [147] [148]
+[148] [149] [150]
 File: DLTips/Attention0.png Graphic file (type QTm)
- <use  "DLTips/Attention0.png" > [149] [150] [151]
+ <use  "DLTips/Attention0.png" > [151] [152] [153]
 File: DLTips/OneOneConv0.jpg Graphic file (type QTm)
 
-<use  "DLTips/OneOneConv0.jpg" > [152] [153]
+<use  "DLTips/OneOneConv0.jpg" > [154] [155]
 Overfull \hbox (79.87991pt too wide) in paragraph at lines 1287--1287
 [] 
  []
 
-) (./ImageProcessing/ImageProcessing.tex [154] [155] [156
+) (./ImageProcessing/ImageProcessing.tex [156] [157] [158
 
 ]
 Chapter 9.
-) (./FeatureExtraction/FeatureExtraction.tex [157] [158
+) (./FeatureExtraction/FeatureExtraction.tex [159] [160
 
 ]
 Chapter 10.
-[159]
+[161]
 File: FeatureExtraction/RCNN0.jpg Graphic file (type QTm)
- <use  "FeatureExtraction/RCNN0.jpg" > [160]
+ <use  "FeatureExtraction/RCNN0.jpg" > [162]
 File: FeatureExtraction/SPPNet0.png Graphic file (type QTm)
 
-<use  "FeatureExtraction/SPPNet0.png" > [161]
+<use  "FeatureExtraction/SPPNet0.png" > [163]
 File: FeatureExtraction/SPPNet1.png Graphic file (type QTm)
 
-<use  "FeatureExtraction/SPPNet1.png" > [162] [163] [164] [165]) [166]
-(./Papers.bbl [167
+<use  "FeatureExtraction/SPPNet1.png" > [164] [165] [166] [167]) [168]
+(./Papers.bbl [169
 
 
-] [168]) (./Papers.ind [169] [170
+] [170]) (./Papers.ind [171] [172
 
 
 ])
@@ -2168,12 +2173,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
  ) 
 Here is how much of TeX's memory you used:
- 29101 strings out of 495525
- 537530 string characters out of 6184337
- 748536 words of memory out of 5000000
- 31802 multiletter control sequences out of 15000+600000
+ 29103 strings out of 495525
+ 537555 string characters out of 6184337
+ 749087 words of memory out of 5000000
+ 31804 multiletter control sequences out of 15000+600000
  13649 words of font info for 96 fonts, out of 8000000 for 9000
  80 hyphenation exceptions out of 8191
  45i,14n,58p,10437b,1780s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Papers.pdf (184 pages).
+Output written on Papers.pdf (186 pages).

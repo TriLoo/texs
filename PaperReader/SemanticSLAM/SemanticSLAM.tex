@@ -2062,7 +2062,39 @@ See the paper.
 {\color{red} \bfseries 自从ResNet火起来后，这个Path Aggregation的方式貌似用的挺多的，关键还是让不同Level的feature更方便的信息交流！比如在本文中，低层次的Feature也可以支持Large Object， 高层次的Feature也可以支持Small Object。}
 
 
+\section{End-to-End Instance Segmentation with Recurrent Attention}
 
+参考文献：\cite{ren2017end}
+
+比较有意思的几点：
+
+在图像预处理过程中，作者用FCN输出两类数据，一类是1个Channel的前景分割；另一类是每一个Object的Angle Map， 作者把这个角度分成八个方向。为什么也会输出Angle Map呢？因为作者认为：Predicting the angle map forces the model to encode more detailed information about object boundaries。
+
+{\color{red} 所以通过多任务学习、改进Loss函数，可以有效提高多任务中的单个任务的性能。我猜测，这个多任务肯定得是具有某种同性的作用，通过多个任务之间的共同的约束来提高单一任务的性能，或者强迫模型学习得到我们想要的性质！}
+
+现在这个智商啊，下降的非常厉害。
+
+\section{Fully Convolutional Instance-aware Semantic Segmentation}
+
+参考文献：\cite{li2016fully}
+
+同时检测、分割Instances。引入了Positioin-senstive inside/outside score maps, 两个任务的底层卷积表示是完全Shared的。
+
+\subsection{背景与相关现状}
+
+Extends the translation invariant score maps in conventional FCNs to \textit{position-sensitive} score maps, which are somewhat translation-variant.
+
+也就是说抛弃了以往的Translation invariant， 而是加上了部分的Translation Variant性质(在分割的时候这样做)。
+
+\subsection{Our Approach}
+
+为了在Mask Prediction中引入Translation-variant性质，作者用了一个Fully Convolution solution来实现Instance Mask Proposal。
+
+作者总结到，高性能的原因来自于高度集中和高效的网络结构，尤其是联合训练Classification和Mask Segmentation的思想。
+
+那么是怎么整合到一起的呢？作者说是通过Fuses the two answers into two scores. 此外，提高Position-sensitive score map的想法来联合的和同时地完成Object segmentation和Detection两个任务。
+
+所以，在深度学习中，重要的点还包括：网络结构 + 适合自己任务的Loss Function。对于后者，应该想明白怎样才是适合自己的Loss Function.
 
 \subsection{常用数据集}
 
