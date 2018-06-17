@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  14 JUN 2018 20:42
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  16 JUN 2018 15:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1486,13 +1486,13 @@ Overfull \hbox (1.97218pt too wide) in paragraph at lines 60--60
 ation with a 2D Semantic Map[[]][][] [][]  
  []
 
-[2] [3] [4] [5] [6])
+[2] [3] [4] [5] [6] [7])
 \tf@toc=\write5
 \openout5 = `Papers.toc'.
 
- [7] [8
+ [8] (./Papers.lof [9
 
-] (./Papers.lof [9] [10])
+] [10])
 \tf@lof=\write6
 \openout6 = `Papers.lof'.
 
@@ -1913,15 +1913,21 @@ conventional FCNs to \EU1/TimesNewRoman(0)/m/it/12 position-sensitive
  []
 
 [82]
+Overfull \hbox (3.04585pt too wide) in paragraph at lines 2099--2099
+[]\EU1/TimesNewRoman(0)/bx/n/17.28 TernausNetV2: Fully Convolutional Network fo
+r In-
+ []
+
+[83]
 File: SemanticSLAM/KITTI0.png Graphic file (type QTm)
- <use  "SemanticSLAM/KITTI0.png" > [83]
+ <use  "SemanticSLAM/KITTI0.png" > [84]
 File: SemanticSLAM/KITTI1.png Graphic file (type QTm)
  <use  "SemanticSLAM/KITTI1.png" >
-[84] [85] [86]) (./OpenSetRecognition/OpenSetRecognition.tex [87] [88
+[85] [86] [87]) (./OpenSetRecognition/OpenSetRecognition.tex [88]
+Chapter 6.
+[89
 
 ]
-Chapter 6.
-[89]
 File: OpenSetRecognition/GANTraining0.jpg Graphic file (type QTm)
  <use  "OpenSetRecognition/GANTraining0.jpg" > [90]
 Overfull \hbox (48.0701pt too wide) in paragraph at lines 93--93
@@ -2051,16 +2057,54 @@ Overfull \hbox (32.58852pt too wide) in paragraph at lines 985--985
  out=None, **kwargs)[] 
  []
 
-) (./DLTips/DLTips.tex [122]
-Chapter 8.
-[123
+[122]
+Overfull \hbox (5.43208pt too wide) in paragraph at lines 1025--1026
+\EU1/SimSun(1)/m/n/12 的 是，| \EU1/TimesNewRoman(0)/m/n/12 Deconvolution \EU1/Sim
+Sun(1)/m/n/12 可 以 用 于 双 线 性 插 值，|  而 要 完 成 这 个，|  只 要 保 证[]\EU1/lmtt/m/n/12 ups
+ample_weight
+ []
+
+[123]
+Overfull \hbox (0.4108pt too wide) in paragraph at lines 1075--1076
+[]\EU1/TimesNewRoman(0)/m/n/12 Each upsample layer consists of (1) Upsample (bi
+linear, zero padding, nearest-
+ []
+
+
+Overfull \hbox (4.96428pt too wide) in paragraph at lines 1077--1078
+\EU1/SimSun(1)/m/n/12 在 代 码 里 面，|  需 要 注 意 的 是，|  当 使 用[]\EU1/lmtt/m/n/12 Bilin
+ear \EU1/SimSun(1)/m/n/12 算 法 的 时 候，|  要 设 置 参 数 为[]\EU1/lmtt/m/n/12 num_args=2
+\EU1/SimSun(1)/m/n/12 。|
+ []
+
+[124]
+Overfull \hbox (16.91058pt too wide) in paragraph at lines 1127--1130
+[]\EU1/TimesNewRoman(0)/m/n/12 upsampler = nn.Conv2DTranspose(channels=channels
+, kernel_size=4, strides=2,
+ []
+
+
+Overfull \hbox (35.21042pt too wide) in paragraph at lines 1127--1130
+\EU1/TimesNewRoman(0)/m/n/12 padding=1, use_bias=False, groups=channels, weight
+_initializer= mx.init.Bilinear()) 
+ []
+
+
+Overfull \hbox (0.92393pt too wide) in paragraph at lines 1138--1139
+[]\EU1/SimSun(1)/m/n/12 使 用 \EU1/TimesNewRoman(0)/m/n/12 Conv2DTranspose + mx.i
+nit.Bilinear() + net.collect_params().setattr('lr_mult',
+ []
+
+) (./DLTips/DLTips.tex [125] [126
 
 ]
+Chapter 8.
+[127]
 File: DLTips/DilatedConv1.jpg Graphic file (type QTm)
  <use  "DLTips/DilatedConv1.jpg" >
 File: DLTips/WaveNet1.jpg Graphic file (type QTm)
- <use  "DLTips/WaveNet1.jpg" > [124]
-[125]
+ <use  "DLTips/WaveNet1.jpg" > [128]
+[129]
 File: DLTips/Deconvolution0.jpg Graphic file (type QTm)
  <use  "DLTips/Deconvolution0.jpg" >
 Overfull \hbox (25.44086pt too wide) in paragraph at lines 141--142
@@ -2068,20 +2112,26 @@ Overfull \hbox (25.44086pt too wide) in paragraph at lines 141--142
  sense as ConvolutionLayer.ConvolutionLayer
  []
 
-[126]
+[130]
 File: DLTips/Deconvolution1.png Graphic file (type QTm)
  <use  "DLTips/Deconvolution1.png" >
 File: DLTips/Deconvolution2.jpg Graphic file (type QTm)
  <use  "DLTips/Deconvolution2.jpg" >
-[127] [128] [129]
+[131] [132]
+Overfull \hbox (7.86864pt too wide) in paragraph at lines 249--249
+[]\EU1/lmtt/m/n/12 gluon.nn.Conv2DTranpose(output_channels, kernel_size=(2*scal
+e, 2*scale)[] 
+ []
+
+[133]
 File: DLTips/ThreeDistillationModules1.png Graphic file (type QTm)
- <use  "DLTips/ThreeDistillationModules1.png" > [130]
+ <use  "DLTips/ThreeDistillationModules1.png" > [134]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 346.
+(hyperref)                removing `\@ifnextchar' on input line 357.
 
 File: DLTips/Inception0.jpg Graphic file (type QTm)
-<use  "DLTips/Inception0.jpg" > [131]
+<use  "DLTips/Inception0.jpg" > [135]
 File: DLTips/Inception1.jpg Graphic file (type QTm)
  <use  "DLTips/Inception1.jpg" >
 File: DLTips/DepthwiseSeparable0.jpg Graphic file (type QTm)
@@ -2089,13 +2139,13 @@ File: DLTips/DepthwiseSeparable0.jpg Graphic file (type QTm)
 <use  "DLTips/DepthwiseSeparable0.jpg" >
 File: DLTips/DepthwiseSeparable1.jpg Graphic file (type QTm)
 
-<use  "DLTips/DepthwiseSeparable1.jpg" > [132] [133]
+<use  "DLTips/DepthwiseSeparable1.jpg" > [136] [137]
 File: DLTips/DeformableConv0.jpg Graphic file (type QTm)
 
-<use  "DLTips/DeformableConv0.jpg" > [134]
+<use  "DLTips/DeformableConv0.jpg" > [138]
 File: DLTips/DeformableConv1.jpg Graphic file (type QTm)
 
-<use  "DLTips/DeformableConv1.jpg" > [135]
+<use  "DLTips/DeformableConv1.jpg" > [139]
 File: DLTips/SENetConv0.jpg Graphic file (type QTm)
  <use  "DLTips/SENetConv0.jpg" >
 File: DLTips/SEInception0.jpg Graphic file (type QTm)
@@ -2105,20 +2155,20 @@ File: DLTips/SEResNet0.jpg Graphic file (type QTm)
  <use  "DLTips/SEResNet0.jpg" >
 File: DLTips/Conv0.jpg Graphic file (type QTm)
 
-<use  "DLTips/Conv0.jpg" > [136] [137]
+<use  "DLTips/Conv0.jpg" > [140] [141]
 File: DLTips/Unpooling0.png Graphic file (type QTm)
- <use  "DLTips/Unpooling0.png" > [138]
-[139] [140]
+ <use  "DLTips/Unpooling0.png" > [142]
+[143] [144]
 File: DLTips/PerceptionField1.png Graphic file (type QTm)
- <use  "DLTips/PerceptionField1.png" > [141]
+ <use  "DLTips/PerceptionField1.png" > [145]
 File: DLTips/PerceptionField0.jpg Graphic file (type QTm)
 
-<use  "DLTips/PerceptionField0.jpg" > [142] [143] [144] [145]
+<use  "DLTips/PerceptionField0.jpg" > [146] [147] [148] [149]
 File: DLTips/BP0.jpg Graphic file (type QTm)
 
-<use  "DLTips/BP0.jpg" > [146]
+<use  "DLTips/BP0.jpg" > [150]
 File: DLTips/BP1.jpg Graphic file (type QTm)
- <use  "DLTips/BP1.jpg" > [147]
+ <use  "DLTips/BP1.jpg" > [151]
 File: DLTips/BP2.png Graphic file (type QTm)
 
 <use  "DLTips/BP2.png" >
@@ -2126,37 +2176,37 @@ File: DLTips/BP3.jpg Graphic file (type QTm)
  <use  "DLTips/BP3.jpg" >
 File: DLTips/BP4.jpg Graphic file (type QTm)
  <use  "DLTips/BP4.jpg" >
-[148] [149] [150]
+[152] [153] [154]
 File: DLTips/Attention0.png Graphic file (type QTm)
- <use  "DLTips/Attention0.png" > [151] [152] [153]
+ <use  "DLTips/Attention0.png" > [155] [156] [157]
 File: DLTips/OneOneConv0.jpg Graphic file (type QTm)
 
-<use  "DLTips/OneOneConv0.jpg" > [154] [155]
-Overfull \hbox (79.87991pt too wide) in paragraph at lines 1287--1287
+<use  "DLTips/OneOneConv0.jpg" > [158] [159]
+Overfull \hbox (79.87991pt too wide) in paragraph at lines 1298--1298
 [] 
  []
 
-) (./ImageProcessing/ImageProcessing.tex [156] [157] [158
+[160]) (./ImageProcessing/ImageProcessing.tex [161] [162
 
 ]
 Chapter 9.
-) (./FeatureExtraction/FeatureExtraction.tex [159] [160
+) (./FeatureExtraction/FeatureExtraction.tex [163] [164
 
 ]
 Chapter 10.
-[161]
+[165]
 File: FeatureExtraction/RCNN0.jpg Graphic file (type QTm)
- <use  "FeatureExtraction/RCNN0.jpg" > [162]
+ <use  "FeatureExtraction/RCNN0.jpg" > [166]
 File: FeatureExtraction/SPPNet0.png Graphic file (type QTm)
 
-<use  "FeatureExtraction/SPPNet0.png" > [163]
+<use  "FeatureExtraction/SPPNet0.png" > [167]
 File: FeatureExtraction/SPPNet1.png Graphic file (type QTm)
 
-<use  "FeatureExtraction/SPPNet1.png" > [164] [165] [166] [167]) [168]
-(./Papers.bbl [169
+<use  "FeatureExtraction/SPPNet1.png" > [168] [169] [170] [171]) [172]
+(./Papers.bbl [173
 
 
-] [170]) (./Papers.ind [171] [172
+] [174]) (./Papers.ind [175] [176
 
 
 ])
@@ -2173,12 +2223,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
  ) 
 Here is how much of TeX's memory you used:
- 29103 strings out of 495525
- 537555 string characters out of 6184337
- 749087 words of memory out of 5000000
- 31804 multiletter control sequences out of 15000+600000
+ 29175 strings out of 495525
+ 538686 string characters out of 6184337
+ 749875 words of memory out of 5000000
+ 31876 multiletter control sequences out of 15000+600000
  13649 words of font info for 96 fonts, out of 8000000 for 9000
  80 hyphenation exceptions out of 8191
  45i,14n,58p,10437b,1780s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Papers.pdf (186 pages).
+Output written on Papers.pdf (190 pages).

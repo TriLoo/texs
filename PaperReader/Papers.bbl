@@ -58,6 +58,11 @@ T.-W. {Hui}, X.~{Tang}, and C.~{Change Loy}.
   Flow Estimation}.
 \newblock {\em ArXiv e-prints}, May 2018.
 
+\bibitem{iglovikov2018ternausnetv2}
+Vladimir~I Iglovikov, Selim Seferbekov, Alexander~V Buslaev, and Alexey Shvets.
+\newblock Ternausnetv2: Fully convolutional network for instance segmentation.
+\newblock {\em arXiv preprint arXiv:1806.00844}, 2018.
+
 \bibitem{li2017fast}
 Chao Li, Yanjing Bi, Franck Marzani, and Fan Yang.
 \newblock Fast fpga prototyping for real-time image processing with very

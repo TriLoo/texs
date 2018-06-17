@@ -2096,6 +2096,53 @@ Extends the translation invariant score maps in conventional FCNs to \textit{pos
 
 所以，在深度学习中，重要的点还包括：网络结构 + 适合自己任务的Loss Function。对于后者，应该想明白怎样才是适合自己的Loss Function.
 
+\section{TernausNetV2: Fully Convolutional Network for Instance Segmentation}
+
+参考文献：\cite{iglovikov2018ternausnetv2}
+
+作者利用Encoder-Decoder结构实现了对遥感数据的Instance-level Semantic Segmentation。 输入除了普通的RGB数据，还包括其它通道的数据。
+
+\subsection{背景及相关工作}
+
+首先提出了FCN结构用于语义分割，后来通过引入Skip Connections来允许综合low-level的Feature maps 和 higher-levle ones，可以保证精确地Pixel-level localization。 后者的典型是U-Net。
+
+作者的方案是，在RGB上进行迁移学习，输出Semantic Mask后在用额外的Output Channel用于Predict areas where objects are touched or close to each other. 最后输出的是Separate Instances.
+
+用到的数据集是SpaceNet。
+
+\subsection{Model}
+
+采用Encoder-Decoder的U-Net网络结构，并且作者把Encoder部分替换成 WideResNet-38 Network，后面这个结构具有In-place activated batch normalization的特点。In-palce activated Batch Normalization把Batch Normalization layer和Activation Layer合并到一起了，可以节省50\%的GPU存储空间。
+
+此外，相比于ResNet, WideResnet每次卷积具有更多的输出Channel, 同时具有更浅的卷积层数。
+
+而在Decoder部分，采用Nearest Neighbor Upsampling来实现分辨率的翻倍。
+
+\subsection{Training}
+
+再输入中，比3个通道多出来的几个通道的网络权重被初始化为0。
+
+在第一个Epoch， 固定Encoder部分的权重，然后只训练Decoder部分的权重。在第二个Epoch开始， 训练所有的权重。作者认为，这样网络可以轻松的从3个通道学习扩展到多个通道的学习， 并且学习的过程是:Delicate, careful manner, slowly increasing weights of the multi-spectral part of the input.
+
+作为Loss function， 作者采用了下面的损失函数：
+\begin{displaymath}
+L = \alpha H - (1 - \alpha)(1 - J)
+\end{displaymath}
+
+其中J是Jaccard loss, H是普通的交叉熵损失函数。
+
+这个Jaccard loss具体长下面这样：
+\begin{displaymath}
+J = \frac{1}{n}\sum_{c=1}^{C}\omega_c \sum_{i = 1}^{n}\left( \frac{y_i^c \hat{y}_i^c}{y_i^c + \hat{y}_i^c - y_i^c \hat{y}_i^c} \right)
+\end{displaymath}
+
+其中， $\hat{y}$是预测的Mask， $y$是真实的Mask, $n$是每一个通道的像素数， $C$是总的通道数， 也就是类别数。
+
+
+
+
+
+
 \subsection{常用数据集}
 
 \subsection{KITTI}

@@ -1008,5 +1008,154 @@ transpose(data=None, axis=_Null, name=None, attr=None, out=None)
 
 例如：输入是 高 * 宽 * 通道数，那么要转换成 通道数 * 高 * 宽，那么axis应该取(2, 0, 1)。
 
+\section{UpSample In MXNet}
+
+这一部分主要总结今天看到的所有关于MXNet中UpSample使用的网上帖子。
+
+参考[1]：\href{https://mxnet.incubator.apache.org/api/python/symbol/symbol.html?highlight=upsampling#mxnet.symbol.UpSampling}{UpSampling-MXNet API}
+
+\verb|mxnet.symbol.UpSampling(*data, **kwargs)|
+
+上式用于对输入实现最近邻/双线性插值。其中，\verb|*data|可以选择：data, scale, num\_filter, sample\_type, multi\_input\_mode, workspace, name, 以及\verb|num_args|。
+
+参考[2]: \href{https://github.com/apache/incubator-mxnet/issues/4134}{使用Deconvolution作为UpSampling来使用}
+
+原文题目：How to use mx.sym.UpSampling for bilinear upsampling， 提问者不知道如何设置UpSampling的参数，下面有答案说可以用Deconvolution来实现分辨率的提高，具体的跟DLTips一章里面的用法是一样的，也就是如何设置参数来成倍的提高分辨率。
+
+另一个讨论者通多对\verb|src/operator/upsampling.cc|代码分析可知，当创建Bilinear Upsampling operator时候，其实会返回Deconvolution Opeartioin。 所以可以确定的是，Deconvolution可以用于双线性插值，而要完成这个，只要保证\verb|upsample_weight|被初始化为Bilinear Kernel。 但讨论者有另外一个疑问：就是在后向传播的时候，\verb|upsampling_weight|也会更新，但这可以通过设置网络层的学习率来决定更新或者不更新。
+
+在这个问题下面，有回答者又给出了另一个链接：\href{https://github.com/apache/incubator-mxnet/pull/9688}{BilinearResize2D-PR}， 貌似是5月份刚提交的，所以可能需要更新下MXNet。
+
+参考[3]: \href{https://github.com/apache/incubator-mxnet/issues/1514}{Deconvolution layer的参数配置}
+
+下面piiswrong的回答同样是DLTips那一章节的提升Scale倍分辨率时的参数配置。
+
+参考[4]: \href{https://github.com/apache/incubator-mxnet/issues/1412}{不理解UpSampling是如何工作的}
+
+还是piiswrong的回答：Blinear Upsampling是基于Convolution实现的，因此需要权重，如果不想在训练过程中更新这些参数，需要设置\verb|lr_scale|为0！
+
+提问者的回答：只要不更新权重系数，就可以当做Bilinear Interpolation来用，但如果跟新参数的话，就会被当做普通的Deconvolution来用，piiswrong认为这样更好一点。
+
+那么具体怎么实现呢？
+
+piiswrong的回答是需要一个weight matrix. 可以被mx.init 中的 bilinear initializer进行初始化。
+
+一个例子：
+\lstset{language=Python, caption={UpSampling的一个例子}}
+
+\begin{lstlisting}
+#upsample filter
+def upsample_filt(size):
+    factor = (size + 1) // 2
+    if size % 2 == 1:
+        center = factor - 1
+    else:
+        center = factor - 0.5
+    og = np.ogrid[:size, :size]
+    return (1 - abs(og[0] - center) / factor) * \
+           (1 - abs(og[1] - center) / factor)
+
+# network
+net = mx.symbol.Variable('data')
+net = mx.symbol.UpSampling(net, num_filter=3, scale=2, 
+			sample_type='bilinear', num_args = 2, name="up")
+
+#upsampling weights
+filt = upsample_filt(4)
+initw = np.zeros((3,1,4,4), dtype=np.float32)
+initw[range(3), 0, :, :] = filt
+initw = mx.nd.array(initw)
+#forward
+c_exec = net.bind(ctx=mx.cpu(), args={'data': im_data, 'up_weight': initw})
+c_exec.forward()
+\end{lstlisting}
+
+最后，给出一个底层一点的解释：
+\begin{quote}
+Each upsample layer consists of (1) Upsample (bilinear, zero padding, nearest- neighbor) and (2) convolution with a transposed filter. That is why you need the convolution operation in these layers. Convolution always reduce the input matrix to the output, to go to a bigger output, you have to upsample the input first and potentially do zero - padding to the output later on in order to fix the dimensions. Also, the filters are called learned filters, because the un-transposed version (filter) that we used to calculate the transposed filter learned the features during training.
+\end{quote}
+在代码里面，需要注意的是，当使用\verb|Bilinear|算法的时候，要设置参数为\verb|num_args=2|。另一个非常重要的是：在权重参数初始化的时候，用的字典的key是\verb|up_weight|!!!
+
+参考[5]: \href{https://github.com/apache/incubator-mxnet/issues/9138}{不能让mxnet.ndarray.UpSampling实现Bilinear插值}
+
+主要有两点值得关注的：
+\begin{itemize}
+\item From zhanghang1989: \href{https://github.com/apache/incubator-mxnet/pull/9688}{PR} about \verb|BilinearResize2D|和\verb|AdaptiveAvgPooling2d|
+\item From \href{https://stackoverflow.com/questions/47897924/implementing-bilinear-interpolation-with-mxnet-ndarray-upsampling}{Stack Overflow Answers}
+
+\verb|mxnet.ndarray.UpSampling| seems to expect 2 inputs (1 input and 1 weight) for bilinear sample\_type.
+
+Also, I think documentation for num\_args parameter is missing which you can check here: \href{https://github.com/apache/incubator-mxnet/blob/master/src/operator/nn/upsampling-inl.h#L78}{Github Souce code}
+
+This should work:
+
+\lstset{language=Python, caption={UpSample例子2}}
+\begin{lstlisting}
+import mxnet as mx
+import mxnet.ndarray as nd
+xx = nd.random_normal(shape=[1,1,256,256],ctx=mx.cpu())
+xx1 = nd.random_normal(shape=[1,1,4,4],ctx=mx.cpu()) 
+temp = nd.UpSampling(xx,xx1, num_filter=1, scale=2, sample_type='bilinear', num_args=2)
+\end{lstlisting}
+
+\end{itemize}
+
+参考[6]: \href{https://discuss.gluon.ai/t/topic/2823}{nd.UpSampling到底怎么使用Bilinear}
+
+UpSampling的源码可以在Github上找到，里面说：
+
+\begin{quote}
+For bilinear upsampling this must be 2; 1 input and 1 weight.
+\end{quote}
+\textbf{后来改成这种就可以了}：
+\begin{lstlisting}
+scale = 2
+seq.add(nn.Conv2DTranspose(128, kernel_size=(2*scale, 2*scale), 
+		strides=(scale, scale), padding=(scale/2, scale/2), 
+		weight_initializer=mx.init.Bilinear()))
+\end{lstlisting}
+
+参考[7]: \href{https://discuss.gluon.ai/t/topic/2672}{UpSampling-Gluon论坛}
+
+\textbf{重点}。
+
+这个问题下面的Chinakook回答的比较好。
+
+\begin{quote}
+严格意义的Upsample应该用Conv2DTranspose，upsampling到指定大小至少到现在我还没看到有任何提升。
+
+upsampler = nn.Conv2DTranspose(channels=channels, 
+		kernel\_size=4, strides=2, padding=1, use\_bias=False,
+		groups=channels, weight\_initializer= mx.init.Bilinear()) 
+		
+upsampler.collect\_params().setattr(‘lr\_mult’, 0.)
+\end{quote}
+
+\subsection{总结}
+
+回顾上面的几个帖子，总结一下可以用以下三个方法：
+\begin{itemize}
+\item 使用Conv2DTranspose + mx.init.Bilinear() + net.collect\_params().setattr('lr\_mult', 0)实现, 可以见参考[2, 6, 7]
+\item 使用UpSample实现，可以见参考[4, 5]
+\item 使用最新的\verb|BilinearResize2D|
+\end{itemize}
+
+
+\section{MXNet中设置层的学习率}
+
+参考：\href{https://discuss.gluon.ai/t/topic/6636}{MXNet如何在命令行设置层的学习率}
+
+Gluon的话可以用\verb|layer.weight.set_lr_mult|来改。
+
+
+
+
+
+
+
+
+
+
+
 
 

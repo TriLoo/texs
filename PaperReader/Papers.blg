@@ -6,45 +6,45 @@ A level-1 auxiliary file: CUDAImageProcessing/CUDAImageProcessing.aux
 A level-1 auxiliary file: FPGAs/FPGAs.aux
 Database file #1: reference.bib
 Warning--empty booktitle in scona2018staticfusion
-You've used 36 entries,
+You've used 37 entries,
             2118 wiz_defined-function locations,
-            674 strings with 10117 characters,
-and the built_in function-call counts, 12867 in all, are:
-= -- 1225
-> -- 758
+            678 strings with 10327 characters,
+and the built_in function-call counts, 13169 in all, are:
+= -- 1252
+> -- 781
 < -- 8
-+ -- 295
-- -- 259
-* -- 895
-:= -- 2180
-add.period$ -- 113
-call.type$ -- 36
-change.case$ -- 235
++ -- 304
+- -- 267
+* -- 916
+:= -- 2237
+add.period$ -- 116
+call.type$ -- 37
+change.case$ -- 242
 chr.to.int$ -- 0
-cite$ -- 37
-duplicate$ -- 487
-empty$ -- 886
-format.name$ -- 259
-if$ -- 2661
+cite$ -- 38
+duplicate$ -- 497
+empty$ -- 903
+format.name$ -- 267
+if$ -- 2719
 int.to.chr$ -- 0
-int.to.str$ -- 36
-missing$ -- 36
-newline$ -- 183
-num.names$ -- 74
-pop$ -- 261
+int.to.str$ -- 37
+missing$ -- 37
+newline$ -- 188
+num.names$ -- 76
+pop$ -- 268
 preamble$ -- 1
-purify$ -- 199
+purify$ -- 205
 quote$ -- 0
-skip$ -- 367
+skip$ -- 374
 stack$ -- 0
-substring$ -- 577
-swap$ -- 126
+substring$ -- 582
+swap$ -- 127
 text.length$ -- 8
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 144
+type$ -- 148
 warning$ -- 1
-while$ -- 103
-width$ -- 38
-write$ -- 379
+while$ -- 105
+width$ -- 39
+write$ -- 389
 (There was 1 warning)

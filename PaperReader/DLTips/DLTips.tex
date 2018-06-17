@@ -237,7 +237,18 @@ N_{in} = (N_{out} - 1) * S + K - 2 * P
 
 起码MXNet中的Conv2Transpose可以这样设置参数。
 
+\subsection{Conv2DTranspose用于成倍的提高分辨率的时候}
 
+参考文献：\href{https://discuss.gluon.ai/t/topic/2823/4}{UpSampling中使用Bilinear到底怎么用-Gluon}
+
+一种简单的做法，假设需要提升的分辨率的倍数是$scale$那么设置Transpose Convolution的参数如下：
+\begin{verbatim}
+gluon.nn.Conv2DTranpose(output_channels, kernel_size=(2*scale, 2*scale) 
+							strides=(scale, scale), padding=(scale/2, scale/2), 
+							weight_initializer=mx.init.Bilinear()))
+\end{verbatim}
+
+比如，要把Feature Map放大2倍，则$scale=2$带入上面的代码就行。
 
 
 \section{Dilated Network与Deconv Network之间的区别}
@@ -1288,6 +1299,17 @@ f(x, y)  & \approx \frac{y_2 - y}{y_2 - y_1} f(x, y_1) + \frac{y-y_1}{y_2 - y_1}
 %\end{displaymath}
 
 参考的知乎答案中，给出了一个插值的例子，可以参考下。
+
+\section{卷积层输出的尺寸}
+
+假设输入尺寸是:$(B, C, W, H)$
+
+且卷积核的大小是$(K, K)$, Stride大小为$(S, S)$, Padding的大小是$Pading$, 那么输出的大小是：
+\begin{displaymath}
+W_{out} = \frac{W - K + 2 * Padding}{S} + 1
+\end{displaymath}
+
+需要注意的是，如果公式中的除法除不尽，那么需要舍去小数部分，也就是，公式中的分式是整除！
 
 \section{机器学习面试博客总结2018.06.11}
 
