@@ -237,6 +237,8 @@
 \contentsline {subsubsection}{Mask RCNN的工作机理}{87}{section*.118}
 \contentsline {subsubsection}{Tensorflow + Keras实现实例分割}{87}{section*.119}
 \contentsline {section}{\numberline {5.33}无需Proposal的实例分割论文}{87}{section.5.33}
+\contentsline {section}{\numberline {5.34}Learning Rich Features from RGB-D Images for Object Detection and Segmentation}{88}{section.5.34}
+\contentsline {section}{\numberline {5.35}Multimodal Deep Learning for Robust RGB-D Object Recognition}{88}{section.5.35}
 \contentsline {chapter}{\numberline {6}Open Set Recognition}{89}{chapter.6}
 \contentsline {section}{\numberline {6.1}GAN}{89}{section.6.1}
 \contentsline {subsection}{\numberline {6.1.1}GAN 原理笔记}{89}{subsection.6.1.1}
@@ -394,9 +396,15 @@
 \contentsline {section}{\numberline {8.26}Bilinear filler初始化ConvTranspose层的权重}{160}{section.8.26}
 \contentsline {section}{\numberline {8.27}卷积层输出的尺寸}{160}{section.8.27}
 \contentsline {section}{\numberline {8.28}机器学习面试博客总结2018.06.11}{161}{section.8.28}
-\contentsline {section}{\numberline {8.29}花书前两部分总结}{161}{section.8.29}
-\contentsline {subsection}{\numberline {8.29.1}信息论}{161}{subsection.8.29.1}
-\contentsline {section}{\numberline {8.30}待续}{161}{section.8.30}
+\contentsline {subsection}{\numberline {8.28.1}大疆}{161}{subsection.8.28.1}
+\contentsline {subsubsection}{机器学习中的范数问题}{161}{section*.210}
+\contentsline {subsubsection}{类别中不平衡}{161}{section*.211}
+\contentsline {subsubsection}{Confusion Matrix}{161}{section*.212}
+\contentsline {subsubsection}{ROC \& AUC}{162}{section*.214}
+\contentsline {subsection}{\numberline {8.28.2}机器学习面试总结}{162}{subsection.8.28.2}
+\contentsline {section}{\numberline {8.29}花书前两部分总结}{162}{section.8.29}
+\contentsline {subsection}{\numberline {8.29.1}信息论}{162}{subsection.8.29.1}
+\contentsline {section}{\numberline {8.30}待续}{162}{section.8.30}
 \contentsline {chapter}{\numberline {9}Image Processing}{163}{chapter.9}
 \contentsline {section}{\numberline {9.1}Feature Extraction}{163}{section.9.1}
 \contentsline {subsection}{\numberline {9.1.1}SIFT}{163}{subsection.9.1.1}
@@ -406,19 +414,19 @@
 \contentsline {subsection}{\numberline {10.1.2}Selective Search}{166}{subsection.10.1.2}
 \contentsline {section}{\numberline {10.2}Region CNN}{166}{section.10.2}
 \contentsline {subsection}{\numberline {10.2.1}概述}{166}{subsection.10.2.1}
-\contentsline {subsubsection}{Boundingbox 回归}{166}{section*.211}
+\contentsline {subsubsection}{Boundingbox 回归}{166}{section*.216}
 \contentsline {section}{\numberline {10.3}SPP Net}{166}{section.10.3}
 \contentsline {subsection}{\numberline {10.3.1}背景与相关工作}{166}{subsection.10.3.1}
 \contentsline {subsection}{\numberline {10.3.2}网络结构}{167}{subsection.10.3.2}
-\contentsline {subsubsection}{Fisher Kernel}{167}{section*.213}
-\contentsline {subsubsection}{Convolutional Layers and Feature Maps}{168}{section*.214}
-\contentsline {subsubsection}{The Spatial Pyramid Pooling Layer}{168}{section*.215}
-\contentsline {subsubsection}{Training}{168}{section*.217}
+\contentsline {subsubsection}{Fisher Kernel}{167}{section*.218}
+\contentsline {subsubsection}{Convolutional Layers and Feature Maps}{168}{section*.219}
+\contentsline {subsubsection}{The Spatial Pyramid Pooling Layer}{168}{section*.220}
+\contentsline {subsubsection}{Training}{168}{section*.222}
 \contentsline {subsection}{\numberline {10.3.3}Object Detection Experiments}{168}{subsection.10.3.3}
 \contentsline {subsection}{\numberline {10.3.4}Conclusion}{169}{subsection.10.3.4}
 \contentsline {section}{\numberline {10.4}Fast RCNN}{170}{section.10.4}
 \contentsline {subsection}{\numberline {10.4.1}ROI-Pooling层的实现-知乎}{170}{subsection.10.4.1}
-\contentsline {subsubsection}{ROI Pooling层}{170}{section*.218}
+\contentsline {subsubsection}{ROI Pooling层}{170}{section*.223}
 \contentsline {section}{\numberline {10.5}Faster RCNN}{171}{section.10.5}
 \contentsline {section}{\numberline {10.6}R FCN}{171}{section.10.6}
 \contentsline {section}{\numberline {10.7}Mask RCNN}{171}{section.10.7}

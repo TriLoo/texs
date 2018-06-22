@@ -12,6 +12,13 @@ Xinlei Chen, Li-Jia Li, Li~Fei-Fei, and Abhinav Gupta.
 \newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
   Pattern Recognition}, 2018.
 
+\bibitem{eitel2015multimodal}
+Andreas Eitel, Jost~Tobias Springenberg, Luciano Spinello, Martin Riedmiller,
+  and Wolfram Burgard.
+\newblock Multimodal deep learning for robust rgb-d object recognition.
+\newblock In {\em Intelligent Robots and Systems (IROS), 2015 IEEE/RSJ
+  International Conference on}, pages 681--687. IEEE, 2015.
+
 \bibitem{Felzenszwalb2004}
 Pedro~F Felzenszwalb and Daniel~P Huttenlocher.
 \newblock {Efficient Graph-Based Image Segmentation}.
@@ -29,6 +36,13 @@ Ian Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley,
 \newblock In Z.~Ghahramani, M.~Welling, C.~Cortes, N.~D. Lawrence, and K.~Q.
   Weinberger, editors, {\em Advances in Neural Information Processing Systems
   27}, pages 2672--2680. Curran Associates, Inc., 2014.
+
+\bibitem{gupta2014learning}
+Saurabh Gupta, Ross Girshick, Pablo Arbel{\'a}ez, and Jitendra Malik.
+\newblock Learning rich features from rgb-d images for object detection and
+  segmentation.
+\newblock In {\em European Conference on Computer Vision}, pages 345--360.
+  Springer, 2014.
 
 \bibitem{maskrcnn2017he}
 K.~{He}, G.~{Gkioxari}, P.~{Doll{\'a}r}, and R.~{Girshick}.

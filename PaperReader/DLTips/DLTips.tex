@@ -1313,6 +1313,62 @@ W_{out} = \frac{W - K + 2 * Padding}{S} + 1
 
 \section{机器学习面试博客总结2018.06.11}
 
+\subsection{大疆}
+
+参考文献：\href{https://blog.csdn.net/weixin_37699515/article/details/80023498}{大疆2018机器学习笔记}
+
+\subsubsection{机器学习中的范数问题}
+
+L0范数指向量中非0元素的个数，L1范数是指各个元素的绝对值之和，也叫稀疏规则算法；L2范数就是先平方在求和开方。L2范数有助于处理Condition number不好的情况下矩阵求逆困难的问题，有助于有噪声的情况。
+
+更多的内容看花书部分的总结。
+
+\subsubsection{类别中不平衡}
+
+1. 过抽样
+抽样处理不平衡数据的最常用方法，基本思想就是通过改变训练数据的分布来消除或减小数据的不平衡。
+
+过抽样方法通过增加少数类样本来提高少数类的分类性能 ，最简单的办法是简单复制少数类样本，缺点是可能导致过拟合，没有给少数类增加任何新的信息。改进的过抽样方法通过在少数类中加入随机高斯噪声或产生新的合成样本等方法。
+
+2.引入代价敏感因子，设计出代价敏感的分类算法。通常对小样本赋予较高的代价，大样本赋予较小的代价，期望以此来平衡样本之间的数目差异。如 Focal Loss
+
+3.特征选择
+
+样本数量分布很不平衡时，特征的分布同样会不平衡。尤其在文本分类问题中，在大类中经常出现的特征，也许在稀有类中根本不出现。因此，根据不平衡分类问题的特点，选取最具有区分能力的特征，有利于提高稀有类的识别率 。
+
+4. 直接基于原始训练集进行学习，但是在用训练好的分类器进行预测的时候，将上面的第一种方法嵌入到决策过程中，这种方法称为“阈值移动(threshold-moving)”。
+
+5. Hard Negative Mining,
+
+也就是仅利用负类(很多)的少量样本进行训练，也就是改变数据的分布的方式。
+
+\subsubsection{Confusion Matrix}
+
+如图\ref{ConfusionMatrix0}所示。
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.95\textwidth]{DLTips/ConfusionMatrix0.png}
+\caption{Confusion Matrix示意图}
+\label{ConfusionMatrix0}
+\end{figure}
+
+\subsubsection{ROC \& AUC}
+
+ROC曲线，恒周围假阳性概率(FP)， 真阳性(TP)为纵轴组成的坐标图。
+
+真阳性又称为灵敏度。
+
+ROC曲线越靠近左上角，实验的准确性就越高。
+
+AUC为ROC曲线下的面积，哪一种实验的AUC最大，则哪一种实验的诊断判断性最佳。
+
+AUC越接近于1,说明效果越好。
+
+\subsection{机器学习面试总结}
+
+参考文献：\href{https://www.cnblogs.com/huanyi0723/p/8470866.html}{机器学习面试总结-博客园}
+
 
 \section{花书前两部分总结}
 

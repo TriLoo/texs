@@ -91,8 +91,9 @@
 \contentsline {figure}{\numberline {8.21}{\ignorespaces 反向传播时的误差\relax }}{153}{figure.caption.201}
 \contentsline {figure}{\numberline {8.22}{\ignorespaces Attention 模型示意图\relax }}{155}{figure.caption.204}
 \contentsline {figure}{\numberline {8.23}{\ignorespaces 1*1 Convolutoin 的作用示意图\relax }}{159}{figure.caption.209}
+\contentsline {figure}{\numberline {8.24}{\ignorespaces Confusion Matrix示意图\relax }}{162}{figure.caption.213}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {10.1}{\ignorespaces RCNN整体思想 \relax }}{166}{figure.caption.210}
-\contentsline {figure}{\numberline {10.2}{\ignorespaces Pyramid Pooling在网络结构中的示意图，与传统CNN结构的比较\relax }}{167}{figure.caption.212}
-\contentsline {figure}{\numberline {10.3}{\ignorespaces Pyramid Pooling的计算过程示意图\relax }}{169}{figure.caption.216}
+\contentsline {figure}{\numberline {10.1}{\ignorespaces RCNN整体思想 \relax }}{166}{figure.caption.215}
+\contentsline {figure}{\numberline {10.2}{\ignorespaces Pyramid Pooling在网络结构中的示意图，与传统CNN结构的比较\relax }}{167}{figure.caption.217}
+\contentsline {figure}{\numberline {10.3}{\ignorespaces Pyramid Pooling的计算过程示意图\relax }}{169}{figure.caption.221}

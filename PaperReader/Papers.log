@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  16 JUN 2018 15:28
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  22 JUN 2018 23:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1923,7 +1923,13 @@ File: SemanticSLAM/KITTI0.png Graphic file (type QTm)
  <use  "SemanticSLAM/KITTI0.png" > [84]
 File: SemanticSLAM/KITTI1.png Graphic file (type QTm)
  <use  "SemanticSLAM/KITTI1.png" >
-[85] [86] [87]) (./OpenSetRecognition/OpenSetRecognition.tex [88]
+[85] [86] [87]
+Overfull \hbox (3.70818pt too wide) in paragraph at lines 2294--2294
+[]\EU1/TimesNewRoman(0)/bx/n/17.28 Learning Rich Features from RGB-D Images for
+ Ob-
+ []
+
+) (./OpenSetRecognition/OpenSetRecognition.tex [88]
 Chapter 6.
 [89
 
@@ -2186,11 +2192,14 @@ Overfull \hbox (79.87991pt too wide) in paragraph at lines 1298--1298
 [] 
  []
 
-[160]) (./ImageProcessing/ImageProcessing.tex [161] [162
-
-]
+[160]
+File: DLTips/ConfusionMatrix0.png Graphic file (type QTm)
+ <use  "DLTips/ConfusionMatrix0.png" > [161])
+(./ImageProcessing/ImageProcessing.tex [162]
 Chapter 9.
-) (./FeatureExtraction/FeatureExtraction.tex [163] [164
+) (./FeatureExtraction/FeatureExtraction.tex [163
+
+] [164
 
 ]
 Chapter 10.
@@ -2223,10 +2232,10 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
  ) 
 Here is how much of TeX's memory you used:
- 29175 strings out of 495525
- 538686 string characters out of 6184337
- 749875 words of memory out of 5000000
- 31876 multiletter control sequences out of 15000+600000
+ 29181 strings out of 495525
+ 538805 string characters out of 6184337
+ 750462 words of memory out of 5000000
+ 31881 multiletter control sequences out of 15000+600000
  13649 words of font info for 96 fonts, out of 8000000 for 9000
  80 hyphenation exceptions out of 8191
  45i,14n,58p,10437b,1780s stack positions out of 5000i,500n,10000p,200000b,80000s
