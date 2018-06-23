@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  22 JUN 2018 23:41
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  23 JUN 2018 15:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2194,28 +2194,28 @@ Overfull \hbox (79.87991pt too wide) in paragraph at lines 1298--1298
 
 [160]
 File: DLTips/ConfusionMatrix0.png Graphic file (type QTm)
- <use  "DLTips/ConfusionMatrix0.png" > [161])
-(./ImageProcessing/ImageProcessing.tex [162]
+ <use  "DLTips/ConfusionMatrix0.png" > [161] [162] [163] [164] [165]
+[166] [167]) (./ImageProcessing/ImageProcessing.tex [168]
 Chapter 9.
-) (./FeatureExtraction/FeatureExtraction.tex [163
+) (./FeatureExtraction/FeatureExtraction.tex [169
 
-] [164
+] [170
 
 ]
 Chapter 10.
-[165]
+[171]
 File: FeatureExtraction/RCNN0.jpg Graphic file (type QTm)
- <use  "FeatureExtraction/RCNN0.jpg" > [166]
+ <use  "FeatureExtraction/RCNN0.jpg" > [172]
 File: FeatureExtraction/SPPNet0.png Graphic file (type QTm)
 
-<use  "FeatureExtraction/SPPNet0.png" > [167]
+<use  "FeatureExtraction/SPPNet0.png" > [173]
 File: FeatureExtraction/SPPNet1.png Graphic file (type QTm)
 
-<use  "FeatureExtraction/SPPNet1.png" > [168] [169] [170] [171]) [172]
-(./Papers.bbl [173
+<use  "FeatureExtraction/SPPNet1.png" > [174] [175] [176] [177]) [178]
+(./Papers.bbl [179
 
 
-] [174]) (./Papers.ind [175] [176
+] [180]) (./Papers.ind [181] [182
 
 
 ])
@@ -2232,12 +2232,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
  ) 
 Here is how much of TeX's memory you used:
- 29181 strings out of 495525
- 538805 string characters out of 6184337
- 750462 words of memory out of 5000000
- 31881 multiletter control sequences out of 15000+600000
+ 29190 strings out of 495525
+ 539195 string characters out of 6184337
+ 750797 words of memory out of 5000000
+ 31890 multiletter control sequences out of 15000+600000
  13649 words of font info for 96 fonts, out of 8000000 for 9000
  80 hyphenation exceptions out of 8191
  45i,14n,58p,10437b,1780s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Papers.pdf (190 pages).
+Output written on Papers.pdf (196 pages).
