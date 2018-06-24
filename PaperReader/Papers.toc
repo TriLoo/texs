@@ -422,40 +422,60 @@
 \contentsline {subsubsection}{随机梯度下降}{167}{section*.228}
 \contentsline {subsubsection}{促使深度学习发展的挑战}{168}{section*.229}
 \contentsline {subsection}{\numberline {8.29.4}第六章}{168}{subsection.8.29.4}
-\contentsline {subsection}{\numberline {8.29.5}第七章}{168}{subsection.8.29.5}
-\contentsline {subsection}{\numberline {8.29.6}第八章}{168}{subsection.8.29.6}
-\contentsline {section}{\numberline {8.30}待续}{168}{section.8.30}
-\contentsline {chapter}{\numberline {9}Image Processing}{169}{chapter.9}
-\contentsline {section}{\numberline {9.1}Feature Extraction}{169}{section.9.1}
-\contentsline {subsection}{\numberline {9.1.1}SIFT}{169}{subsection.9.1.1}
-\contentsline {chapter}{\numberline {10}Feature Extraction}{171}{chapter.10}
-\contentsline {section}{\numberline {10.1}Selective Search}{171}{section.10.1}
-\contentsline {subsection}{\numberline {10.1.1}Efficient Graph-Based Image Segmentation}{171}{subsection.10.1.1}
-\contentsline {subsection}{\numberline {10.1.2}Selective Search}{172}{subsection.10.1.2}
-\contentsline {section}{\numberline {10.2}Region CNN}{172}{section.10.2}
-\contentsline {subsection}{\numberline {10.2.1}概述}{172}{subsection.10.2.1}
-\contentsline {subsubsection}{Boundingbox 回归}{172}{section*.231}
-\contentsline {section}{\numberline {10.3}SPP Net}{172}{section.10.3}
-\contentsline {subsection}{\numberline {10.3.1}背景与相关工作}{172}{subsection.10.3.1}
-\contentsline {subsection}{\numberline {10.3.2}网络结构}{173}{subsection.10.3.2}
-\contentsline {subsubsection}{Fisher Kernel}{173}{section*.233}
-\contentsline {subsubsection}{Convolutional Layers and Feature Maps}{174}{section*.234}
-\contentsline {subsubsection}{The Spatial Pyramid Pooling Layer}{174}{section*.235}
-\contentsline {subsubsection}{Training}{174}{section*.237}
-\contentsline {subsection}{\numberline {10.3.3}Object Detection Experiments}{174}{subsection.10.3.3}
-\contentsline {subsection}{\numberline {10.3.4}Conclusion}{175}{subsection.10.3.4}
-\contentsline {section}{\numberline {10.4}Fast RCNN}{176}{section.10.4}
-\contentsline {subsection}{\numberline {10.4.1}ROI-Pooling层的实现-知乎}{176}{subsection.10.4.1}
-\contentsline {subsubsection}{ROI Pooling层}{176}{section*.238}
-\contentsline {section}{\numberline {10.5}Faster RCNN}{177}{section.10.5}
-\contentsline {section}{\numberline {10.6}R FCN}{177}{section.10.6}
-\contentsline {section}{\numberline {10.7}Mask RCNN}{177}{section.10.7}
-\contentsline {section}{\numberline {10.8}YOLO}{177}{section.10.8}
-\contentsline {section}{\numberline {10.9}YOLO v2}{177}{section.10.9}
-\contentsline {section}{\numberline {10.10}YOLO v3}{177}{section.10.10}
-\contentsline {section}{\numberline {10.11}SSD}{177}{section.10.11}
-\contentsline {section}{\numberline {10.12}DSSD}{177}{section.10.12}
-\contentsline {section}{\numberline {10.13}Retina Net (Focal Loss)}{177}{section.10.13}
-\contentsline {section}{\numberline {10.14}Feature Pyramid Network}{177}{section.10.14}
-\contentsline {subsection}{\numberline {10.14.1}Nearest Neighbor Interpolation}{177}{subsection.10.14.1}
-\contentsline {section}{\numberline {10.15}ResNet}{177}{section.10.15}
+\contentsline {subsubsection}{基于梯度的学习}{168}{section*.230}
+\contentsline {subsubsection}{隐藏单元}{170}{section*.231}
+\contentsline {subsubsection}{架构设计}{173}{section*.233}
+\contentsline {subsubsection}{反向传播}{173}{section*.234}
+\contentsline {subsection}{\numberline {8.29.5}第七章}{174}{subsection.8.29.5}
+\contentsline {subsubsection}{参数范数惩罚}{174}{section*.235}
+\contentsline {subsubsection}{数据集增强}{174}{section*.236}
+\contentsline {subsubsection}{噪声鲁棒性}{174}{section*.237}
+\contentsline {subsubsection}{半监督学习}{175}{section*.238}
+\contentsline {subsubsection}{多任务学习}{175}{section*.239}
+\contentsline {subsubsection}{提前终止}{175}{section*.240}
+\contentsline {subsubsection}{Bagging等集成方法}{175}{section*.241}
+\contentsline {subsubsection}{Dropout}{175}{section*.242}
+\contentsline {subsubsection}{对抗训练}{175}{section*.243}
+\contentsline {subsection}{\numberline {8.29.6}第八章}{175}{subsection.8.29.6}
+\contentsline {subsubsection}{神经网络优化中的挑战}{175}{section*.244}
+\contentsline {subsubsection}{基本算法}{176}{section*.245}
+\contentsline {subsubsection}{参数初始化策略}{178}{section*.246}
+\contentsline {subsubsection}{自适应学习率算法}{178}{section*.247}
+\contentsline {subsubsection}{选择正确的优化算法}{180}{section*.248}
+\contentsline {subsubsection}{优化策略和元算法}{180}{section*.249}
+\contentsline {section}{\numberline {8.30}梯度消失-梯度爆炸 专题}{180}{section.8.30}
+\contentsline {section}{\numberline {8.31}待续}{181}{section.8.31}
+\contentsline {chapter}{\numberline {9}Image Processing}{183}{chapter.9}
+\contentsline {section}{\numberline {9.1}Feature Extraction}{183}{section.9.1}
+\contentsline {subsection}{\numberline {9.1.1}SIFT}{183}{subsection.9.1.1}
+\contentsline {chapter}{\numberline {10}Feature Extraction}{185}{chapter.10}
+\contentsline {section}{\numberline {10.1}Selective Search}{185}{section.10.1}
+\contentsline {subsection}{\numberline {10.1.1}Efficient Graph-Based Image Segmentation}{185}{subsection.10.1.1}
+\contentsline {subsection}{\numberline {10.1.2}Selective Search}{186}{subsection.10.1.2}
+\contentsline {section}{\numberline {10.2}Region CNN}{186}{section.10.2}
+\contentsline {subsection}{\numberline {10.2.1}概述}{186}{subsection.10.2.1}
+\contentsline {subsubsection}{Boundingbox 回归}{186}{section*.251}
+\contentsline {section}{\numberline {10.3}SPP Net}{186}{section.10.3}
+\contentsline {subsection}{\numberline {10.3.1}背景与相关工作}{186}{subsection.10.3.1}
+\contentsline {subsection}{\numberline {10.3.2}网络结构}{187}{subsection.10.3.2}
+\contentsline {subsubsection}{Fisher Kernel}{187}{section*.253}
+\contentsline {subsubsection}{Convolutional Layers and Feature Maps}{188}{section*.254}
+\contentsline {subsubsection}{The Spatial Pyramid Pooling Layer}{188}{section*.255}
+\contentsline {subsubsection}{Training}{188}{section*.257}
+\contentsline {subsection}{\numberline {10.3.3}Object Detection Experiments}{188}{subsection.10.3.3}
+\contentsline {subsection}{\numberline {10.3.4}Conclusion}{189}{subsection.10.3.4}
+\contentsline {section}{\numberline {10.4}Fast RCNN}{190}{section.10.4}
+\contentsline {subsection}{\numberline {10.4.1}ROI-Pooling层的实现-知乎}{190}{subsection.10.4.1}
+\contentsline {subsubsection}{ROI Pooling层}{190}{section*.258}
+\contentsline {section}{\numberline {10.5}Faster RCNN}{191}{section.10.5}
+\contentsline {section}{\numberline {10.6}R FCN}{191}{section.10.6}
+\contentsline {section}{\numberline {10.7}Mask RCNN}{191}{section.10.7}
+\contentsline {section}{\numberline {10.8}YOLO}{191}{section.10.8}
+\contentsline {section}{\numberline {10.9}YOLO v2}{191}{section.10.9}
+\contentsline {section}{\numberline {10.10}YOLO v3}{191}{section.10.10}
+\contentsline {section}{\numberline {10.11}SSD}{191}{section.10.11}
+\contentsline {section}{\numberline {10.12}DSSD}{191}{section.10.12}
+\contentsline {section}{\numberline {10.13}Retina Net (Focal Loss)}{191}{section.10.13}
+\contentsline {section}{\numberline {10.14}Feature Pyramid Network}{191}{section.10.14}
+\contentsline {subsection}{\numberline {10.14.1}Nearest Neighbor Interpolation}{191}{subsection.10.14.1}
+\contentsline {section}{\numberline {10.15}ResNet}{191}{section.10.15}

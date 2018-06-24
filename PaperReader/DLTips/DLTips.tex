@@ -1625,15 +1625,624 @@ MAP贝叶斯推断提供了一个直观的方法来设计复杂但可解释的�
 
 \subsection{第六章}
 
+深度前馈网络
+
+\subsubsection{基于梯度的学习}
+
+代价函数：
+
+1. 使用最大似然学习条件分布，正如前面说过的，基于最大似然的优化等价于基于KL散度和交叉熵的优化，准确的说，与训练数据和模型分布间的交叉熵等价。等价函数表示为：
+\begin{displaymath}
+J(\mathbf{\theta}) = - \mathbb{E}_{\mathbf{x}, y \sim \hat{y}_{data}} \log p_{model}(y | \mathbf{x})
+\end{displaymath}
+
+代价函数的具体形式与模型相关，取决于$\log p_{model}$的形式，比如当$p_{model}$具有高斯分布的形式时，最大后验概率具有均方误差的形式。具体的推导只需要把高斯分布的公式带入到上式就行。
+
+使用最大似然来导出代价函数的方法的一个优势是，它减轻了为每个模型设计代价函数的负担。
+
+贯穿神经网络设计的一个反复出现的主题就是代价函数的梯度必须足够大和具有足够的预测性。很多输出单元都会包含一个指数函数，这在它的变量取绝对值非常大的赋值时会造成饱和，所以，\textbf{通过负对数的形式可以在一定程度上抵消输出层的指数效果}。
+
+2. 学习条件概率统计量
+
+这是另一种代价函数，可以吧代价函数看做一个\textbf{泛函}。而不仅仅是一个函数，泛函的意思是函数到实数的映射。常用到变分法，这个方法可以在花书第19章找到。
+
+输出单元：
+
+任何可用作输出的神经网络单元也可以用于隐藏单元。通过下面的问题，可以看出，输出单元的形式(输出函数)与模型的分布形式相关。
+
+1. 用于高斯输出分布的线性单元
+
+给定特征h， 线性输出单元产生一个分量，$\hat{y}=\mathbf{W}^T h + b$， 由于输出还具有高斯函数的形式，因此等价函数就是前文提到的等价于均方误差了。
+
+多说一句，为啥要用线性单元呢？因为对于高斯输出分布，我们只需要知道两个连续的变量就可以，一个是期望，一个是方差；这两个值基本上没什么限制，最大的特点就是它们是连续的值，所以用线性单元就可以了。
+
+2. 用于Bernoulli输出分布的sigmoid单元
+
+为啥要引入sigmoid单元呢，因为该函数的可以将所有的输入压缩到$(0, 1)$区间。对于Bernoulli输出，我们需要输出的是一个用于二分类的概率的值，但概率需要满足在0到1之间，因此Sigmoid就刚好合适。Sigmoid输出单元的形式如下：
+
+\begin{displaymath}
+\hat{y} = \sigma(z), z = \mathbf{\omega}^T\mathbf{h} + b
+\end{displaymath}
+
+下面简单推导一下输出单元是sigmoid时的代价函数形式，还是基于最大似然实现代价函数。需要强调一下，若要使用最大似然，我们需要知道$p_{model}(y | x)$的形式，在Bernoulli分布中，首先假定费归一化的对数概率对y和z是线性的(不明白为什么可以)，并且先不考虑x的条件，那么$\hat{y}_{model}(y)$为：
+
+\begin{align*}
+\log \tilde{P}(y) & = yz\\
+\tilde{P}(y) & = \exp(yz)\\
+P(y) &= \frac{\exp(yz)}{\sum_{y'=0}^{1}\exp(y'z)}\\
+P(y) & = \sigma((2y - 1)z)
+\end{align*}
+
+需要说明的一点：基于指数和归一化的概率分布在统计建模的文献中很常见。用于定义这种二值型变量分布的变量z被称为分对数。
+
+所以损失函数就是：
+
+\begin{align*}
+J(\mathbf{\theta}) &= -\log P(y|x) \\
+	& = -\log \sigma((2y - 1)z) \\
+	& = \zeta ((1-2y)z)
+\end{align*}
+
+其中，$\zeta(x) = \log (1 + \exp(x))$是Softplus函数。
+
+几点重要的性质：
+
+通过分析上面的损失函数，可以看到，只有在$(1-2y)z$取绝对值很大的负值时才会饱和。因此饱和只会出现在模型应得到正确答案的时候。反正对于极限情况下极度不正确的z， softplus函数完全不会收缩梯度。这个性质可以让基于梯度的学习可以很快的改正错误。
+
+最大似然几乎总是训练sigmoid输出单元的优选方法。
+
+3. 用于Multinoulli输出分布的softmax单元
+
+主要看一下基于softmax输出单元的代价函数长什么样。
+
+softmax函数：
+\begin{displaymath}
+softmax(z)_i = \frac{\exp(z)_i}{\sum_{j}\exp(z_j)}
+\end{displaymath}
+
+则负对数似然的形式是：
+\begin{displaymath}
+\log softmax(z)_i = z_i - \log \sum_{j} \exp(z_j)
+\end{displaymath}
+
+上式中，第一项表示输入$z_i$总是对代价函数有直接的贡献。因为这一项不会饱和，因此及时$z_i$对第二项的贡献很小，学习依然可以进行！当最大化对数似然时，第一项会一直鼓励$z_i$被推高，而第二项则鼓励所有的z被压低。注意，可以把第二项大致近似为$\max_j z_j$。这种近似对任何明显小于 $\max_j z_j$的$z_k, \exp(z_k)$都是不重要的。所以，可以认为负对数似然总是强烈的惩罚最活跃的不正确的预测。也就是说，如果当前的$z_i$就是所有的z中的最大值，那么这两项大致抵消，也就是没有多少损失；但如果不是最大的值，那么就会产生一个差值，而且对于负对数形式(上面公式乘以-1)而言，第一项负数的绝对值小于第二项的正数，因此会贡献一个正的损失。
+
+额外的一点是，softmax正如前文提到的，可能会遇到饱和的情况，这种背景下的解决办法就是前文提到的方法了。
+
+最后说一点，softmax跟神经元之间的侧抑制类似，极端情况下会出现赢者通吃的形式。
+
+4. 其它输出类型
+
+\subsubsection{隐藏单元}
+
+1. 整流线性单元及其扩展
+
+\begin{itemize}
+\item ReLU
+
+\begin{displaymath}
+ReLU(x) = \max(0, x)
+\end{displaymath}
+
+优点是：已与优化， 因为他们和线性单元非常相似。由于，在激活状态时，一阶导数处处为1,这意味着相比于引入二阶效应的激活函数来说，它的梯度方向对于学习来说更加有用。
+
+缺陷是：它们不能通过基于梯度的学习方法学习那些使它们激活为0的样本。也就是在非激活状态下，梯度为0了。
+
+针对上面的缺陷，主要的改进下式中的$\alpha$的不同得到集中不同的改进方法：
+
+\begin{displaymath}
+max(0, x_i) + \alpha_i \min(0, x_i)
+\end{displaymath}
+
+\item 绝对值整流
+
+此时：$\alpha_i = -1$
+
+\item 渗漏整流线性单元 Leaky ReLU
+
+此时，$\alpha_i$被固定成一个类似0.01的小值。
+
+\item 参数化整流线性单元 PReLU
+
+此时, 将$\alpha_i$是可以学习的参数。
+
+\item maxout
+
+进一步扩展了整流线性单元，就是将z划分成具有k个值的组，即每一组具有k个值。每个maxout单元则输出每组中的最大元素。
+
+maxout可以学习具有多达k段的分段线性的凸函数。maxout单元因此可以视为学习激活函数本身，而不仅仅是单元之间的关系。使用足够大的k，maxout可以以任意精度近似任何凸函数。maxout具有一些冗余来帮助抵抗灾难遗忘的现象，即神经网络忘记了如何执行它们过去训练的任务。
+
+\end{itemize}
+
+整流线性单元及其扩展都是基于一个原则，就是如果它们的行为更接近线性，那么模型更容易优化。
+
+2. Logistic sigmoid
+
+\begin{displaymath}
+g(z) = \sigma(z)
+\end{displaymath}
+
+sigmoid函数在大多定义域内都是饱和的，仅在0附近梯度比较大。这使得基于梯度的学习变得非常困难。现在不鼓励将其作为隐藏单元了。但在循环网络、许多概率模型以及一些自编码器中还是比较有吸引力的。
+
+3. 双曲正切函数
+
+\begin{displaymath}
+g(z) = \tanh(z) = 2\sigma(2z) - 1
+\end{displaymath}
+
+如果必须使用sigmoid激活函数时，双曲正切激活函数更好。并且tanh(0) = 0, 而$\sigma(0) = 1/2$， 使后者看上去更像单位函数。因为tanh函数在0附近跟单位函数更向。
+
+4. 其它
+
+包括：径向基函数，此函数大部分输入容易饱和，很难优化；softpluse，是整流线性单元的平滑版本，不鼓励使用；硬双曲正切函数。
+
+5. 个人补充
+
+比较好的总结：\href{https://zhuanlan.zhihu.com/p/21568660}{激活函数面面观-知乎}
+
+激活函数需要的一些性质：
+\begin{itemize}
+\item 非线性
+
+当激活函数是非线性(按照后面的万能近似性质，这里原文可能有误，所以改成非线性)的时候，一个两层的神经网络就可以逼近基本上所有的函数了。
+
+\item 可微性
+
+用于基于梯度的学习。
+
+\item 单调性
+
+当激活函数是单调的时候，单层网络能够保证是凸函数。
+
+\item 输出值的范围
+
+当激活函数输出值是 有限 的时候，基于梯度的优化方法会更加 稳定，因为特征的表示受有限权值的影响更显著；当激活函数的输出是 无限 的时候，模型的训练会更加高效，不过在这种情况小，一般需要更小的learning rate.(不太理解！)
+
+\end{itemize}
+
+对于每一个激活函数，简单补充如下：
+
+\begin{itemize}
+\item Sigmoid
+
+它能够把输入的连续实值“压缩”到0和1之间。
+
+缺点：
+\begin{itemize}
+\item Sigmoids saturate and kill gradients. sigmoid 有一个非常致命的缺点，当输入非常大或者非常小的时候，这些神经元的梯度是接近于0的，从图中可以看出梯度的趋势。所以，你需要尤其注意参数的初始值来尽量避免saturation的情况。如果你的初始值很大的话，大部分神经元可能都会处在saturation的状态而把gradient kill掉，这会导致网络变的很难学习。
+
+\item Sigmoid 的 output 不是0均值. 这是不可取的，因为这会导致后一层的神经元将得到上一层输出的非0均值的信号作为输入。产生的一个结果就是：如果数据进入神经元的时候是正的$(e.g. x>0 elementwise in f=w^T x + b)$，那么针对 w 计算出的梯度(简单的可以认为就是$x$， 见本章的后向传播的解释)也会始终都是正的。
+
+
+\item 当然了，如果你是按batch去训练，那么那个batch可能得到不同的信号，所以这个问题还是可以缓解一下的。因此，非0均值这个问题虽然会产生一些不好的影响，不过跟上面提到的 kill gradients 问题相比还是要好很多的。
+\end{itemize}
+
+\item tanh
+
+与 sigmoid 不同的是，tanh 是0均值的。因此，实际应用中，tanh 会比 sigmoid 更好（毕竟去粗取精了嘛）。
+
+\item ReLU
+
+梯度消失 和 梯度爆炸 在relu下都存在， sigmoid下没有梯度爆炸。
+
+随着 网络层数变深， activations倾向于越大和越小的方向前进， 往大走梯度爆炸（回想一下你在求梯度时， 每反向传播一层， 都要乘以这一层的activations）， 往小走进入死区， 梯度消失。
+
+这两个问题最大的影响是， 深层网络难于converge。
+
+BN和xavier初始化（经指正， 这里最好应该用msra初始化， 这是he kaiming大神他们对xavier的修正， 其实就是xavier多除以2）很大程度上解决了该问题。
+
+\href{https://www.zhihu.com/question/66027838}{怎么理解梯度弥散和梯度爆炸？-知乎}
+
+个人认为梯度不稳定的根本原因在于神经网络的高度非线性，这使得优化过程中既存在很小的梯度，同时也存在很大的梯度
+
+relu只是缓解了梯度消失的问题，并不是解决了梯度消失问题，前向神经网络由于每层的权重相关性较小，bp过程相乘之后相对来说不易产生消失的梯度，再加上relu本身不具饱和性，所以才会取得很好的效果。但是并不是所有的神经网络都用relu，比如循环神经网络，当然也可以通过加入一些线性通路来缓解。
+
+ReLU的负半轴梯度为0，所以有时候（比较少见）也还是会梯度消失，这时可以使用PReLU替代，如果用了PReLU还会梯度弥散和爆炸，请调整初始化参数，对自己调参没信心或者就是懒的，请直接上BN。
+
+至于sigmoid为什么会有梯度消失现象，是因为sigmoid(x)在不同尺度的x下的梯度变化太大了，而且一旦x的尺度变大，梯度消失得特别快，网络得不到更新，就再也拉不回来了。我想sigmoid函数的情况，可以通过sigmoid函数的求导看出来了，因为求导后的结果同样包含sigmoid函数！
+
+\end{itemize}
+
+\begin{figure}[!hbtp]
+\centering
+\includegraphics[width=0.5\textwidth]{DLTips/ActivationFunctions0.jpg}
+\caption{激活函数对比}
+\label{ActivationFunctions0}
+\end{figure}
+
+梯度弥散就是梯度消失。
+
+\subsubsection{架构设计}
+
+主要几点：
+
+\begin{itemize}
+\item 万能近似性质
+
+万能近似定理：一个前馈神经网络如果具有线性输出层和至少一层具有任何一种挤压性质的激活函数，例如sigmoid，的隐藏层， 只要给予足够数量的隐藏单元，它可以以任意的精度来近似任何一个从有限维空间到另一个空间有限维空间的Borel可测函数。
+
+\item 深度
+
+Montufar等人指出，一些用深度深度整流网络表示的函数可能需要浅层网络(一个隐藏层)指数级的隐藏单元才能表示！一个公式：具有d个输入、深度为l、每个隐藏层具有n个单元的深度整流网络可以描述的线性区域的数量是：
+
+%\begin{displaymath}
+%O\left( \begin{array}[cc]
+%
+%\end{array} \right)
+%\end{displaymath}
+
+意味着，这是深度l的指数级。
+
+\item 其它架构上的考虑
+
+比如跳跃连接等。
+
+\end{itemize}
+
+\subsubsection{反向传播}
+
+这部分单独写。感觉重要的一个公式是：微积分中的链式法则。
 
 \subsection{第七章}
+
+深度学习中的正则化
+
+根据第五章的定义，正则化是对学习算法的修改----旨在减少泛化误差而不是训练误差。
+
+目前有许多正则化策略，有些策略向机器学习模型添加限制参数值的额外约束、有些策略向目标函数添加额外项对参数值进行软约束。
+
+估计的正则项以偏差的增加换取方差的减少。
+
+按照花书的意思，正则化的目标是使模型从过拟合状态变为正常状态。
+
+\subsubsection{参数范数惩罚}
+
+其实，主要是L1、L2范数正则项。
+
+\begin{itemize}
+\item L2参数范数正则化
+
+通常被称为权重衰减(weight decay), 又叫岭回归或Tikhonoy正则。
+
+前面提到了，L2范数有助于病态条件下的优化。这是因为加入权重衰减的效果是沿着Hessian矩阵H的特征向量所定义的轴缩放未加约束时的最优值$\omega^{*}$。具体来说，我们会根据$\frac{\lambda_i}{\lambda_i+\alpha}$因子缩放与H的第i个特征向量对齐的$\omega^{*}$分量。若该方向特征值较大，则正则化的影响较小，若该方向的特征值较小，则该分量将会收缩到几乎为0.
+
+\item L1参数范数正则化
+
+最终的特性是，会产生更稀疏的解。会起到特征选择的作用。
+
+补充：
+
+\href{https://zhuanlan.zhihu.com/p/35356992}{L1正则化与L2正则化}
+
+再这篇文章中，作者提到了本笔记前面提到的MAP中的重点说明。也就是说，L1范数等价于先验让权重$\omega$服从标准拉普拉斯分布，即概率密度函数为$1/2 \exp(-|x|)$，则MAP多出来的一项就是L1的形式了。而通过拉普拉斯分布可知，当$\omega$取到0的概率特别大。也就是说我们提前先假设了$\omega$的解更容易取到0。
+
+而对于L2范数，其等价于先验让权重$\omega$服从标准正态分布，即概率密度为$1/\sqrt{2\pi} \exp(-(x)^2/2)$，带入这个权重的先验分布，就可以得到L2范数的形式了。根据正态分布可以知道，我们预先假设了$\omega$的最终值可能取到0附近的概率特别大。
+
+结构风险最小化： 在经验风险最小化的基础上（也就是训练误差最小化），尽可能采用简单的模型，以此提高泛化预测精度。
+
+\end{itemize}
+
+\subsubsection{数据集增强}
+
+\subsubsection{噪声鲁棒性}
+
+对于某些模型，向输入添加方差极小的噪声等价于对权重施加范数惩罚。一般情况下，注入噪声远比简单的收缩参数强大，特别是噪声被添加到隐藏单元时，会更加强大，比如Dropout就是这种做法的主要发展方向。
+
+另一种正则化模型的噪声使用方式是将其添加到权重上。这项技术主要用于循环神经网络。
+
+\subsubsection{半监督学习}
+
+\subsubsection{多任务学习}
+
+当模型的一部分被多个额外的任务共享时，这部分将被约束为良好的值。
+
+\subsubsection{提前终止}
+
+通过分析，可以发现，提前终止与权重衰减有非常大的联系，尤其是权重衰减系数的倒数。
+
+\subsubsection{Bagging等集成方法}
+
+模型平均奏效的原因是不同的模型通常不会在测试集上产生完全相同的误差。
+
+Bagging是一种允许重复多次使用同一种模型，训练算法和目标函数的方法。
+
+\subsubsection{Dropout}
+
+Dropout提供了一种廉价的Bagging集成近似，能够训练和评估指数级数量的神经网络。
+
+Dropout训练与Bagging训练不太一样，在Bagging的情况下，所有模型都是独立的。在Dropout的情况下，所有模型共享参数，其中每个模型继承父神经网络参数的不同子集。
+
+下面一段话来自Gluon教程：对一个随机采样的一个批量的训练数据分别训练一个元神经网络子集的分类器，且每个神经网络子集使用同一套参数。
+
+\subsubsection{对抗训练}
+
 
 
 \subsection{第八章}
 
+深度模型中的优化
+
+\subsubsection{神经网络优化中的挑战}
+
+1. 病态
+
+病态体现在随机梯度下降会卡在某些情况，此时即使很小的更新步长也会增加代价函数。数学原理如下：
+
+将跟新后的代价函数的新值进行泰勒二阶近似：
+
+\begin{displaymath}
+f(x_0 - \epsilon g) = f(x_0) - \epsilon g^T g + \frac{1}{2} \epsilon^2 g^T H g
+\end{displaymath}
+
+我们主要关注上式的后两项。
+\begin{displaymath}
+- \epsilon g^T g + \frac{1}{2} \epsilon^2 g^T H g
+\end{displaymath}
+
+很明显，当$\frac{1}{2} \epsilon^2 g^T H g$超过$- \epsilon g^T g$时，梯度的病态就会成为问题。虽然牛顿法在解决图优化问题中的病态条件比较有效果，但对神经网络效果不太好。
+
+2. 局部极小值
+
+3. 高原、鞍点和其它平坦区域
+
+4. 悬崖和梯度爆炸
+
+5. 长期依赖
+
+当计算图变得极深时，神经网络优化算法面临的另一个难题就是长期依赖问题。深层的计算图不仅存在于前馈网络中，还存在于循环网络中。其数学原理如下：
+
+假设某个计算图中包含一条反复与矩阵$W$相乘的路径，那么t步后，相当于乘以$W^t$。假设$W$有特征分解$W = V diag(\lambda) V^{-1}$。在这种简单的情况下，很容易看出：
+\begin{displaymath}
+W^t = (V diag(\lambda) V^{-1})^t = v diag(\lambda)^t V^{-1}
+\end{displaymath}
+
+所以，当特征值$\lambda_i$不在1附近时，若在量级大于1则会爆炸；若小于1时则会消失。梯度消失和爆炸问题，是指该计算图上的梯度也会因为$diag(\lambda)$大幅变化。
+
+\subsubsection{基本算法}
+
+\begin{itemize}
+\item SGD
+
+\begin{algorithm}
+\caption{SGD}
+\begin{algorithmic}[1]
+\Require 学习率$\epsilon$, 初始参数$\theta$
+\Ensure 更新后的参数$\theta$
+\Repeat
+
+	从训练样本中随机采样m个样本，构成一个小批量
+	
+	计算小批量的梯度：
+	\begin{displaymath}
+	g \leftarrow \frac{1}{m} \sum_{i}\nabla_{\theta}L(f(x^{i}; \theta), y^{i})
+	\end{displaymath}
+	
+	更新参数：$\theta \leftarrow \theta - \epsilon g$
+\Until{条件满足}
+\end{algorithmic}
+\end{algorithm}
+
+虽然随机梯度下降仍然是非常受欢迎的优化方法，但其学习过程有时会很慢。特别是高区率，小但一致的梯度，或是带噪声的梯度。
+
+\item 动量
+
+动量法旨在加速学习过程，特别是处理高曲率，小但一致的梯度，或是带噪声的梯度。动量算法积累之前梯度指数级衰减的移动平均，并且继续沿该方向移动。算法如下：
+\begin{algorithm}
+\caption{使用动量的SGD}
+\begin{algorithmic}
+\Require 学习率$\epsilon$, 初始参数$\theta$, 动量参数$\alpha$, 初始速度$v$
+\Ensure 更新后的参数
+\Repeat
+	随机抽样m个样本构成一个小批量
+	
+	计算小批量上的梯度：
+	\begin{displaymath}
+		g \leftarrow \frac{1}{m} \sum_{i}\nabla_{\theta}L(f(x^{i}; \theta), y^{i})
+	\end{displaymath}
+		
+	计算动量：$v \leftarrow \alpha v - \epsilon g$
+	
+	更新： $\theta \leftarrow \theta + v$	
+	
+\Until{满足停止条件}
+\end{algorithmic}
+\end{algorithm}
+
+\item Nesterov动量
+
+Nesterov动量与标准动量之间的区别体现在梯度计算上，Nesterov动量中，梯度计算在施加当前速度之后。
+\begin{algorithm}
+\caption{使用Nesterov动量的SGD}
+\begin{algorithmic}
+\Require 学习率$\epsilon$, 初始参数$\theta$, 动量参数$\alpha$, 初始速度$v$
+\Ensure 更新后的参数
+\Repeat
+	随机抽样m个样本构成一个小批量
+	
+	首先更新一次参数：$\tilde{\theta} \leftarrow \theta + v$
+	
+	
+	计算小批量上的梯度：
+	\begin{displaymath}
+		g \leftarrow \frac{1}{m} \sum_{i}\nabla_{\tilde{\theta}}L(f(x^{i}; \theta), y^{i})
+	\end{displaymath}
+		
+	计算动量：$v \leftarrow \alpha v - \epsilon g$
+	
+	更新： $\theta \leftarrow \theta + v$	
+	
+\Until{满足停止条件}
+\end{algorithmic}
+\end{algorithm}
+
+在凸批量梯度的情况下，Nesterov动量将额外误差收敛率从$O(1/k)$改进到$O(1/k^2)$， 其中k是迭代次数。但在随机梯度的情况下，Nesterov动量没有改进收敛率。
+
+\end{itemize}
+
+\subsubsection{参数初始化策略}
+
+参数的初始点对算法的性能影响很大。也许完全确知的唯一特性是初始参数需要在不同单元间''破坏对称性''。这或许有助于确保没有输入模式丢失在前向传播的零空间中，没有梯度模式丢失在反向传播的零空间中。
+
+现在存在Normalized initialization或者Xaive初始化方法。在该模型下，这个初始化方案确保了达到收敛所需的训练迭代总次数独立于深度。
+
+\subsubsection{自适应学习率算法}
+
+\begin{itemize}
+\item AdaGrad
+
+AdaGrad算法，独立地适应所有模型参数的学习率，缩放每个参数反比其所有梯度历史平方值总和的平方根。具有损失最大偏导的参数相应地有一个快速下降的学习率，而具有小偏导的参数在学习率上具有较小的下降，净效果就是在参数空间中，更为平缓的倾斜方向会取得更大的进步。
+
+但有一个缺点：从训练开始时积累平方会导致有效学习率过早或过量的减少。在一些深度学习模型上效果不错，但不是全部。算法如下：
+\begin{algorithm}
+\caption{AdaGrad算法}
+\begin{algorithmic}
+\Require 全局学习率$\epsilon$, 初始化参数$\theta$, 小常数$\delta$ , 为了数值稳定，一般设为$10^{-7}$
+\Ensure 自适应学习率
+\State 初始梯度累计变量$r=0$
+\Repeat
+	从训练集中随机抽样m个样本构成一个小批量
+	
+	计算小批量上的梯度：
+	\begin{displaymath}
+		g \leftarrow \frac{1}{m} \sum_{i}\nabla_{\tilde{\theta}}L(f(x^{i}; \theta), y^{i})
+	\end{displaymath}
+	
+	计算梯度累计量(梯度历史平方值总和)：$r \leftarrow r + g \odot g$
+	
+	计算更新：
+	\begin{displaymath}
+	\Delta \theta \leftarrow - \frac{\epsilon}{\sqrt{r}+\delta} \odot g
+	\end{displaymath}
+	
+	应用更新：$\theta \leftarrow \theta + \Delta \theta $
+\Until{达到更新准则}
+\end{algorithmic}
+\end{algorithm}
+
+\item RMSProp
+
+RMSProp算法修改AdaGrad以在非凸设定下效果更好，改变梯度积累为指数加权的移动平均。AdaGrad旨在应用于凸问题时快速收敛。当应用于非凸函数训练时神经网络时，学习轨迹可能穿过很多不同的结构，最终到达一个局部是凸碗的区域。AdaGrad根据平方梯度的整个历史收敛学习率，可能使得学习率在达到这样的凸结构之前就变得太小了。RMSProp使用指数衰减平均以丢弃遥远过去的历史，使其能够再找到凸碗状结构后快速收敛，它像一个初始化于该碗状结构的AdaGrad算法实例。算法如下：
+\begin{algorithm}
+\caption{RMSProp算法}
+\begin{algorithmic}
+\Require 全局学习率$\epsilon$, 初始化参数$\theta$, 小常数$\delta$ , 为了数值稳定，一般设为$10^{-7}$, 衰减速度$\rho$
+\Ensure 自适应学习率
+\State 初始梯度累计变量$r=0$
+\Repeat
+	从训练集中随机抽样m个样本构成一个小批量
+	
+	计算小批量上的梯度：
+	\begin{displaymath}
+		g \leftarrow \frac{1}{m} \sum_{i}\nabla_{\tilde{\theta}}L(f(x^{i}; \theta), y^{i})
+	\end{displaymath}
+	
+	计算梯度累计量(指数加权的移动平均)：$r \leftarrow \rho r + (1 - \rho) g \odot g$
+	
+	计算更新：
+	\begin{displaymath}
+	\Delta \theta \leftarrow - \frac{\epsilon}{\sqrt{r}+\delta} \odot g
+	\end{displaymath}
+	
+	应用更新：$\theta \leftarrow \theta + \Delta \theta $
+\Until{达到更新准则}
+\end{algorithmic}
+\end{algorithm}
+
+具有Nesterov动量的RMSProp， 思想大体一致，先暂时更新参数$\theta$，然后用这个更新后的参数计算梯度，就如Nesterov动量SGD一样。
+
+RMSProp是现阶段深度学习从业者经常采用的优化方法。
+
+\item Adam
+
+Adam包含了偏置修正，修正从原点初始化的一阶矩和二阶矩的估计。Adam通常被认为对超参数的选择相当鲁棒，尽管学习率有时需要跟从建议的默认修改。
+
+\begin{algorithm}
+\caption{Adam算法}
+\begin{algorithmic}
+\Require 全局学习率$\epsilon$， 建议为0.001, 初始化参数$\theta$, 小常数$\delta$ , 为了数值稳定，一般设为$10^{-7}$
+\Require 矩估计的指数衰减速率$\rho_1$和$\rho_2$, 在区间$[0, 1]$， 建议分别为0.9和0.999
+\Ensure 自适应学习率
+\State 初始梯度累计变量$s=0$和$r=0$
+\Repeat
+	从训练集中随机抽样m个样本构成一个小批量
+	
+	计算小批量上的梯度：
+	\begin{displaymath}
+		g \leftarrow \frac{1}{m} \sum_{i}\nabla_{\tilde{\theta}}L(f(x^{i}; \theta), y^{i})
+	\end{displaymath}
+	
+	$t \leftarrow t+1$
+	
+	更新有偏一阶矩估计：$s \leftarrow \rho_1 s + (1 - \rho_1) \odot g$
+	
+	更新有偏二阶矩估计：$r \leftarrow \rho_2 r + (1 - \rho_2) g \odot g$
+	
+	修正一阶矩的偏差：$\hat{s} \leftarrow \frac{s}{1 - \rho_1^t}$
+	
+	修正二阶矩的偏差：$\hat{r} \leftarrow \frac{r}{1 - \rho_2^t}$
+	
+	计算更新：
+	\begin{displaymath}
+	\Delta \theta \leftarrow - \epsilon \frac{\hat{s}}{\sqrt{\hat{r}}+\delta} \odot g
+	\end{displaymath}
+	
+	应用更新：$\theta \leftarrow \theta + \Delta \theta $
+\Until{达到更新准则}
+\end{algorithmic}
+\end{algorithm}
+
+\item AdaDelta
+
+RMSProp针对Adagrad在迭代后期可能较难找到有用解的问题，对小批量随机梯度按元素平方项做指数加权移动平均而不是累加。另一种应对该问题的优化算法叫做Adadelta。有意思的是，它没有学习率超参数。
+
+Adadelta算法也像RMSProp一样，使用了小批量随机梯度按元素平方的指数加权移动平均变量s，并将其中每个元素初始化为0。  给定超参数$\rho$且$0≤\rho<1$， 在每次迭代中，RMSProp首先计算小批量随机梯度g，然后对该梯度按元素平方项$g\odot g$做指数加权移动平均，记为s：
+
+\begin{displaymath}
+s \leftarrow \rho s + ( 1- \rho) g \odot g
+\end{displaymath}
+
+然后，计算当前需要迭代的目标函数自变量的变化量$g'$：
+
+\begin{displaymath}
+g' \leftarrow \frac{\sqrt{\Delta x + \delta}}{\sqrt{s + \delta}} \odot g
+\end{displaymath}
+
+其中$\delta$为数值稳定而添加的常数。和Adagrad与RMSProp一样，目标函数自变量中每个元素都分别拥有自己的学习率。上式中的$\Delta x$初始化为零张量，并记录$g'$暗元素平方的指数加权移动平均：
+\begin{displaymath}
+\Delta x \leftarrow \Delta x + (1 - \rho)g' \odot g'
+\end{displaymath}
+
+最后，自变量迭代步骤和小批量随机梯度下降类似：
+\begin{displaymath}
+x \leftarrow x - g'
+\end{displaymath}
+
+\end{itemize}
+
+一些资料：\href{https://zhuanlan.zhihu.com/p/33385885}{Adam优化算法-知乎}
+
+\subsubsection{选择正确的优化算法}
+
+花书说，目前最流行的并且使用很高的优化算法包括SGD, 包含动量的SGD, RMSProp, 具有栋梁的RMSProp， AdaDelta和Adam。选择哪一个算法似乎主要取决于使用者对算法的熟悉程度，以便调节超参数。
+
+\subsubsection{优化策略和元算法}
+
+1. 批标准化
+
+2. 坐标下降
+
+3. 监督与训练
+
+等
 
 
+\section{梯度消失-梯度爆炸 专题}
 
+参考文献[1]: \href{https://zhuanlan.zhihu.com/p/25631496}{神经网络训练中的梯度消失和梯度爆炸-知乎}
+
+本质上是因为梯度反向传播中的连乘效应。
+
+参考文献[2]: \href{https://www.zhihu.com/question/49812013}{BP算法中为什么产生梯度消失-知乎}
 
 
 
