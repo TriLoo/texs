@@ -320,10 +320,11 @@
 \contentsline {section}{\numberline {7.9}Gluon中的数据结构}{122}{section.7.9}
 \contentsline {section}{\numberline {7.10}MXNet中的Confusing参数}{122}{section.7.10}
 \contentsline {subsection}{\numberline {7.10.1}mx.symbol.reshape}{122}{subsection.7.10.1}
-\contentsline {subsection}{\numberline {7.10.2}mx.symbol.transpose}{122}{subsection.7.10.2}
+\contentsline {subsection}{\numberline {7.10.2}mx.symbol.transpose}{123}{subsection.7.10.2}
 \contentsline {section}{\numberline {7.11}UpSample In MXNet}{123}{section.7.11}
 \contentsline {subsection}{\numberline {7.11.1}总结}{125}{subsection.7.11.1}
-\contentsline {section}{\numberline {7.12}MXNet中设置层的学习率}{125}{section.7.12}
+\contentsline {section}{\numberline {7.12}MXNet中设置层的学习率}{126}{section.7.12}
+\contentsline {section}{\numberline {7.13}SoftmaxCrossEntropyLoss释疑}{126}{section.7.13}
 \contentsline {chapter}{\numberline {8}Tips in DL}{127}{chapter.8}
 \contentsline {section}{\numberline {8.1}Enlarge the FOV}{127}{section.8.1}
 \contentsline {section}{\numberline {8.2}Upsampling}{127}{section.8.2}
@@ -444,7 +445,8 @@
 \contentsline {subsubsection}{选择正确的优化算法}{180}{section*.248}
 \contentsline {subsubsection}{优化策略和元算法}{180}{section*.249}
 \contentsline {section}{\numberline {8.30}梯度消失-梯度爆炸 专题}{180}{section.8.30}
-\contentsline {section}{\numberline {8.31}待续}{181}{section.8.31}
+\contentsline {section}{\numberline {8.31}ROI Pooling}{181}{section.8.31}
+\contentsline {section}{\numberline {8.32}待续}{181}{section.8.32}
 \contentsline {chapter}{\numberline {9}Image Processing}{183}{chapter.9}
 \contentsline {section}{\numberline {9.1}Feature Extraction}{183}{section.9.1}
 \contentsline {subsection}{\numberline {9.1.1}SIFT}{183}{subsection.9.1.1}

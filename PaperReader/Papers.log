@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  24 JUN 2018 23:27
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  25 JUN 2018 22:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2052,60 +2052,72 @@ a.Dataset
  []
 
 [121]
-Overfull \hbox (67.60858pt too wide) in paragraph at lines 985--985
+Overfull \hbox (2.40096pt too wide) in paragraph at lines 992--993
+[]\EU1/SimSun(1)/m/n/12 上 面 两 种 方 式，|  我 们 都 得 到 了 一 个[]\EU1/lmtt/m/n/12 Parame
+ter \EU1/SimSun(1)/m/n/12 类 型 的 变 量 了。|  该 类 型 支 持[]\EU1/lmtt/m/n/12 lr_mult
+ []
+
+
+Overfull \hbox (67.60858pt too wide) in paragraph at lines 1003--1003
 []\EU1/lmtt/m/n/12 reshape(data=None, shape=_null, reverse = _Null, target_shap
 e=_Null, target_shape=[] 
  []
 
 
-Overfull \hbox (32.58852pt too wide) in paragraph at lines 985--985
+Overfull \hbox (32.58852pt too wide) in paragraph at lines 1003--1003
 []            \EU1/lmtt/m/n/12 _Null, keep_highest=_Null, name=None, attr=None,
  out=None, **kwargs)[] 
  []
 
 [122]
-Overfull \hbox (5.43208pt too wide) in paragraph at lines 1025--1026
+Overfull \hbox (5.43208pt too wide) in paragraph at lines 1043--1044
 \EU1/SimSun(1)/m/n/12 的 是，| \EU1/TimesNewRoman(0)/m/n/12 Deconvolution \EU1/Sim
 Sun(1)/m/n/12 可 以 用 于 双 线 性 插 值，|  而 要 完 成 这 个，|  只 要 保 证[]\EU1/lmtt/m/n/12 ups
 ample_weight
  []
 
 [123]
-Overfull \hbox (0.4108pt too wide) in paragraph at lines 1075--1076
+Overfull \hbox (0.4108pt too wide) in paragraph at lines 1093--1094
 []\EU1/TimesNewRoman(0)/m/n/12 Each upsample layer consists of (1) Upsample (bi
 linear, zero padding, nearest-
  []
 
 
-Overfull \hbox (4.96428pt too wide) in paragraph at lines 1077--1078
+Overfull \hbox (4.96428pt too wide) in paragraph at lines 1095--1096
 \EU1/SimSun(1)/m/n/12 在 代 码 里 面，|  需 要 注 意 的 是，|  当 使 用[]\EU1/lmtt/m/n/12 Bilin
 ear \EU1/SimSun(1)/m/n/12 算 法 的 时 候，|  要 设 置 参 数 为[]\EU1/lmtt/m/n/12 num_args=2
 \EU1/SimSun(1)/m/n/12 。|
  []
 
 [124]
-Overfull \hbox (16.91058pt too wide) in paragraph at lines 1127--1130
+Overfull \hbox (16.91058pt too wide) in paragraph at lines 1145--1148
 []\EU1/TimesNewRoman(0)/m/n/12 upsampler = nn.Conv2DTranspose(channels=channels
 , kernel_size=4, strides=2,
  []
 
 
-Overfull \hbox (35.21042pt too wide) in paragraph at lines 1127--1130
+Overfull \hbox (35.21042pt too wide) in paragraph at lines 1145--1148
 \EU1/TimesNewRoman(0)/m/n/12 padding=1, use_bias=False, groups=channels, weight
 _initializer= mx.init.Bilinear()) 
  []
 
 
-Overfull \hbox (0.92393pt too wide) in paragraph at lines 1138--1139
+Overfull \hbox (0.92393pt too wide) in paragraph at lines 1156--1157
 []\EU1/SimSun(1)/m/n/12 使 用 \EU1/TimesNewRoman(0)/m/n/12 Conv2DTranspose + mx.i
 nit.Bilinear() + net.collect_params().setattr('lr_mult',
  []
 
-) (./DLTips/DLTips.tex [125] [126
+[125]
+Overfull \hbox (1.68861pt too wide) in paragraph at lines 1175--1175
+[]\EU1/lmtt/m/n/12 SoftmaxCrossEntropyLoss(axis=-1, sparse_label=True, from_log
+its=False,[] 
+ []
+
+) (./DLTips/DLTips.tex [126]
+Chapter 8.
+[127
 
 ]
-Chapter 8.
-[127]
 File: DLTips/DilatedConv1.jpg Graphic file (type QTm)
  <use  "DLTips/DilatedConv1.jpg" >
 File: DLTips/WaveNet1.jpg Graphic file (type QTm)
@@ -2241,7 +2253,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
 Here is how much of TeX's memory you used:
  29206 strings out of 495525
  539481 string characters out of 6184337
- 750912 words of memory out of 5000000
+ 750996 words of memory out of 5000000
  31905 multiletter control sequences out of 15000+600000
  13649 words of font info for 96 fonts, out of 8000000 for 9000
  80 hyphenation exceptions out of 8191

@@ -975,6 +975,24 @@ data_iter = gluon.data.DataLoader(dataset, batch_size=Noen,
 
 这一部分，我主要想总结一下Gluon中的各种部件的数据结构，如Net = gluon.nn.Sequentional()后，net的数据结构到底是什么样的，还有就是网络的参数又是什么结构的， 比如Parameter类到底长什么样，又该如何使用等。有时间慢慢写吧。
 
+填下坑。
+
+我们可以通过[]来访问Sequential类构造出来的网络的特定层。对于带有模型参数的层，我们可以通过Block类的params属性来得到它包含的所有参数， \textbf{注意这里的Block类是所有neural network lyear和model的基类}！如：\verb|net[0].params|会返回parameter dictionary。
+
+既然\verb|params|会返回parameter dictionary， 那么就可以通过名字来访问字典里面的元素，也可以直接使用它的变量名。下面的两种方法是等价的，但通常后者的代码可读性更好。补充一下这个字典的Key-Value的类型， Key是net的层名字，如dense0\_, conv0\_等； Value是类型是\verb|gluon.nn.Parameter|类型。
+
+\begin{verbatim}
+net[0].params['dense0_weight']
+
+net[0].weight
+\end{verbatim}
+
+后者貌似不是Block的成员了，通过看Conv2D为例，\verb|weight|是\verb|Conv2D|的一个类成员，其它layer类型应该也有吧,还包括bias等。
+
+上面两种方式，我们都得到了一个\verb|Parameter|类型的变量了。该类型支持\verb|lr_mult|等类型成员了，而且，支持通过\verb|data()|和\verb|grad()|等函数来获取具体的数据。
+
+最后，基类Block提供了\verb|collect_params|函数来获取这个实例包含的所有的参数，他返回的同样是一个Parameter Dictionary， 该字典类型还支持\verb|initialize|和\verb|reset_ctx|等等等等。
+
 \section{MXNet中的Confusing参数}
 
 \subsection{mx.symbol.reshape}
@@ -1147,6 +1165,36 @@ upsampler.collect\_params().setattr(‘lr\_mult’, 0.)
 
 Gluon的话可以用\verb|layer.weight.set_lr_mult|来改。
 
+\section{SoftmaxCrossEntropyLoss释疑}
+
+API:
+
+\begin{verbatim}
+SoftmaxCrossEntropyLoss(axis=-1, sparse_label=True, from_logits=False, 
+									 weight=None, batch_axis=0, **kwargs)
+\end{verbatim}
+
+主要说一下\verb|sparse_label|和\verb|axis|两个参数。前者表明输入的label是整数array还是一个概率分布！
+
+如果是一个整数，那么损失的计算方式是：
+
+\begin{displaymath}
+L = - \sum_{i}\log p_{i, label_i}
+\end{displaymath}
+
+此时输入的label是一个去掉axis哪一维同时保持其它维度的数据尺寸。
+
+而如果输入的是一个概率分布，那么交叉熵的计算方式是：
+
+\begin{displaymath}
+L = - \sum_{i} \sum_{j}^{class number} label_j \log p_{ij}
+\end{displaymath}
+
+此时输入的label要与输入的pred的尺寸是完全一致的。
+
+也就是说，如果输入是sparse=True， 则每一个label是一个整数标量；而如果输入的是sparse=False， 那么输入的每一个label是一个尺寸是class number的array， 表示该点的概率分布，这里的概率分布是Multinoulli。
+
+再说一下\verb|axis|， 表示在该维度上进行计算。
 
 
 

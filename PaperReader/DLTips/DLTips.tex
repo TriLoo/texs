@@ -2245,6 +2245,22 @@ x \leftarrow x - g'
 参考文献[2]: \href{https://www.zhihu.com/question/49812013}{BP算法中为什么产生梯度消失-知乎}
 
 
+\section{ROI Pooling}
+
+参考[1]:\href{https://deepsense.ai/region-of-interest-pooling-explained/}{Region of interest pooling explained}
+
+The purpose is to perform max pooling on inputs of nonuniform size to obtain fixed-size feature maps (e.g. 7*7).
+
+在Fast R-CNN中最先提出，ROI Pooling层需要两个输入，一个是ROI区域，一个是来自CNN的Feature Map。而一般输入的ROI区域的个数是固定的，比如在Faster RCNN中是300个。所以ROI Pooling的结果是，共含输入的ROI个数的固定大小的Feature Map。
+
+原文：
+
+What does the ROI pooling actually do? For every region of interest from the input list, it takes a section of the input feature map that corresponds to it and scales it to some pre-defined size (e.g. 7*7). Ths scaling it done by: 1) Dividing the region proposal into equal-size sections, 2) finding the largest value in each section, 3) copying these max values to the output buffer.
+
+\textbf{ROI Pooling: The result is that from a list of rectangles with different sizes (ROI) we can quickly get a list of corresponding feature maps with a fixed size. }
+
+
+What’s the benefit of RoI pooling? One of them is processing speed. If there are multiple object proposals on the frame (and usually there’ll be a lot of them), we can still use the same input feature map for all of them. Since computing the convolutions at early stages of processing is very expensive, this approach can save us a lot of time.
 
 \section{待续}
 
