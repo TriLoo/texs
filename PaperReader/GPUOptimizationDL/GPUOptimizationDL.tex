@@ -1,0 +1,25 @@
+\chapter{GPU Optimization in DL}
+
+在存储优化上面，近三年的文章如下。In-place ABN里面提到，一方面是提出高效的内存管理算法；另一个方向是通过Training with reduced precision.
+
+
+
+\section{In-Place Activated BatchNorm for Memory-Optimized Training of DNNs}
+
+作者提到了几种常见的优化方法。一个是本文所属的利用In-place和Sharing Memory来提高存储效率；另一个研究方向是用低精度或混合精度训练。其实还有一种方法是改进神经网络架构，如The revesible residual network。 对于部署，作者提到了可以使用TensorRT。
+
+
+
+
+\section{Training deep nets with sublinear memory cost}
+
+又名Checkpointing。
+
+
+\section{Memory-efficient backpropagation through time}
+
+
+\section{The Reversible Residual Network: Backpropagation Without Storing Activations}
+
+\section{}
+

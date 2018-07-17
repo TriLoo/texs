@@ -262,11 +262,73 @@ Thresholding可能会在某些时候会帮助Open Set Recognition，但对于Foo
 \subsection{背景及相关工作}
 
 
+\section{Meta Recognition}
+
+主要的思想：作者把网络的输出称为scores， 并用Extreme Value Theory来对每个类别的scores进行分析，发现每一类的scores都符合Weibull分布！！！
+
+所以这里的Meta Recognition的思想就比较明显了，就是判断当前样本的score是否符合其中某一类的Weibull的分布，如果都不符合，那么就可以认为这个样本就是未知的了，从这个角度来看，Meta Recognition的数学基础应该是度量分布之间的距离！！！
+
+
+\subsection{该死的Fisher-Tippet Theorem}
+
+也被称为Fisher-Tippett-Gnedenko theorem或者Extreme Value Theorem。
+
+与中心极限定理的关系，Fisher-Tippet theorem分析的是最大值的极限分布，而中心极限定理(centric limit theorem)分析的均值的极限分布，并收敛到近似高斯分布。
+
+Fisher-Tippet Theorem(Wikipedia):
+
+The maximum of a sample of iid(独立同分布) random variables after proper renormalization can only converge in distribution to one of 3 possible distributions: the Gumbel distribution, the Frechet distribution, or the Weibull distribution.
+
+这句话的意思是：对于来自独立同分布随机变量的采样，所有采样的最大值在经过合适的正则化后，只会收敛到3中可能的概率分布。
+
+定理内容如下：
+
+有独立同分布的随机变量：$X_1, X_2, X_3, \ldots$， 他们的最大值为:$M_n = \max {X_1, \ldots X_n}$。如果存在一个序列对：$(a_n, b_n)$， 满足$a_n > 0$ 且
+\begin{displaymath}
+\lim_{n \rightarrow \inf} P \left( \frac{M_n - b_n}{a_n} \le x \right) = F(x)
+\end{displaymath}
+
+其中，$F$是不退化的分布函数，那么这个分布$F$属于上述三种分布之一。可以被归为Generalized extreme value distribution一类。
+
+来自文章的一句话：EVT is analogous to a central limit therem, but tells us what the distribution of extreme values should look like as we approach the limit.
 
 
 
 
+\subsubsection{Extreme Value Theory}
 
+\href{https://en.wikipedia.org/wiki/Extreme_value_theory}{Extreme Value Theory - Wikipedia}
+
+Extreme Value Theory 是处理远离概率分布中值的极端情况下的数据理论。
+
+对于给定的有序的随机变量的样本，EVT用于评估出现相对于已有Observation的非常极端的情况的概率。如发生百年一遇的洪灾的概率。
+
+Wikipedia 的后面就提到Fisher-Tippet Theorem了。
+
+\subsection{Weibull Distribution}
+
+参考文献：Wikipedia
+
+
+Weibull distribution公式如下：
+\begin{displaymath}
+f(x; \lambda, k) = \begin{cases}
+\frac{k}{\lambda} (\frac{x}{\lambda})^{-(x/\lambda)^k} & \text{if } x \ge 0, \\
+0 & \text{if } x < 0
+\end{cases}
+\end{displaymath}
+
+其中，$k>0$是shape parameter, $\lambda > 0$  是scalar parameter。
+
+Weibull Distribution的CDF(Cumulative distribution function)：
+
+当$x \ge 0$时：
+
+\begin{displaymath}
+F(x; k, \lambda) = 1 - e^{-(x/\lambda)^k}
+\end{displaymath}
+
+对于$x = 0$时，$F(x; k, \lambda) = 0$
 
 
 

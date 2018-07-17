@@ -132,6 +132,12 @@ Trung~T. Pham, Markus Eich, Ian Reid, and Gordon Wyeth.
 \newblock In {\em Ieee/rsj International Conference on Intelligent Robots and
   Systems}, pages 4199--4204, 2016.
 
+\bibitem{qi20173d}
+Xiaojuan Qi, Renjie Liao, Jiaya Jia, Sanja Fidler, and Raquel Urtasun.
+\newblock 3d graph neural networks for rgbd semantic segmentation.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 5199--5208, 2017.
+
 \bibitem{ren2017end}
 Mengye Ren and Richard~S Zemel.
 \newblock End-to-end instance segmentation with recurrent attention.

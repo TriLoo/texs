@@ -2310,10 +2310,57 @@ Semantic Instance Segmentation via Deep Metric Learning
 值得注意的几点：
 
 \begin{itemize}
-\item 
+\item 提出了一种基于NiN和GoogLeNet结构的RGBD处理框架以及一种有效的初始化方法。
+\item 具体的，输入的Depth为单通道，同时depth 的 NiN结构的Channel数都减少为原来的$1/3$并被随机初始化。Depth分支学习到的Filter与RGB分支学习到的Filter作者认为具有很大的不同。
+\item 对于RGB通路，采用GoogLeNet结构，Depth的Feature通过Concatenate来引入到RGB分支中
+\item 对比Early fusion, Mid fusion, late fusion， 最后发现a mid-level fusion after 2NiN modules leads to the best results
+\item 对比了几种对Depth分支的初始化策略：随机初始化、使用在RGB上的训练权重、使用CityScape预训练。结果表明：降低channel数为原来的1/3，并采用CityScape与训练效果最好！
+\item 使用CityScape训练集
 \end{itemize}
 
+\section{3D Graph Neural Networks for RGBD Semantic Segmentation}
 
+
+\section[RefineNet]{Multi-Path Refinement Networks for High-resolution semantic segmentation}
+
+时间：2018.07.09
+
+需要注意的几点：
+\begin{itemize}
+\item 提出了一种利用多层中间层信息的网络结构
+\item 引入了一种新的结构，叫做： Chained residual pooling，一个比较重要的点是在进行具体Pooling之前，引入一个ReLU层，作者说这样可以让后面的Pooling更高效，同时学习过程对学习率更鲁棒
+\item 包含Short-range 和 long-range residual connections. 
+\item 在Pascal Voc 2012, SUN RGBD, Cityscape等七个数据集上结果很好。用到的评估包括：mIoU， Pixel Accuracy, mAP等。在测试的时候，还测试了不同Scale的输入情况下的平均表现。
+\end{itemize}
+                                                                                
+
+\subsection{引言中的重要几点}
+
+\begin{itemize}
+\item 在CNN结构中，在底层部分，分辨率较高，但都是一些低层次的特征，如边缘等；在高层部分，具有叫高层的语义信息，但分辨率较低。一种不降低分辨率但提高感受野的技术是Dilated Convolution。
+\item Dilated Convolution: 缺点，占用GPU显存较大
+\end{itemize}
+
+\subsection{算法思想}
+
+
+
+\subsection{实验部分}
+
+\subsection{小结}
+
+
+
+\section{RedNet: Residual Encoder-Decoder Network for indoor RGB-D Semantic Segmentation}
+
+\section{RDFNet: RGB-D Multi-level Residual Feature fusion for Indoor Sematnic Segmentation}
+
+
+\section{Progressively Complementarity-aware Fusion Network for RGB-D Salient Object Detection}
+
+\section{Semantic-Guided Multi-level RGB-D Feature Fusion for Indoor Semantic segmentation}
+
+\section{Learning Common and Specific Features for RGB-D Semantic Segmentation with Deconvolutional Networks}
 
 
 

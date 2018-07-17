@@ -4,6 +4,133 @@
 
 {\color{red}Time: 2018.05.18}
 
+\section{MXNet System Overview}
+
+今天把这个Overview补上。
+
+\subsection{MXNet System Architecture}
+
+MXNet系统主要的Modules包含：
+
+\begin{itemize}
+\item Runtime Dependency Engines: 根据程序的读写依赖对它们进行调度和执行
+\item Storage Allocator: 用于高效的分配和回收CPU和GPU上的存储空间
+\item Resource Manager: 管理Global资源，比如随机数发生器等
+\item NDArray: 动态的、异步的n维array，可以为MXNet提供方便的命令式编程
+\item Symbolic Execution: 静态的符号图执行器，可以提供搞笑的符号计算图执行和优化
+\item Operator: 定义了前向和反向传播计算的计算子
+\item SimpleOp: 以同意的风格扩展NDarray计算子和符号计算子 
+\item Symbol Construction: 提供一种定义计算图的方法
+\item KVStore: Key-Value 存储接口，用于高效的参数同步
+\item Data Loading (IO): 高效的分布式数据加载和增广工具 
+\end{itemize}
+
+\subsection{MXNet System Components}
+
+\subsubsection{Execution Engine}
+
+我们不仅可以使用mxnet的engine用于深度学习，而且还可以用于其他领域特定的问题。它主要用于执行一些具有依赖关系的functions。任何有依赖关系的两个函数只能顺序执行，而那些没有依赖关系的计算可以并行执行。
+
+\begin{verbatim}
+    using Fn = std::function<void(RunContext)>
+\end{verbatim}
+
+所以，函数的类型是\verb|void(RunContext)|。另外一个需要注意的地方是，这里的RunContext与Context的区别，前者包含了只有在运行时才能确定的一些信息，比如函数执行的stream；后者包含了device type与device 看文档，ImageFolderDataset的说明文档。其中
+
+另外一个变量是\verb|VarHandle|，这个主要用于指定function的依赖。在\verb|const_vars|用于存储那些只读变量，而\verb|mutate_vars|用于指定那些可以修改的变量。
+
+\subsubsection{Operators in MXNet}
+
+在MXNet中，每一个操作都是一个类，包含了实际运算逻辑和一些辅助信息，这些辅助信息可以帮助确定可以优化的地方。建议让自己熟悉\verb|mshadow|库，因为所有的计算都是\verb|mshadow::TBlob|这一tensor-like的结构进行的。MXNet里面的运算接口可以允许：
+
+\begin{itemize}    
+    \item 指定inplace更新来降低memory allocation cost
+    \item 隐藏Python中的一些临时变量，让其更干净
+    \item 定义输入与输出张量的关系，可以让系统帮助shape检查
+    \item 索取更多的临时变量用于计算，比如cudnn等
+\end{itemize}
+
+\subsubsection{Operator Interface}
+
+Forward是核心算子接口，此外还有Backward接口。
+
+\lstset{language=C++}
+\begin{lstlisting}
+virtual void Backward(const OpContext &ctx,
+                          const std::vector<TBlob> &out_grad,
+                          const std::vector<TBlob> &in_data,
+                          const std::vector<TBlob> &out_data,
+                          const std::vector<OpReqType> &req,
+                          const std::vector<TBlob> &in_grad,
+                          const std::vector<TBlob> &aux_states);
+\end{lstlisting}
+
+在Backward中，输入数据时out\_grad, in\_data, 和out\_data，同时计算in\_grad作为函数的结果。有些操作可能不是同时需要上述三个参数，此时可以通过\verb|OperatorProperty|里面的\verb|DeclareBackwardDependency|接口来设置实际的依赖关系。
+
+\subsubsection{Operator Property}
+
+上面说完了两个最重要的核心Operator Interface，在这里，就开始说一下Operator Property了。
+
+单独设置Operator  Property的目的：有时候卷积操作可能有多种不同的实现方式，并且想要通过切换它们来实现最高的性能。因此，我们把Operator 的semantic interfaces和Implementation interface (\verb|Operator|类)分开，并把前者在\verb|OperatorProperty|类中。\verb|OperatorProperty|主要由以下几个部分构成：
+\begin{itemize}
+\item \verb|InferShape|
+
+这个函数有两个目的：
+
+\begin{itemize}
+\item 告诉系统输入、输出tensor的size,因此系统可以在实际调用Forward和Backward之前就可以分配空间了；
+\item 在实际运行前，先进行shape的检查，以避免一些明显的错误。同时如果没有足够的信息用于推断出shape时会返回false，如果shape不一致，那么就会throws an error
+\end{itemize}
+
+\item \verb|RequestResources|
+
+有一些操作如\verb|cudnnConvolutionForward|在计算过程中需要额外的一些空间。MXNet定义了两个函数分别用于Foward和Backward过程的资源请求，资源请求的结果会保存在ctx中，然后传入Operator中的Forward和Backward函数。具体做法如下：
+\begin{lstlisting}
+auto tmp_space_res = ctx.requested[kTempSpace].get_space(some_shape, some_stream);
+auto rand_res = ctx.requested[kRandom].get_random(some_stream);
+\end{lstlisting}
+
+\item \verb|Backward dependency|
+
+用于声明在反向传播过程中所依赖的变量，这样的话，如果发现不需要的变量，那么就可以及早把资源释放掉。
+
+\item \verb|In palce Option|
+
+为了进一步节省存储的消耗，可以使用in-place update。 这个策略适合 element-wise类的操作，并且输入、输出有相同的shape。通过\verb|ForwardInplaceOption|和\verb|BackwardInplaceOption|来实现，这两个函数的返回值说明是可以inplace的两个变量。
+
+需要注意的地方是，及时你用到了这些设置，但也不能保证结果是确实是inplace的。实际上，这只是对系统的一个建议，而不是强制性的，系统还会考虑一些其它因素，但这些因素对开发者是不可见的，因此对于Forward和Backward的实现可以不用考虑这些隐含的策略。
+
+\item \verb|Expose Operator to Python|
+
+由于C++的限制，必须实现以下接口：
+
+\begin{lstlisting}
+// initial the property class from a list of key-value string pairs
+           virtual void Init(const vector<pair<string, string>> &kwargs) = 0;
+           // return the parameters in a key-value string map
+           virtual map<string, string> GetParams() const = 0;
+           // return the name of arguments (for generating signature in python)
+           virtual vector<string> ListArguments() const;
+           // return the name of output values
+           virtual vector<string> ListOutputs() const;
+           // return the name of auxiliary states
+           virtual vector<string> ListAuxiliaryStates() const;
+           // return the number of output values
+           virtual int NumOutputs() const;
+           // return the number of visible outputs
+           virtual int NumVisibleOutputs() const;
+
+\end{lstlisting}
+
+\end{itemize}
+
+\subsubsection{Create an Operator from the Operator Property}
+
+Operator Property不仅提供一下Semantic 属性，而且还负责创建Operator指针，用于实际计算。
+
+待续...
+
+
 \section{Optimizing Memory Consumption in DL}
 Over the last ten years, a constant trend in deep learning is towards deeper and larger networks. Despite rapid advances in hardware performance, cutting-edge deep learning models continue to push the limits of GPU RAM. So even today, it’s always desirable to find ways to train larger models while consuming less memory. Doing so enables us to train faster, using larger batch sizes, and consequently achieving a higher GPU utilization rate.
 
@@ -1195,6 +1322,267 @@ L = - \sum_{i} \sum_{j}^{class number} label_j \log p_{ij}
 也就是说，如果输入是sparse=True， 则每一个label是一个整数标量；而如果输入的是sparse=False， 那么输入的每一个label是一个尺寸是class number的array， 表示该点的概率分布，这里的概率分布是Multinoulli。
 
 再说一下\verb|axis|， 表示在该维度上进行计算。
+
+\section{MXNet中的3D CNN}
+
+\subsection{应该怎么理解3D CNN}
+
+参考：\href{https://www.zhihu.com/question/266352189}{卷积神经网络中的二维卷积核和三维卷积核有什么区别-知乎}
+
+首先需要明确一点的是：在讨论卷积核的维度时，是不把channel维加进来的(或者说卷积核的维度指的是进行划窗操作的维度，而划窗操作是不在channel维度上进行的，因为每个channel共享同一个划窗位置，但每个channel上的卷积核权重是独立的)。所以，二维conv的卷积核其实是(c, h, w)，3D 的卷积核就是(c, d, h, w)，其中多出来的d就是第三维，根据具体应用，在视频中对应的就是时间维，在CT图像中对应就是层数维。
+
+\section{向MXNet添加新的操作}
+
+\subsection{添加新的Operator}
+
+参考[1]: \href{https://blog.csdn.net/u011765306/article/details/54562282}{mxnet学习笔记-自定义Op-CSDN}
+
+需要注意以下几点：
+
+
+\subsubsection{自定义Op}
+
+自定义Op都需要去继承operator.py中的类，其中提供以下几类：
+\begin{itemize}
+\item CustomOp(object)
+\item CustomOpProp(object)
+\item NDArrayOp(PythonOp)
+\item NumpyOp(PythonOp)
+\item PythonOp(object)
+\end{itemize}
+
+这里可以看出，operator分成两条路线，一条路线为CustomOp，另一条路线为继承PythonOp，下面分别介绍下。
+
+\subsubsection{CustomOp类}
+
+这条路线由三步组成。
+
+\begin{itemize}
+\item 第一步继承CustomOp,重写方法\verb|forward()|和\verb|backward()|
+\item 然后继承\verb|CustomOpProp|重写成员方法，并在方法\verb|create_operator|中调用之前写好的Op
+\item 第三步调用\verb|operator.register|对操作进行注册
+\end{itemize}
+
+下面就结合具体的代码来说一下：
+
+第一步是继承CustomOp定义自己的Operator类，并重载\verb|forward()|和\verb|backward()|两个函数。
+\lstset{language=Python,caption={基于CustomOp的Softmax}}
+\begin{lstlisting}
+class Softmax(mx.operator.CustomOp):
+    # 这里的的in_data就是Prop里面的list_augments返回的数据所包含的内容
+    def forward(self, is_train, req, in_data, out_data, aux):  # length of in_data: 2, 也就是list_augments()里面返回数据的length
+        x = in_data[0].asnumpy()  # x的shape就是Prop里面的data的shape，
+        # 而data的shape就是(batch_size, softmax输入data的shape！)
+        # in_data[1]的shape就是Prop里面label的shape。在这里，具体的shape是(batch_size, )，即每一个样本对应一个label!
+        y = np.exp(x - x.max(axis=1).reshape((x.shape[0], 1)))     # y 的 shape变成x的shape也就是输入data的shape
+        # 下面这一步会涉及Python里面的Broadcast机制！
+        y /= y.sum(axis=1).reshape((x.shape[0], 1))  
+        self.assign(out_data[0], req[0], mx.nd.array(y))  # 输出的值就是mx.nd.array(y), shape=x.shape
+    def backward(self, req, out_grad, in_data, out_data, in_grad, aux):
+        l = in_data[1].asnumpy().ravel().astype(np.int)   # in_data[1]对应着labels
+        y = out_data[0].asnumpy()                         # 对应forward()的输出，也就是out_augments()的返回值的的第一个元素
+        # 知乎上有推导，貌似softmax的求导只需要在响应位置上-1就可，并且其它地方的值是不变的！！
+        y[np.arange(l.shape[0])), l] -= 1.0               # l.shape[0]对应着batch_size, l对应每个sample的label的值
+        self.assign(in_grad[0], req[0], mx.ndarray(y))    # 返回的是y， 对应的shape还是forward()里面x的shape
+\end{lstlisting}
+
+其中，\verb|req|是list of \{ 'null', 'write', 'inplace', 'add'  \}， 确定如何assign to out\_data. null means skip assignment \textit{etc.}  \verb|assign|函数定义在基类CustomOp中，定义如下：
+
+\begin{verbatim}
+def assign(self, dst, req, src):
+    if req = 'null'  # 什么也不做
+        return
+    elif req == 'write' or req == 'inpalce':
+        dst[:] = src
+    elif req == 'add':
+        dst[:] += src
+\end{verbatim}
+
+第二步是继承mx.operator.CustomOpProp，定义SoftmaxProp类，该类共包含六个函数(包含\verb|__init__|)，代码如下：
+\lstset{language=Python, caption={第二步，基于CustomOpProp的SoftmaxProp类}}
+\begin{lstlisting}
+@mx.operator.register("softmax")
+class SoftmaxProp(mx.operator.CustomOpProp):
+    def __init__(self):
+        super(SoftmaxProp, self).__init__(need_top_grad=False)
+    def list_augments(self):  
+        return ['data', 'label']
+    def list_outputs(self):    
+        return ['output']
+    def infer_shape(self, in_shape):   # 第一次调用时，会运行这个进行shape的推理
+        data_shape = in_shape[0]
+        label_shape = in_shape[0][0]
+        output_shape = in_shape[0]
+        # 返回的的三个[]表示aux_data的shape
+        return [data_shape, label_shape], [output_shape], []
+    def infer_type(self, in_type):     # 同样也是第一次调用时运行
+        return in_type, [in_type[0]], [] 
+    def create_operator(self, ctx, shapes, dtypes):
+        return Softmax()   # 返回Softmax类
+\end{lstlisting}
+
+上述代码就完成了对Softmax的自定义，在类Softmax中重写\verb|forward()|和\verb|backward()|，这里与caffe中定义层操作类似，forward中定义层的前向操作，backward中定义反向传播的梯度计算。在完成定义之后，在类SoftmaxProp中的\verb|create_operator()|调用并返回\verb|Softmax()|实例。那么第三步\verb|register|如何实现呢？可以看到\verb|SoftmaxProp|中带有装饰器\verb|mx.operator.register()|，等价于操作\verb|register("custom_op")(CustomOpProp)|，这里即在代码运行前即完成了该Op的实例化，与Optimazer的装饰器类似，关于这个register的解释见单独介绍。
+
+完成上述操作符的定义后，就可以使用新的操作符了，具体是使用\verb|mx.symbol.Custon()|函数，具体的调用形式如下：
+\begin{lstlisting}
+data_sym = mx.symbol.Custom(data=fc3, name='softmax', op_type='softmax')
+\end{lstlisting}
+
+需要注意的地方在于：1)fc3是softmax上一层网络的输出数据的名字，2)name是本层softmax的名字, 3)是op\_type，这里指定的是自己上面新定义的操作类的名字，或者说是注册时用到的名字。
+
+最后调用Module进行测试：
+\begin{lstlisting}
+mod = mx.mod.Module(data_sym, context=mx.cpu())   # 等
+mod.fit(...)
+\end{lstlisting}
+
+其中，data\_sym是symbol模型的最后的输出的变量的名字。
+
+需要注意的地方是，例子程序里面的注释，以及register和两个类的创建过程！！
+
+\subsubsection{PythonOp类}
+
+在这条路线中，PythonOp为基类，而我们大多数定义Op时不会去继承它，而是使用它的subclass：\verb|NDarrayOp|、\verb|NumpyOp|。这条路线不需要像CustomOp那样需要三步。
+
+具体的官网例子可以查看：\href{https://github.com/ROCmSoftwarePlatform/mxnet/blob/master/example/numpy-ops/ndarray_softmax.py}{NDarray Softmax-github}
+
+在这个例子中，类的定义为\verb|class NDarraySoftmax(mx.operator.NDArrayOp)|。类内部主要包含六个函数(一个为init函数)。
+
+纵观整个实现代码，NDarraySoftmax类继承自NDArrayOp，后者其实与NumpyOp类似，不同之处在于\verb|forward()|和\verb|backward()|重写方式使用函数不停，NDArrayOp中使用mx.nd中的操作，但NumpyOp使用numy中的操作。总之重点在\verb|forward()|和\verb|backward()|。当然，如此的自定义方法在使用时需要预先定义类对象才可以使用，基于CustomOp中的定义时机不同。
+
+成员方法\verb|list_augments()|和\verb|list_outputs|和\verb|infer_shape|。第一个函数主要对该Op定义是形参的命名，如代码中的['data', 'label']，那么该Op在使用时形参必须为data和label!这里也可以看出mxnet是使用名字寻找变量的，DataIter和Optimizer也是如此。第二个函数定义了Op的输出变量的名字，一般命名规则是：op\_name + \_'output'。最后一个函数是用于在给定输入时，获取该Op输出的Shape。当然，在自定义Op时，需要自己设计Op的输入和输出的Op。在这个具体的例子中，输出包含两个List，第一个List是输入data和label的Shape，第二个List是输出output的Shape。输入的Shape也就是包含data和label。其中，data的shape就是输入data的shape的第一个维度，也就是样本的个数，而label的shape是输入in\_shape的第二个维度，也就是每个样本的Channel的个数；然后就是输出的shape，这个数值根据Op的操作来确定，这里的具体数值等价于输入in\_shape的第一个维度的取值，也就是样本的个数。
+
+在定义好Op后，我们需要通过\verb|mx.mod.Module()|将Op进行整合，并通过\verb|bind()|来申请内存，在此之后，我们可以通过以下两种方法训练它：
+\begin{itemize}
+\item 分别调用\verb|init_params()|初始化参数，调用\verb|init_optimizer()|初始化Optimizer，接下来就可以通过\verb|forward()|和\verb|backward()|进行前向、反向传播训练模块。
+\item 或者直接调用\verb|fit()|方法进行训练，因为\verb|fit()|中包含所需的初始化操作。
+\end{itemize}
+
+\subsection{添加新的Layer}
+
+参考[1]: \href{https://blog.csdn.net/qq_25491201/article/details/51284416}{MXNet创建新的操作(层)-CSDN}
+
+如果需要创建自定义层，有3个选择：
+
+\begin{itemize}
+\item 使用Python原生的语言和它的矩阵库(numpy in python)。这不需要过多的能力和对MXNet的了解，但会影响性能
+\item 使用mxnet原生的语言和它的矩阵库mxnet.rtc和mxnet.ndarray。这会得到更好的性能，但是相应的需要了解更多的MXNet的知识，可以通过Python来写CUDA的Kernel函数，并且在运行时编译
+\item 使用C++/mshadow (CUDA)，这需要对mxnet、mshadow和CUDA都比较熟悉
+\end{itemize}
+
+参考里面给出了基于Python/Numpy的一个例子，步骤如下：
+
+\begin{itemize}
+\item 定义新的类，继承自mx.operator.NumpyOp
+\item 定义函数，返回输入、输出的数据列表，名称分别为：\verb|list_arguments(self)|和\verb|list_outputs(self)|
+
+推荐的返回数据的顺序为：['input1', 'input2', ..., 'weight1', 'weight2',...]
+
+\item 提供\verb|infer_shape|来声明我们的output/weight并且检测输入的形状的一致性
+
+第一个维度总是batch size.\verb|infer_size|需要返回两列，即使他们是空的。
+
+\item 定义\verb|forward()|、|\verb|backward()|函数
+
+forward函数含有两个参数：\verb|in_data|和\verb|out_data|，backward()函数含有四个参数：\verb|out_grad|， \verb|in_data|， \verb|out_data|和 \verb|in_grad|
+
+\end{itemize}
+
+\subsubsection{如何创建新的网络层-CSDN}
+
+参考[2]: \href{https://blog.csdn.net/xuezhisdc/article/details/54927635}{如何创建新的网络层-CSDN}
+
+如果需要自定义一个网络层，比如新的损失函数，有两个选择：
+\begin{itemize}
+\item 借助前端语言(比如Python),使用CustomOp来写新的操作符。既可以运行在CPU上，也可以运行在GPU上。根据实际情况，性能可能很高，也可能很低。
+\item 使用C++/mshadow(CUDA)。但前提是需要熟悉MXNet、mshadow和CUDA，能获得最佳的性能。
+\end{itemize}
+
+这里还是以上面的具体的Softmax代码为例子。需要补充说明的一点是，\verb|assign|函数会根据req的取值来决定对out\_data[0]的赋值方式，req取值包括：write, add或null等。
+
+Softmax类定义了新的自定义操作符的计算，但仍然需要通过定义\verb|mx.operator.CustomOpProp|的子类的方式，来定义它的I/O格式！！
+
+在\verb|infer_shape|里面，声明输出和权重的形状，并检查输入形状的一致性。输入/输出张量的第一维是数据的批量大小(Batch size)。标签是一组整数，每个整数对应一个样本，并且输出、输入的形状相同。函数\verb|infer_shape|的输出是三个列别，及时某一项为空，顺序也必须是：输入、输出和辅助状态。
+
+重要的一点：如果想使用自定义操作符，需要创建\verb|mx.sym.Custom|符号。其中，使用新操作符的注册名字来设置参数\verb|op_type|，具体代码如下：
+\begin{verbatim}
+mlp = mx.symbol.Custom(data=fc3, name='softmax', op_type='softmax')
+\end{verbatim}
+
+\subsubsection{MXNet添加新层-CSDN}
+
+参考[3]: \href{https://blog.csdn.net/qq_20965753/article/details/66975622}{MXNet添加新层-CSDN}
+
+具体的是，本文将开始讲一下如何基于C++、CUDA来添加新的操作，而不是上面的那些Python了！具体添加的操作时Softplus函数，然后就可以使用\verb|mx.sym.Softplus|进行调用了。
+
+首先额外说明一下Softplus的计算公式：
+\begin{displaymath}
+f(x) = \log (1 + exp(x))
+\end{displaymath}
+
+具体的步骤如下：
+
+1. 在src/operator下面写好三个文件：-inl.h, .cc, .cu等
+
+2. 对于激活层，在src/operator/mshadow\_op.h加入对\verb|mshadow_op::softplus|、\verb|mshadow_op::softplus_grad|结构体的描述。
+
+\verb|struct softplus {...}|只需要修改return语句即可，y=f(x)，计算y
+
+\verb|struct softplus_grad {...}| 只需要修改return语句即可，计算f的导数f'(x)
+
+具体代码如下：
+
+\lstset{language=C++, caption={在mshadow\_op.h里面添加结构体}}
+\begin{lstlisting}
+/*! \brief Softplus */
+strcut softplus{
+	template<typename DType> 
+	MSHADOW_XINLINE static DType Map(DType a)
+	{
+	    return DType(log1pf(a))
+	}
+};
+
+struct softplus_grad
+{
+	template<typename DType>
+	MSHADOW_XINLINE static DType Map(DType a)
+	{
+		return DType(DType(1.0f) - exp(-a)
+	}
+};
+\end{lstlisting}
+
+重新编译mxnet即可，将python/mxnet/ lib库文件，重新拷贝到python2.7下的site-packages或Python3的site-packages(或dist-packages)下。在mxnet文件夹外验证：
+
+\begin{verbatim}
+>>> import mxnet as mx
+>>> help(mx.sym.Softplus)
+\end{verbatim}
+
+源码分析。
+
+MXNet输入数据格式是TBlob，输出数据格式是Tesnor，两者都是高维的数组类型。mshadow用于数据存储结构。代码较多，内容待续。
+
+
+
+\section{关于MXNet里面的register修饰符}
+
+\subsection{调用顺序-CSDN博客}
+
+在添加自己的softmax的例子中，一个需要值得注意的地方就是register装饰器的理解问题。这里还是参考一个CSDN博客！
+
+参考[1]: \href{https://blog.csdn.net/u011765306/article/details/54562266}{MXNet-Python源码中的装饰器理解-CSDN}
+
+这里主要注意的地方是调用顺序。简单来说，顺序如下：首先执行类方法register，然后执行构建基类，在构建基类的派生类。
+
+稍具体来说：调用类静态方法(@staticmethod)是不需要构建对象的，即调用基类的静态方法时，还不会创建基类的对象，而且在debug里面可以发现register是在调用这个基类的静态函数之前执行的。然后创建基类的对象，最后调用create函数什么的创建派生类。
+
+总而言之一句话：装饰器运行在代码运行之前，即定义阶段就已经完成了。
+
+\subsection{Python中的装饰器之register}
+
+
 
 
 

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  25 JUN 2018 22:25
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.9.2)  17 JUL 2018 23:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1486,17 +1486,23 @@ Overfull \hbox (1.97218pt too wide) in paragraph at lines 60--60
 ation with a 2D Semantic Map[[]][][] [][]  
  []
 
-[2] [3] [4] [5] [6] [7])
+[2] [3] [4]
+Overfull \hbox (2.6751pt too wide) in paragraph at lines 250--250
+ [][] [][][]\EU1/TimesNewRoman(0)/m/n/12 Progressively Complementarity-aware Fu
+sion Network for RGB-D Salient 
+ []
+
+[5] [6] [7] [8])
 \tf@toc=\write5
 \openout5 = `Papers.toc'.
 
- [8] (./Papers.lof [9
+ [9] [10
 
-] [10])
+] (./Papers.lof [11] [12])
 \tf@lof=\write6
 \openout6 = `Papers.lof'.
 
- [11] [12
+ [13] [14
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 75--76
@@ -1929,90 +1935,133 @@ Overfull \hbox (3.70818pt too wide) in paragraph at lines 2294--2294
  Ob-
  []
 
-) (./OpenSetRecognition/OpenSetRecognition.tex [88]
+[88]
+Overfull \hbox (4.6855pt too wide) in paragraph at lines 2321--2321
+[]\EU1/TimesNewRoman(0)/bx/n/17.28 3D Graph Neural Networks for RGBD Semantic S
+eg-
+ []
+
+
+Overfull \hbox (8.51031pt too wide) in paragraph at lines 2324--2324
+[]\EU1/TimesNewRoman(0)/bx/n/17.28 Multi-Path Refinement Networks for High-reso
+lution
+ []
+
+
+Overfull \hbox (4.69514pt too wide) in paragraph at lines 2361--2361
+[]\EU1/TimesNewRoman(0)/bx/n/17.28 Semantic-Guided Multi-level RGB-D Feature Fu
+sion
+ []
+
+
+Overfull \hbox (0.85912pt too wide) in paragraph at lines 2363--2363
+\EU1/TimesNewRoman(0)/bx/n/17.28 D Semantic Segmentation with Deconvolutional N
+et-
+ []
+
+) (./OpenSetRecognition/OpenSetRecognition.tex [89] [90]
 Chapter 6.
-[89
+[91
 
 ]
 File: OpenSetRecognition/GANTraining0.jpg Graphic file (type QTm)
- <use  "OpenSetRecognition/GANTraining0.jpg" > [90]
+ <use  "OpenSetRecognition/GANTraining0.jpg" > [92]
 Overfull \hbox (48.0701pt too wide) in paragraph at lines 93--93
 [] 
  []
 
-[91]
+[93]
 Missing character: There is no θ in font cmmi12!
 Missing character: There is no θ in font cmmi12!
 Missing character: There is no θ in font cmmi12!
 File: OpenSetRecognition/CGAN0.jpg Graphic file (type QTm)
- <use  "OpenSetRecognition/CGAN0.jpg" > [92] [93] [94]) (./MXNet/MXNet.tex
-[95] [96
+ <use  "OpenSetRecognition/CGAN0.jpg" > [94] [95] [96]
+Overfull \hbox (3.49316pt too wide) in paragraph at lines 286--287
+[]\EU1/SimSun(1)/m/n/12 有 独 立 同 分 布 的 随 机 变 量：| $\OML/cmm/m/it/12 X[]; X[]; X[]
+; []$\EU1/SimSun(1)/m/n/12 ，| 他 们 的 最 大 值 为\EU1/TimesNewRoman(0)/m/n/12 :$\OML/
+cmm/m/it/12 M[] \OT1/cmr/m/n/12 = [] []$\EU1/SimSun(1)/m/n/12 。|
+ []
 
-]
+[97]) (./MXNet/MXNet.tex [98]
 Chapter 7.
+[99
+
+] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2013/08/26 1.5b listings language file
+)
+Overfull \hbox (30.77615pt too wide) in paragraph at lines 68--69
+\EU1/SimSun(1)/m/n/12 函 数 的 结 果。|  有 些 操 作 可 能 不 是 同 时 需 要 上 述 三 个 参 数，|  此 时 可
+ 以 通 过[]\EU1/lmtt/m/n/12 OperatorProperty
+ []
+
+[100] [101]
 File: MXNet/back_graph.png Graphic file (type QTm)
-<use  "MXNet/back_graph.png" > [97]
+ <use  "MXNet/back_graph.png" > [102]
 File: MXNet/back_dep_prune.png Graphic file (type QTm)
- <use  "MXNet/back_dep_prune.png" >
+
+<use  "MXNet/back_dep_prune.png" >
 File: MXNet/back_agg_grad.png Graphic file (type QTm)
-
-<use  "MXNet/back_agg_grad.png" > [98]
+ <use  "MXNet/back_agg_grad.png" > [103]
 File: MXNet/alloc_normal.png Graphic file (type QTm)
- <use  "MXNet/alloc_normal.png" >
+
+<use  "MXNet/alloc_normal.png" > [104]
 File: MXNet/alloc_mlp.png Graphic file (type QTm)
-
-<use  "MXNet/alloc_mlp.png" > [99]
+ <use  "MXNet/alloc_mlp.png" >
 File: MXNet/alloc_step.png Graphic file (type QTm)
- <use  "MXNet/alloc_step.png" > [100]
-File: MXNet/parallel_alloc.png Graphic file (type QTm)
 
-<use  "MXNet/parallel_alloc.png" > [101]
+<use  "MXNet/alloc_step.png" > [105]
+File: MXNet/parallel_alloc.png Graphic file (type QTm)
+ <use  "MXNet/parallel_alloc.png" >
+[106]
 File: MXNet/graph_color.png Graphic file (type QTm)
- <use  "MXNet/graph_color.png" >
-[102] [103]
+ <use  "MXNet/graph_color.png" > [107] [108]
 File: MXNet/Symbolic1.png Graphic file (type QTm)
- <use  "MXNet/Symbolic1.png" >
+
+<use  "MXNet/Symbolic1.png" >
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
-) [104] [105]
-[106]
+) [109] [110]
+[111]
 File: MXNet/Tag1.png Graphic file (type QTm)
  <use  "MXNet/Tag1.png" >
 File: MXNet/Tag2.png Graphic file (type QTm)
- <use  "MXNet/Tag2.png" > [107]
+ <use  "MXNet/Tag2.png" > [112]
 File: MXNet/Tag3.png Graphic file (type QTm)
 
-<use  "MXNet/Tag3.png" > [108]
+<use  "MXNet/Tag3.png" > [113]
 File: MXNet/recordIO1.png Graphic file (type QTm)
  <use  "MXNet/recordIO1.png" >
 File: MXNet/recordIO2.png Graphic file (type QTm)
 
-<use  "MXNet/recordIO2.png" >
+<use  "MXNet/recordIO2.png" > [114] [115]
 File: MXNet/loadingData1.png Graphic file (type QTm)
- <use  "MXNet/loadingData1.png" > [109] [110]
+ <use  "MXNet/loadingData1.png" >
 File: MXNet/dataLoading2.png Graphic file (type QTm)
 
-<use  "MXNet/dataLoading2.png" > [111] [112]
+<use  "MXNet/dataLoading2.png" > [116] [117]
 
 LaTeX Font Warning: Font shape `EU1/SimSun(1)/m/it' undefined
-(Font)              using `EU1/SimSun(1)/m/n' instead on input line 544.
+(Font)              using `EU1/SimSun(1)/m/n' instead on input line 671.
 
-
-Overfull \hbox (24.8007pt too wide) in paragraph at lines 558--560
+[118]
+Overfull \hbox (24.8007pt too wide) in paragraph at lines 685--687
 []\EU1/SimSun(1)/m/n/12 方 式 二，|  即 先 定 义 一 个 \EU1/TimesNewRoman(0)/m/n/12 Seque
 ntial \EU1/SimSun(1)/m/n/12 的 类 型 变 量 \EU1/TimesNewRoman(0)/m/n/12 Net\EU1/SimS
 un(1)/m/n/12 ，|  然 后 在 向 里 面 增 加[]\EU1/lmtt/m/n/12 gluon.nn.Layer
  []
 
-[113] [114] [115]
-Overfull \hbox (19.36221pt too wide) in paragraph at lines 697--698
+[119] [120]
+Overfull \hbox (19.36221pt too wide) in paragraph at lines 824--825
 []\EU1/SimSun(1)/m/n/12 需 要 注 意 的 是，|  即 使 在[]\EU1/lmtt/m/n/12 class \EU1/SimSu
 n(1)/m/n/12 里 面 也 可 以 调 用 底 层 的 自 定 义 模 块，|  如 在[]\EU1/lmtt/m/n/12 resnet_block
 
  []
 
 
-Overfull \hbox (59.3144pt too wide) in paragraph at lines 709--710
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [121]
+Overfull \hbox (59.3144pt too wide) in paragraph at lines 836--837
 []\EU1/SimSun(1)/m/n/12 参 考[][]\EU1/TimesNewRoman(0)/m/n/12 FCN \EU1/SimSun(1)/
 m/n/12 讨 论 区 \EU1/TimesNewRoman(0)/m/n/12 -chen0510566[][]\EU1/SimSun(1)/m/n/12
  回 答，| []\EU1/lmtt/m/n/12 gluon.nn.Conv2DTranspose \EU1/SimSun(1)/m/n/12 的 文 档，
@@ -2020,109 +2069,161 @@ m/n/12 讨 论 区 \EU1/TimesNewRoman(0)/m/n/12 -chen0510566[][]\EU1/SimSun(1)/m
  []
 
 
-Overfull \hbox (54.65408pt too wide) detected at line 715
+Overfull \hbox (54.65408pt too wide) detected at line 842
 [] []
  []
 
-[116] [117]
-Overfull \hbox (4.77385pt too wide) in paragraph at lines 809--810
+[122] [123]
+Overfull \hbox (4.77385pt too wide) in paragraph at lines 936--937
 \EU1/SimSun(1)/m/n/12 为[]\EU1/lmtt/m/n/12 train \EU1/SimSun(1)/m/n/12 和[]\EU1/l
 mtt/m/n/12 val \EU1/SimSun(1)/m/n/12 的 \EU1/TimesNewRoman(0)/m/n/12 data iterat
 or. \EU1/SimSun(1)/m/n/12 分 别 作 用 与 训 练 图 像 与 训 练 标 签。| []\EU1/lmtt/m/n/12 NDAa
 rrayIter
  []
 
-[118]
-Overfull \hbox (66.09253pt too wide) in paragraph at lines 858--859
+[124]
+Overfull \hbox (66.09253pt too wide) in paragraph at lines 985--986
 []\EU1/TimesNewRoman(0)/m/n/12 Returns an iterator for mx.nd.NDArray, numpy.nda
 rray, h5py.Dataset mx.nd.sparse.CSRNDArray
  []
 
-[119] [120]
-Overfull \hbox (64.02332pt too wide) in paragraph at lines 936--936
+[125]
+Overfull \hbox (64.02332pt too wide) in paragraph at lines 1063--1063
  []\EU1/lmtt/m/n/12 data_set = gluon.data.vision.ImageFolderDataset(root, flag=
 1, tranform=None)[] 
  []
 
-
-Overfull \hbox (15.27353pt too wide) in paragraph at lines 953--954
+[126]
+Overfull \hbox (15.27353pt too wide) in paragraph at lines 1080--1081
 []\EU1/SimSun(1)/m/n/12 从 上 面 的 代 码 可 以 看 出，|  生 成 自 定 义 的 \EU1/TimesNewRoman(0
 )/m/n/12 Dataset \EU1/SimSun(1)/m/n/12 时，|  需 要 继 承[]\EU1/lmtt/m/n/12 gluon.dat
 a.Dataset
  []
 
-[121]
-Overfull \hbox (2.40096pt too wide) in paragraph at lines 992--993
+
+Overfull \hbox (2.40096pt too wide) in paragraph at lines 1119--1120
 []\EU1/SimSun(1)/m/n/12 上 面 两 种 方 式，|  我 们 都 得 到 了 一 个[]\EU1/lmtt/m/n/12 Parame
 ter \EU1/SimSun(1)/m/n/12 类 型 的 变 量 了。|  该 类 型 支 持[]\EU1/lmtt/m/n/12 lr_mult
  []
 
-
-Overfull \hbox (67.60858pt too wide) in paragraph at lines 1003--1003
+[127]
+Overfull \hbox (67.60858pt too wide) in paragraph at lines 1130--1130
 []\EU1/lmtt/m/n/12 reshape(data=None, shape=_null, reverse = _Null, target_shap
 e=_Null, target_shape=[] 
  []
 
 
-Overfull \hbox (32.58852pt too wide) in paragraph at lines 1003--1003
+Overfull \hbox (32.58852pt too wide) in paragraph at lines 1130--1130
 []            \EU1/lmtt/m/n/12 _Null, keep_highest=_Null, name=None, attr=None,
  out=None, **kwargs)[] 
  []
 
-[122]
-Overfull \hbox (5.43208pt too wide) in paragraph at lines 1043--1044
+[128]
+Overfull \hbox (5.43208pt too wide) in paragraph at lines 1170--1171
 \EU1/SimSun(1)/m/n/12 的 是，| \EU1/TimesNewRoman(0)/m/n/12 Deconvolution \EU1/Sim
 Sun(1)/m/n/12 可 以 用 于 双 线 性 插 值，|  而 要 完 成 这 个，|  只 要 保 证[]\EU1/lmtt/m/n/12 ups
 ample_weight
  []
 
-[123]
-Overfull \hbox (0.4108pt too wide) in paragraph at lines 1093--1094
+[129]
+Overfull \hbox (0.4108pt too wide) in paragraph at lines 1220--1221
 []\EU1/TimesNewRoman(0)/m/n/12 Each upsample layer consists of (1) Upsample (bi
 linear, zero padding, nearest-
  []
 
 
-Overfull \hbox (4.96428pt too wide) in paragraph at lines 1095--1096
+Overfull \hbox (4.96428pt too wide) in paragraph at lines 1222--1223
 \EU1/SimSun(1)/m/n/12 在 代 码 里 面，|  需 要 注 意 的 是，|  当 使 用[]\EU1/lmtt/m/n/12 Bilin
 ear \EU1/SimSun(1)/m/n/12 算 法 的 时 候，|  要 设 置 参 数 为[]\EU1/lmtt/m/n/12 num_args=2
 \EU1/SimSun(1)/m/n/12 。|
  []
 
-[124]
-Overfull \hbox (16.91058pt too wide) in paragraph at lines 1145--1148
+[130]
+Overfull \hbox (16.91058pt too wide) in paragraph at lines 1272--1275
 []\EU1/TimesNewRoman(0)/m/n/12 upsampler = nn.Conv2DTranspose(channels=channels
 , kernel_size=4, strides=2,
  []
 
 
-Overfull \hbox (35.21042pt too wide) in paragraph at lines 1145--1148
+Overfull \hbox (35.21042pt too wide) in paragraph at lines 1272--1275
 \EU1/TimesNewRoman(0)/m/n/12 padding=1, use_bias=False, groups=channels, weight
 _initializer= mx.init.Bilinear()) 
  []
 
 
-Overfull \hbox (0.92393pt too wide) in paragraph at lines 1156--1157
+Overfull \hbox (0.92393pt too wide) in paragraph at lines 1283--1284
 []\EU1/SimSun(1)/m/n/12 使 用 \EU1/TimesNewRoman(0)/m/n/12 Conv2DTranspose + mx.i
 nit.Bilinear() + net.collect_params().setattr('lr_mult',
  []
 
-[125]
-Overfull \hbox (1.68861pt too wide) in paragraph at lines 1175--1175
+
+Overfull \hbox (1.68861pt too wide) in paragraph at lines 1302--1302
 []\EU1/lmtt/m/n/12 SoftmaxCrossEntropyLoss(axis=-1, sparse_label=True, from_log
 its=False,[] 
  []
 
-) (./DLTips/DLTips.tex [126]
+[131] [132]
+Overfull \hbox (9.6382pt too wide) in paragraph at lines 1368--1370
+[]\EU1/SimSun(1)/m/n/12 第 一 步 是 继 承 \EU1/TimesNewRoman(0)/m/n/12 CustomOp \EU1/
+SimSun(1)/m/n/12 定 义 自 己 的 \EU1/TimesNewRoman(0)/m/n/12 Operator \EU1/SimSun(1)
+/m/n/12 类，|  并 重 载[]\EU1/lmtt/m/n/12 forward() \EU1/SimSun(1)/m/n/12 和[]\EU1/lm
+tt/m/n/12 backward()
+ []
+
+[133]
+Overfull \hbox (35.73586pt too wide) in paragraph at lines 1424--1425
+[]\EU1/SimSun(1)/m/n/12 上 述 代 码 就 完 成 了 对 \EU1/TimesNewRoman(0)/m/n/12 Softmax 
+\EU1/SimSun(1)/m/n/12 的 自 定 义，|  在 类 \EU1/TimesNewRoman(0)/m/n/12 Softmax \EU1/
+SimSun(1)/m/n/12 中 重 写[]\EU1/lmtt/m/n/12 forward() \EU1/SimSun(1)/m/n/12 和[]\EU
+1/lmtt/m/n/12 backward()\EU1/SimSun(1)/m/n/12 ，|
+ []
+
+
+Overfull \hbox (65.62491pt too wide) in paragraph at lines 1424--1425
+\EU1/SimSun(1)/m/n/12 中 带 有 装 饰 器[]\EU1/lmtt/m/n/12 mx.operator.register()\EU1/
+SimSun(1)/m/n/12 ，|  等 价 于 操 作[]\EU1/lmtt/m/n/12 register("custom_op")(CustomOp
+Prop)\EU1/SimSun(1)/m/n/12 ，|
+ []
+
+
+Overfull \hbox (35.54222pt too wide) in paragraph at lines 1426--1427
+[]\EU1/SimSun(1)/m/n/12 完 成 上 述 操 作 符 的 定 义 后，|  就 可 以 使 用 新 的 操 作 符 了，|  具 体 是
+ 使 用[]\EU1/lmtt/m/n/12 mx.symbol.Custon()
+ []
+
+[134]
+Overfull \hbox (3.5893pt too wide) in paragraph at lines 1451--1452
+[]\EU1/SimSun(1)/m/n/12 纵 观 整 个 实 现 代 码，| \EU1/TimesNewRoman(0)/m/n/12 NDarrayS
+oftmax \EU1/SimSun(1)/m/n/12 类 继 承 自 \EU1/TimesNewRoman(0)/m/n/12 NDArrayOp\EU1
+/SimSun(1)/m/n/12 ，|  后 者 其 实 与 \EU1/TimesNewRoman(0)/m/n/12 NumpyOp
+ []
+
+[135]
+Overfull \hbox (74.55191pt too wide) in paragraph at lines 1503--1504
+[]\EU1/TimesNewRoman(0)/m/n/12 Softmax \EU1/SimSun(1)/m/n/12 类 定 义 了 新 的 自 定 义 
+操 作 符 的 计 算，|  但 仍 然 需 要 通 过 定 义[]\EU1/lmtt/m/n/12 mx.operator.CustomOpProp
+ []
+
+[136] [137]) (./GPUOptimizationDL/GPUOptimizationDL.tex [138]
 Chapter 8.
-[127
+
+Overfull \hbox (11.32843pt too wide) in paragraph at lines 7--7
+[]\EU1/TimesNewRoman(0)/bx/n/17.28 In-Place Activated BatchNorm for Memory-Opti
+mized
+ []
+
+) (./DLTips/DLTips.tex [139
+
+] [140
 
 ]
+Chapter 9.
+[141]
 File: DLTips/DilatedConv1.jpg Graphic file (type QTm)
  <use  "DLTips/DilatedConv1.jpg" >
 File: DLTips/WaveNet1.jpg Graphic file (type QTm)
- <use  "DLTips/WaveNet1.jpg" > [128]
-[129]
+ <use  "DLTips/WaveNet1.jpg" > [142]
+[143]
 File: DLTips/Deconvolution0.jpg Graphic file (type QTm)
  <use  "DLTips/Deconvolution0.jpg" >
 Overfull \hbox (25.44086pt too wide) in paragraph at lines 141--142
@@ -2130,26 +2231,26 @@ Overfull \hbox (25.44086pt too wide) in paragraph at lines 141--142
  sense as ConvolutionLayer.ConvolutionLayer
  []
 
-[130]
+[144]
 File: DLTips/Deconvolution1.png Graphic file (type QTm)
  <use  "DLTips/Deconvolution1.png" >
 File: DLTips/Deconvolution2.jpg Graphic file (type QTm)
  <use  "DLTips/Deconvolution2.jpg" >
-[131] [132]
+[145] [146]
 Overfull \hbox (7.86864pt too wide) in paragraph at lines 249--249
 []\EU1/lmtt/m/n/12 gluon.nn.Conv2DTranpose(output_channels, kernel_size=(2*scal
 e, 2*scale)[] 
  []
 
-[133]
+[147]
 File: DLTips/ThreeDistillationModules1.png Graphic file (type QTm)
- <use  "DLTips/ThreeDistillationModules1.png" > [134]
+ <use  "DLTips/ThreeDistillationModules1.png" > [148]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\@ifnextchar' on input line 357.
 
 File: DLTips/Inception0.jpg Graphic file (type QTm)
-<use  "DLTips/Inception0.jpg" > [135]
+<use  "DLTips/Inception0.jpg" > [149]
 File: DLTips/Inception1.jpg Graphic file (type QTm)
  <use  "DLTips/Inception1.jpg" >
 File: DLTips/DepthwiseSeparable0.jpg Graphic file (type QTm)
@@ -2157,13 +2258,13 @@ File: DLTips/DepthwiseSeparable0.jpg Graphic file (type QTm)
 <use  "DLTips/DepthwiseSeparable0.jpg" >
 File: DLTips/DepthwiseSeparable1.jpg Graphic file (type QTm)
 
-<use  "DLTips/DepthwiseSeparable1.jpg" > [136] [137]
+<use  "DLTips/DepthwiseSeparable1.jpg" > [150] [151]
 File: DLTips/DeformableConv0.jpg Graphic file (type QTm)
 
-<use  "DLTips/DeformableConv0.jpg" > [138]
+<use  "DLTips/DeformableConv0.jpg" > [152]
 File: DLTips/DeformableConv1.jpg Graphic file (type QTm)
 
-<use  "DLTips/DeformableConv1.jpg" > [139]
+<use  "DLTips/DeformableConv1.jpg" > [153]
 File: DLTips/SENetConv0.jpg Graphic file (type QTm)
  <use  "DLTips/SENetConv0.jpg" >
 File: DLTips/SEInception0.jpg Graphic file (type QTm)
@@ -2173,20 +2274,20 @@ File: DLTips/SEResNet0.jpg Graphic file (type QTm)
  <use  "DLTips/SEResNet0.jpg" >
 File: DLTips/Conv0.jpg Graphic file (type QTm)
 
-<use  "DLTips/Conv0.jpg" > [140] [141]
+<use  "DLTips/Conv0.jpg" > [154] [155]
 File: DLTips/Unpooling0.png Graphic file (type QTm)
- <use  "DLTips/Unpooling0.png" > [142]
-[143] [144]
+ <use  "DLTips/Unpooling0.png" > [156]
+[157] [158]
 File: DLTips/PerceptionField1.png Graphic file (type QTm)
- <use  "DLTips/PerceptionField1.png" > [145]
+ <use  "DLTips/PerceptionField1.png" > [159]
 File: DLTips/PerceptionField0.jpg Graphic file (type QTm)
 
-<use  "DLTips/PerceptionField0.jpg" > [146] [147] [148] [149]
+<use  "DLTips/PerceptionField0.jpg" > [160] [161] [162] [163]
 File: DLTips/BP0.jpg Graphic file (type QTm)
 
-<use  "DLTips/BP0.jpg" > [150]
+<use  "DLTips/BP0.jpg" > [164]
 File: DLTips/BP1.jpg Graphic file (type QTm)
- <use  "DLTips/BP1.jpg" > [151]
+ <use  "DLTips/BP1.jpg" > [165]
 File: DLTips/BP2.png Graphic file (type QTm)
 
 <use  "DLTips/BP2.png" >
@@ -2194,69 +2295,69 @@ File: DLTips/BP3.jpg Graphic file (type QTm)
  <use  "DLTips/BP3.jpg" >
 File: DLTips/BP4.jpg Graphic file (type QTm)
  <use  "DLTips/BP4.jpg" >
-[152] [153] [154]
+[166] [167] [168]
 File: DLTips/Attention0.png Graphic file (type QTm)
- <use  "DLTips/Attention0.png" > [155] [156] [157]
+ <use  "DLTips/Attention0.png" > [169] [170] [171]
 File: DLTips/OneOneConv0.jpg Graphic file (type QTm)
 
-<use  "DLTips/OneOneConv0.jpg" > [158] [159]
+<use  "DLTips/OneOneConv0.jpg" > [172] [173]
 Overfull \hbox (79.87991pt too wide) in paragraph at lines 1298--1298
 [] 
  []
 
-[160]
+[174]
 File: DLTips/ConfusionMatrix0.png Graphic file (type QTm)
- <use  "DLTips/ConfusionMatrix0.png" > [161] [162] [163] [164] [165]
-[166] [167] [168] [169] [170] [171]
+ <use  "DLTips/ConfusionMatrix0.png" > [175] [176] [177] [178] [179]
+[180] [181] [182] [183] [184] [185]
 File: DLTips/ActivationFunctions0.jpg Graphic file (type QTm)
  <use  "DLTips/ActivationFunctions0.jpg" >
-[172] [173] [174] [175]
+[186] [187] [188] [189]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 2007.
- [176] [177] [178] [179] [180])
-(./ImageProcessing/ImageProcessing.tex [181] [182
-
-]
-Chapter 9.
-) (./FeatureExtraction/FeatureExtraction.tex [183] [184
-
-]
+ [190] [191] [192] [193] [194] [195] [196] [197]
+[198] [199]) (./ImageProcessing/ImageProcessing.tex [200]
 Chapter 10.
-[185]
+) (./FeatureExtraction/FeatureExtraction.tex [201
+
+] [202
+
+]
+Chapter 11.
+[203]
 File: FeatureExtraction/RCNN0.jpg Graphic file (type QTm)
- <use  "FeatureExtraction/RCNN0.jpg" > [186]
+ <use  "FeatureExtraction/RCNN0.jpg" > [204]
 File: FeatureExtraction/SPPNet0.png Graphic file (type QTm)
 
-<use  "FeatureExtraction/SPPNet0.png" > [187]
+<use  "FeatureExtraction/SPPNet0.png" > [205]
 File: FeatureExtraction/SPPNet1.png Graphic file (type QTm)
 
-<use  "FeatureExtraction/SPPNet1.png" > [188] [189] [190] [191]) [192]
-(./Papers.bbl [193
+<use  "FeatureExtraction/SPPNet1.png" > [206] [207] [208] [209]) [210]
+(./Papers.bbl [211
 
 
-] [194]) (./Papers.ind [195] [196
+] [212]) (./Papers.ind [213] [214
 
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 114.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 114.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 118.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 118.
  (./Papers.aux
 (./CUDAImageProcessing/CUDAImageProcessing.aux) (./FPGAs/FPGAs.aux))
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 114.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 114.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 118.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 118.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 118.
  ) 
 Here is how much of TeX's memory you used:
- 29206 strings out of 495525
- 539481 string characters out of 6184337
- 750996 words of memory out of 5000000
- 31905 multiletter control sequences out of 15000+600000
+ 29443 strings out of 495525
+ 543444 string characters out of 6184337
+ 755597 words of memory out of 5000000
+ 32136 multiletter control sequences out of 15000+600000
  13649 words of font info for 96 fonts, out of 8000000 for 9000
  80 hyphenation exceptions out of 8191
- 45i,14n,58p,10437b,1780s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 45i,14n,58p,10437b,1805s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Papers.pdf (210 pages).
+Output written on Papers.pdf (230 pages).
