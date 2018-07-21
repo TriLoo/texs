@@ -2349,10 +2349,190 @@ Semantic Instance Segmentation via Deep Metric Learning
 
 \subsection{小结}
 
+\section{Residual Attention Network For Image Classification}
+
+参考文献：
+
+这篇文章和前天看到的CBAM: Convolutional Block Attention Module有异曲同工之妙，而且，感觉正式我想要的！  
+
+\subsection{背景及相关工作}
+
+文章主要的贡献：
+\begin{itemize}
+\item Stacked Network Structure
+
+在读分割相关的论文的时候，一种经常出现的模型结构是Encoder-Decoder，现在，作者提到了另一种常见的网络结构：Stacked Network Structure。
+
+作者认为：{\bfseries Stacked structure 是混合Attention模型的典型应用}。因此使用不同的Attention Modules可以获取到不同类型的注意力！
+
+\item Attention Residual Learning
+
+直接以Stack的结构特点对注意力Module进行堆叠，会导致明显的性能下降，因此，作者提出基于残差结构特点进行学习，可以训练上百层的网络模型。
+
+\item Bottom-up top-down feedforward attention
+
+这是另一个经常出现的名词。在本文中，这是Attention Module的实现方式，可以让Feedforward和Feedback的注意力处理过程变成一个单独的Feedforward的处理过程。
+
+在图像分割中，这里的Bottom-up top-down feedforward attention也被成功应用了，比如FCN、Encoder-Decoder结构中！
+
+本文中，利用这种结构来实现在Feature上添加soft weights。
+
+\end{itemize}
+
+利用注意力机制，两种信息源被获取用于相互帮助，这两种信息源是：Query和Query Context，没看懂什么意思。。。
+
+作者提到，在图像分类过程中，注意力机制的引入体现在三个方面：Sequential process, region proposal和control gates。
+
+第一个和最后一个经常与LSTM或RNN等模型一起使用。关于Control Gates，Highway Network中使用control gate被扩展到帮助解决梯度消失的问题。
+
+在Region Proposal中，一种实现方式是基于有监督的方式，这种情况下，就需要大量的已经标记号的类别数据；所以更多的使用无监督的方式来实现Region Proposal，但这不是指Selective Search么。
+
+这里，作者提到了Soft Attention以及两篇相关论文：Spatial Tranform Network和Scale-aware semantic image segmentation。后者在图像分割上表现很好。
+
+STN的流程如下：
+\begin{itemize}
+\item 用一个深度神经网络来提取top information并生成仿射变换的系数
+\item 计算得到的仿射系数被应用于输入图像上，从而获得想要的区域，并把这些区域输入到另一个深度网络模块中
+\end{itemize}
+
+作者说本文的思想是受localization oriented task启发的，比如图像分割和human pose estimation。也属于Soft Attention。
+
+对于图像分割，现在普遍的做法就是Encoder-Decoder的结构了，也就是先在Feedforward过程中对数据进行降维，获得维度较低，但语义信息丰富的信息；然后经过Decoder来提高维度。
+
+\subsection{Residual Attention Network}
+
+我们的Residual Attention Network是通过stacking multiple attention modules来实现的！
+
+对于Attention Modules来说，由两个Branch构成：
+\begin{itemize}
+\item Mask branch
+
+用于对Feature进行处理，并可以被引入到任何SOTA深度模型中。对于这个Branch，输入是$x$，输出是$T(x)$。
+
+\item Trunk branch
+
+这个Branch基于Bottom-up top-down结构实现，也就是Encoder-Decoder结构。用于学习得到一个Mask $M(x)$，然后这个Mask被当做Soft weight用于$T(x)$，这就是典型的Attention机制了。
+
+\end{itemize}
+
+更高一层的，Attention Modules是基于Residual Unit、ResNeXt和Inception等神经网络构成。经过Attention Module之后，输出为$H$:
+
+\begin{displaymath}
+H_{i, c}(x) = M_{i, c}(x) * T_{i, c}(x)
+\end{displaymath}
+
+其中，i表示Spatial index， c表示第c个Channel。
+
+Attention机制有两个好处,不仅可以用于在Forward过程中作为Feature selector，还可以在back propagation中，当做gradient update filter。这一点可以从原文中对Attention Module反向求导的公式中可以看出来。
+
+值得注意的是，这里的Attention是由两个Branch来实现的，作者认为如果只有一个Branch的话有很多缺点，比如对于具有复杂背景或者场景变化很大的图像，需要用指数数量的channel才能比较好的建模，或者表征包含的Features等。
+
+\subsubsection{Attention Residual Learning}
+
+如果单纯的把Attention Modules进行Stacked起来的话，会导致性能的降低，这也体现了信息流、梯度流的重要性！！作者认为原因有二：
+\begin{itemize}
+\item 点乘(Dot product)会导致Mask branch产生的Mask生成的0到1之间的Mask反复出现，然后degrade the value of features in deep layers.
+\item Soft mask可能会破坏Trunk branch的一些比较好的特性，比如Residual Unit中的Identical mapping等。
+\end{itemize}
+
+为了解决这两个问题，作者提出了Attention Residual Learning机制，非常简单，就是在上面提到的把Soft Mask作用于$T(x)$时修改了下$M(x)$的形式：
+
+\begin{displaymath}
+H_{i, c}(x) = (1 + M_{i, c}(x)) * F_{i, c}(x)
+\end{displaymath}
+
+作者反复提到，Attention Moduels具有IncrementalNature，因此可以在不同的层对不同的特征引入注意力机制。    
+
+\subsubsection{Soft Mask Branch}
+
+最终要的一点是具有Encoder-Decoder的结构特点，在Encoder中，用max pooling来提高感受野，知道不能继续降低分辨率未知；在Decoder中，采用线性插值实现升采样。两者的结构是对称的，类似U-Net结构，并且两个部分之间也有Skip Connection。
+用于在不同Scale上获取信息。
+
+另外一点是，不像U-Net中那样直接利用这中Encoder-Decoder结构来做复杂的分割任务，在本文中上述过程的目的是提供Attention机制，也就是利用Sigmoid作为一种Gating机制来用的！目的不同、做法不同，导致这里就可以被称为Attention机制了。
+
+\subsubsection{Spatial Attention And Channel Attention}
+
+这一小节非常重要，是对Attention机制的作用的讨论。作者对比了三种不同的Attention作用方式：
+\begin{itemize}
+\item Mixed Attention
+
+也就是同时包含后面的两种的作用机制。计算公式如下：
+
+\begin{displaymath}
+f_1(x_{i, c}) = \frac{1}{1 + \exp(-x_{i, c})}
+\end{displaymath}
+
+\item Channel Attention
+
+只考虑Channel之间的重要性：
+
+\begin{displaymath}
+f_2(x_{i, c}) = \frac{x_{i, c}}{\parallel x_{i} \parallel}
+\end{displaymath}
+
+\item Spatial Attention
+
+只考虑Spatial之间的重要性：
+
+\begin{displaymath}
+f_3(x_{i, c}) = \frac{1}{1 + \exp(-(x_{i, c} - mean_c)/std_c)}
+\end{displaymath}
+\end{itemize}
+
+{\bfseries 最后，作者表明第一种方式也就是同时考虑Channel和Spatial中的注意力机制效果最好。}
+
+\subsection{实验}
+
+相比于第一种没有残差结构的Attention结构，改进后的效果更好；相比于ResNet， Inception，引入Attention机制后，效果更好。
+
+对于CIFAR-100等数据集，训练约160 Epoches， Batchsize为64， 在64K、94K的时候降低学习率10倍；使用Nesterov SGD进行训练。
+
+\subsection{总结}                         
+
+实验结果表明，提出的Residual Attention Networks有两个好处，及其原因如下：
+
+\begin{itemize}
+\item 可以Capture mixed attention
+
+可以获取不同的Attention用于指导Feature的学习。
+
+\item 具有很高可扩展性的神经网络结构
+
+用具有Bottom-up Top-down feedforward的卷积结构代替Top-down attentnion mechanism用于Attention Modules中，帮助学习的更好。
+
+\end{itemize}
+
+作者说下一步的工作是验证本文的工作在目标识别、语义分割方面的性能。
+
+\section{Object-based RGBD Image Co-segmentation with Mutex Constraint}
+
+参考文献：
+
+本文的主要思想如下：
+
+\begin{itemize}
+\item 还是CRF的基本框架
+\item Unary 部分
+
+由Objectness和Saliency socre两部分构成。
+
+\item Pair部分
+
+由两点之间的color， shape， depth三个参数的距离构成。Color由彩色的Histogram计算得到，Shape由HOG特征得到，depth直接由深度数据得到，所有的距离都是基于L2 Norm的方式计算。
+
+\item Mutex Constrains
+
+这是本文的创新之一，在Pair部分中引入了一个Mutex Constraint Matrix，这个由两个候选Object的交叠大小决定，具体公式可参见论文。
+
+\item 深度信息的利用
+
+主要是用于Unary和Pair的计算过程中。比如Objectness和Saliency的计算都用到了Depth， Pair中也考虑了Depth之间的距离等信息。
+
+\end{itemize}
 
 
-\section{RedNet: Residual Encoder-Decoder Network for indoor RGB-D Semantic Segmentation}
-
+\section{RedNet: Residual Encoder-Decoder Network for indoor .RGB-D Semantic Segmentation}
+ 
 \section{RDFNet: RGB-D Multi-level Residual Feature fusion for Indoor Sematnic Segmentation}
 
 
