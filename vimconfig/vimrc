@@ -1,0 +1,243 @@
+set nocompatible        " 
+filetype off
+
+let g:ale_disable_lsp = 1
+
+call plug#begin('~/.vim/plugged')
+
+" add own plugins
+"
+" git
+Plug 'tpope/vim-fugitive'
+" fold the code block smarter
+Plug 'tmhedberg/SimpylFold' " directory tree
+Plug 'preservim/nerdtree'
+" color theme
+Plug 'jnurmine/Zenburn'           " used for terminal
+Plug 'altercation/vim-colors-solarized'   " used for gui
+" comment/uncomment 
+Plug 'preservim/nerdcommenter'
+" python autoindent
+Plug 'vim-scripts/indentpython.vim'
+" fuzzy find file, not installed yet
+Plug 'Yggdroot/LeaderF'
+" auto pair
+Plug 'jiangmiao/auto-pairs'
+" air-line, not installed yet
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" auto-complete **
+Plug 'neoclide/coc.nvim'
+" syntax checking & semantic erros
+Plug 'dense-analysis/ale'
+
+" tags
+Plug 'ludovicchabant/vim-gutentags'
+
+" AsyncRun to build cpp, c
+Plug 'skywind3000/asyncrun.vim'
+
+" git/svn diff compare
+if has('nvim') || has('patch-8.0.902')
+      Plug 'mhinz/vim-signify'
+  else
+    Plug 'mhinz/vim-signify', { 'branch': 'legacy'  }
+endif
+
+
+
+
+
+
+
+call plug#end()
+filetype plugin indent on
+
+"" --------- puglin short cut ----------
+""             keyword & setting
+"" --------- puglin short cut ----------
+
+" ---- plugin: nerdtree
+map <C-n> :NERDTreeToggle<CR>       " open nerdtree ctrl + n to open directory structure
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif       " close nerdtree if it is the last one window
+autocmd StdinReadPre * let s:std_in=1               " below two lines: open the nerdtree automatically when a directory is opened !!
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+
+" ---- plugin: vim-colors-solarized
+if has('gui_running')
+    set background=dark
+    colorscheme solarized
+else
+    colorscheme zenburn
+endif
+
+" ---- plugin: nerdcommenter
+let g:NERDSpaceDelims = 1           " add spaces after comment delimiters by default
+let g:NERDCompactSexyComs = 1       " Use compact syntax for prettified multi-line comments
+let g:NERDDefaultAlign = 'left'     " Align line-wise comment delimiters flush left instead of following code indentation
+" let g:NERDCustomDelimiters = { 'c': { 'left': '/**', 'right': '*/'} }             " custom formats or override the default
+" let g:NERDCustomDelimiters = { 'cpp': { 'left': '/**', 'right': '*/'} }             " custom formats or override the default
+let g:NERDCommentEmptyLines = 1     " Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDTrimTrailingWhitespace = 1                                              " Enable trimming of trailing whitespace when uncommenting
+let g:NERDToggleCheckAllLines = 1   " Enable NERDCommenterToggle to check all selected lines is commented or not 
+
+" ---- plugin: leaderf
+let g:Lf_ShortcutF = '<c-p>'
+let g:Lf_ShortcutB = '<m-n>'
+noremap <c-m> :LeaderfMru<cr>
+noremap <m-p> :LeaderfFunction!<cr>
+noremap <m-n> :LeaderfBuffer<cr>
+noremap <m-m> :LeaderfTag<cr>
+let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': ''  }
+
+let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
+let g:Lf_WorkingDirectoryMode = 'Ac'
+let g:Lf_WindowHeight = 0.30
+let g:Lf_CacheDirectory = expand('~/.vim/cache')
+let g:Lf_ShowRelativePath = 0
+let g:Lf_HideHelp = 1
+let g:Lf_StlColorscheme = 'powerline'
+let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+
+
+" ---- plugin: air-line
+set laststatus=2  " always show the status bar
+let g:airline_powerline_fonts = 1  " support powerline fonts
+let g:airline#extensions#tabline#enabled = 1 " show window bar & buffer
+let g:airline_theme='molokai'  
+" let g:airline_theme='simple'
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_left_sep = '▶'
+let g:airline_left_alt_sep = '❯'
+let g:airline_right_sep = '◀'
+let g:airline_right_alt_sep = '❮'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline#extensions#tabline#enabled=1          " display the tab on top alwayx
+nnoremap <c-s-tab> :bprevious<cr>                   " use ctrl + shift + tab go to previous tab
+nnoremap <c-tab> :bnext<cr>                       " use ctrl + tab go to the next tab
+
+" ---- plugin: coc.nvim
+set hidden
+set updatetime=300
+" Use <c-space> to trigger completion.
+if has('nvim')
+    inoremap <silent><expr> <c-space> coc#refresh()
+else
+    inoremap <silent><expr> <c-@> coc#refresh()
+endif
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" Remap for format selected region
+xmap <leader>fm  <Plug>(coc-format-selected)
+nmap <leader>fm  <Plug>(coc-format-selected)
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" ---- plugin: ale
+let g:ale_linters_explicit = 1
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:airline#extensions#ale#enabled = 1
+
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+let g:ale_c_cppcheck_options = ''
+let g:ale_cpp_cppcheck_options = ''
+
+let g:ale_sign_error = "\ue009\ue009"
+hi! clear SpellBad
+hi! clear SpellCap
+hi! clear SpellRare
+hi! SpellBad gui=undercurl guisp=red
+hi! SpellCap gui=undercurl guisp=blue
+hi! SpellRare gui=undercurl guisp=magenta
+
+" ---- plugin: vim-gutentags
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']     " stop search when meet these files
+let g:gutentags_ctags_tagfile = '.tags'                                         " filename of tags
+let s:vim_tags = expand('~/.cache/tags')                                        " put the .tags file into .cache to avoid pollute the project
+let g:gutentags_cache_dir = s:vim_tags
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']            " some configures
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+if !isdirectory(s:vim_tags)                                                     " create the tag file if not exists
+   silent! call mkdir(s:vim_tags, 'p')
+endif
+
+set tags=./.tags;,.tags
+
+" ---- plugin: asyncrun
+let g:asyncrun_open = 6         " automatically open quickfix window, height = 6
+let g:asyncrun_bell = 1         " bell when task finished
+nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>        " use F10 to open/close quickfix window
+nnoremap <silent> <F9> :AsyncRun clang++ -Wall -O2 "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>      " F9 to build current opened file
+nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>                    " F5 to run current executable program
+let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '.project', '_darcs', 'build.xml']                 " define project root
+" nnoremap <silent> <F7> :AsyncRun -cwd=<root> cmake .. <cr>
+
+" ---- plugin: asyncrun
+" default updatetime 4000ms is not good for async update
+set updatetime=100
+
+
+
+
+
+
+
+
+
+
+
+
+
+"" --------- puglin short cut ----------
+""            Normal Settings
+"" --------- puglin short cut ----------
+
+" -------- python autoindent
+au BufNewFile,BufRead *.py
+    \ set tabstop=4     |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4  |
+    \ set expandtab     |
+    \ set autoindent    |
+    \ set fileformat=unix
+" -------- other autoindent
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2     |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2
+
+
+
+
+set nu
+set autoindent
+set ts=4
+set sw=4
+set expandtab
+syntax on
+let python_highlight_all=1
+set cindent
+set smartindent
+" filetype plugin on
+set foldmethod=indent       " key 'za' to fold or unfold the code block, 'space' can also unfold the code block
+set foldlevel=10
+nnoremap <space> za         " use 'space' to instead 'za' key to fold the code block
+set clipboard=unnamed       " allow use system clipborad
+
