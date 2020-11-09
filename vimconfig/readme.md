@@ -10,10 +10,10 @@ $ curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent
 
 * add custom plugins witin following code block
 
-''' vimL
+''' vim
 call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
-" ,,,
+...
 call plug#end()
 '''
 
@@ -38,4 +38,13 @@ call plug#end()
 
     参考文件： [Vim-plug: 极简Vim插件管理器](https://zhuanlan.zhihu.com/p/38156442)
 
+* some shotcut
+
+  - ctrl-p: find filename using Leaderf
+  - gd: goto defined places
+  - gr: goto all referenced places
+  - gy: goto the type definition place
+  - :AsyncRun + commond: run the command in the quickfix window
+  - :bp goto previous buffer
+  - :bn goto next buffer
 
