@@ -26,6 +26,7 @@ Plug 'jiangmiao/auto-pairs'
 " air-line, not installed yet
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'enricobacis/vim-airline-clock'
 
 " auto-complete **
 Plug 'neoclide/coc.nvim'
@@ -119,6 +120,8 @@ let g:airline_symbols.branch = '⎇'
 let g:airline#extensions#tabline#enabled=1          " display the tab on top alwayx
 nnoremap <c-s-tab> :bprevious<cr>                   " use ctrl + shift + tab go to previous tab
 nnoremap <c-tab> :bnext<cr>                       " use ctrl + tab go to the next tab
+let g:airline#extensions#clock#format = '%H:%M:%S'      " set the airline-clock time format
+" let g:airline#extensions#clock#auto = 0               " close the airline-clock time
 
 " ---- plugin: coc.nvim
 set hidden
@@ -240,4 +243,6 @@ set foldmethod=indent       " key 'za' to fold or unfold the code block, 'space'
 set foldlevel=10
 nnoremap <space> za         " use 'space' to instead 'za' key to fold the code block
 set clipboard=unnamed       " allow use system clipborad
+set backspace=2             " allow delete empty content cross text lines
+set hlsearch                " highlight when the patten is matched
 
