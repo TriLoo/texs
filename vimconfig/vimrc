@@ -236,8 +236,9 @@ set sw=4
 set expandtab
 syntax on
 let python_highlight_all=1
-set cindent
-set smartindent
+set autoindent
+" set cindent
+" set smartindent
 " filetype plugin on
 set foldmethod=indent       " key 'za' to fold or unfold the code block, 'space' can also unfold the code block
 set foldlevel=10
@@ -245,4 +246,6 @@ nnoremap <space> za         " use 'space' to instead 'za' key to fold the code b
 set clipboard=unnamed       " allow use system clipborad
 set backspace=2             " allow delete empty content cross text lines
 set hlsearch                " highlight when the patten is matched
+set paste
+
 
