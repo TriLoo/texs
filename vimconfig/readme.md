@@ -1,5 +1,9 @@
 # vim configure
 
+* install zenburn color scheme
+
+download this file: https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim to `~/.vim/colors`
+
 * install vim-plug
 
 run this commond in terminal:
