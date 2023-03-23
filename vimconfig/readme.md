@@ -4,6 +4,10 @@
 
 download this file: https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim to `~/.vim/colors`
 
+* install nodejs
+
+see https://nodejs.org/en/download/package-manager#debian-and-ubuntu-based-linux-distributions for install nodejs on ubuntu.
+
 * install vim-plug
 
 run this commond in terminal:
