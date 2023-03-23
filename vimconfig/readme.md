@@ -1,5 +1,9 @@
 # vim configure
 
+* to make vim color theme work under tmux, set environments:
+
+export TERM="screen-256color"
+
 * install zenburn color scheme
 
 download this file: https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim to `~/.vim/colors`
