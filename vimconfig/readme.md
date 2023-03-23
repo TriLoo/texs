@@ -4,7 +4,9 @@
 
 download this file: https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim to `~/.vim/colors`
 
-* install nodejs
+* install for coc
+
+see https://zhuanlan.zhihu.com/p/145793963 for more details.
 
 see https://nodejs.org/en/download/package-manager#debian-and-ubuntu-based-linux-distributions for install nodejs on ubuntu.
 
