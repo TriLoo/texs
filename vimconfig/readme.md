@@ -1,5 +1,11 @@
 # vim configure
 
+# Tmux trige bashrc
+
+see [new tmux sessions do not source bashrc](https://unix.stackexchange.com/questions/320465/new-tmux-sessions-do-not-source-bashrc-file) for details.
+
+the fastest way is to put "source ~/.bashrc" into oneof ~/.bash_profile, ~/.bash_login, and ~/.profile is ok.
+
 * to make vim color theme work under tmux, set environments:
 
 export TERM="screen-256color"
