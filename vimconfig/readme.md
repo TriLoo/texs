@@ -1,5 +1,9 @@
 # vim configure
 
+**MUST READ**
+
+add `export COLORTERM=truecolor` to Windows terminal setting / WSL Ubuntu .bashrc file!
+
 # Tmux trige bashrc
 
 see [new tmux sessions do not source bashrc](https://unix.stackexchange.com/questions/320465/new-tmux-sessions-do-not-source-bashrc-file) for details.
