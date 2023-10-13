@@ -20,10 +20,30 @@ set expandtab
 set ts=4
 set sw=4
 set hlsearch
-" SHOULD export TERM="screen-256color" first !!!
+
 set background=dark
 colorscheme gruvbox
-let g:airline_theme='base16_gruvbox_dark_soft'
+let g:airline_theme='molokai'
+" let g:airline_theme='gruvbox_dark'
+" let g:airline_theme='base16_gruvbox_dark_soft'
+
+" SHOULD export TERM="screen-256color" first !!!
+let g:airline_powerline_fonts = 1
+let g:airline_left_sep = '▶'
+let g:airline_left_alt_sep = '❯'
+let g:airline_right_sep = '◀'
+let g:airline_right_alt_sep = '❮'
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+
+
+let g:airline#extensions#tabline#enabled = 1
+nnoremap <c-s-tab> :bprevious<cr>
+nnoremap <c-tab> :bnext<cr>
+" let g:airline#extensions#clock#format = '%H:%M:%S'
 
 set sm!
 set ruler
