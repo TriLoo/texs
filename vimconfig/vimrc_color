@@ -1,0 +1,34 @@
+call plug#begin('~/.vim/plugged')
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'enricobacis/vim-airline-clock'
+
+Plug 'morhetz/gruvbox'
+
+Plug 'junegunn/vim-easy-align'
+Plug 'jiangmiao/auto-pairs'
+
+" python autoindent
+Plug 'vim-scripts/indentpython.vim'
+
+call plug#end()
+
+
+set paste
+set nu
+set expandtab
+set ts=4
+set sw=4
+set hlsearch
+" SHOULD export TERM="screen-256color" first !!!
+set background=dark
+colorscheme gruvbox
+let g:airline_theme='base16_gruvbox_dark_soft'
+
+set sm!
+set ruler
+
+syntax on
+
+set laststatus=2
+set showtabline=2
