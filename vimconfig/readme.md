@@ -4,42 +4,52 @@
 
 add `export COLORTERM=truecolor` to Windows terminal setting / WSL Ubuntu .bashrc file!
 
-# Tmux trige bashrc
+## Tmux trige bashrc
 
 see [new tmux sessions do not source bashrc](https://unix.stackexchange.com/questions/320465/new-tmux-sessions-do-not-source-bashrc-file) for details.
 
 the fastest way is to put "source ~/.bashrc" into oneof ~/.bash_profile, ~/.bash_login, and ~/.profile is ok.
 
+## VIM Plugs
+
 * to make vim color theme work under tmux, set environments:
 
-export TERM="screen-256color"
+  export TERM="screen-256color"
 
 * install zenburn color scheme
 
-download this file: https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim to `~/.vim/colors`
+  download this file: https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim to `~/.vim/colors`
 
 * install for coc
 
-see https://zhuanlan.zhihu.com/p/145793963 for more details.
+  Should install nodes first: `curl -sL install-node.now.sh/lts | sudo bash`
 
-see https://nodejs.org/en/download/package-manager#debian-and-ubuntu-based-linux-distributions for install nodejs on ubuntu.
+  see https://zhuanlan.zhihu.com/p/145793963 for more details.
+
+  see https://nodejs.org/en/download/package-manager#debian-and-ubuntu-based-linux-distributions for install nodejs on ubuntu.
+
+  * Install coc plugs
+    ```vim
+    :CocInstall coc-json
+    :CocInstall coc-pyright
+    ```
 
 * install vim-plug
 
-run this commond in terminal:
+  run this commond in terminal:
 
-''' shell 
-$ curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-'''
+  ```shell 
+  $ curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  ```
 
 * add custom plugins witin following code block
 
-''' vim
-call plug#begin('~/.vim/plugged')
-Plug 'itchyny/lightline.vim'
-...
-call plug#end()
-'''
+  ```vim
+    call plug#begin('~/.vim/plugged')
+    Plug 'itchyny/lightline.vim'
+    ...
+    call plug#end()
+  ```
 
 * some vim-plug commands
 
@@ -56,9 +66,9 @@ call plug#end()
   - 升级 vim-plug
     要升级vim-plug本身，请输入：
     
-    ''' vimL
+    ``` vimL
     :PlugUpgrade
-    '''
+    ```
 
     参考文件： [Vim-plug: 极简Vim插件管理器](https://zhuanlan.zhihu.com/p/38156442)
 
