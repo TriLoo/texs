@@ -1,0 +1,73 @@
+call plug#begin('~/.vim/plugged')
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'enricobacis/vim-airline-clock'
+
+Plug 'morhetz/gruvbox'
+Plug 'joshdick/onedark.vim'
+
+Plug 'junegunn/vim-easy-align'
+Plug 'jiangmiao/auto-pairs'
+
+" python autoindent
+Plug 'vim-scripts/indentpython.vim'
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+call plug#end()
+
+set paste
+
+
+" coc not warning
+let g:coc_disable_startup_warning = 1
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" let g:onedark_termcolors = 256
+set background=dark
+" colorscheme onedark
+colorscheme gruvbox
+" let g:airline_theme='molokai'
+let g:airline_theme='onedark'
+" let g:airline_theme='gruvbox_dark'
+" let g:airline_theme='base16_gruvbox_dark_soft'
+
+" SHOULD export TERM="screen-256color" first !!!
+let g:airline_powerline_fonts = 1
+let g:airline_left_sep = '▶'
+let g:airline_left_alt_sep = '❯'
+let g:airline_right_sep = '◀'
+let g:airline_right_alt_sep = '❮'
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+
+let g:airline#extensions#tabline#enabled = 1
+nnoremap <c-s-tab> :bprevious<cr>
+nnoremap <c-tab> :bnext<cr>
+
+set sm!
+set ruler
+
+set laststatus=2
+set showtabline=2
+
+set nu
+set expandtab
+set ts=4
+set sw=4
+set hlsearch
+syntax on
+
+
