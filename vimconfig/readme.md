@@ -3,6 +3,7 @@
 **MUST READ**
 
 add `export COLORTERM=truecolor` to Windows terminal setting / WSL Ubuntu .bashrc file!
+add `export TERM="screen-256color"` to .bashrc file!
 
 ## Tmux trige bashrc
 
