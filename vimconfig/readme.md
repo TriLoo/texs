@@ -5,6 +5,10 @@
 add `export COLORTERM=truecolor` to Windows terminal setting / WSL Ubuntu .bashrc file!
 add `export TERM="screen-256color"` to .bashrc file!
 
+## coc.vim 插件报错
+
+https://chatgpt.com/share/67f8db69-2a38-8010-8f85-012327edd260
+
 ## Tmux trige bashrc
 
 see [new tmux sessions do not source bashrc](https://unix.stackexchange.com/questions/320465/new-tmux-sessions-do-not-source-bashrc-file) for details.
